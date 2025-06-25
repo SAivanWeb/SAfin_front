@@ -1,0 +1,2 @@
+<template>
+  <!-- icon666.com - MILLIONS OF FREE VECTOR ICONS --><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="Glyph"><path d="m12 1a11 11 0 1 0 11 11 11 11 0 0 0 -11-11zm-5 8h7.59l-.3-.29a1 1 0 1 1 1.42-1.42l2 2a1 1 0 0 1 .21 1.09 1 1 0 0 1 -.92.62h-10a1 1 0 0 1 0-2zm10 6h-7.59l.3.29a1 1 0 0 1 0 1.42 1 1 0 0 1 -1.42 0l-2-2a1 1 0 0 1 -.21-1.09 1 1 0 0 1 .92-.62h10a1 1 0 0 1 0 2z"/></g></svg></template>
