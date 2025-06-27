@@ -39,7 +39,7 @@ const props = defineProps({
     max-width: 50vw;
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 24px;
   }
 
   &__layout{
@@ -79,8 +79,8 @@ const props = defineProps({
 
   &__goals{
     &-container{
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
   }

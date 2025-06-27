@@ -2,16 +2,16 @@ import userApi from '@/api/modules/user.js';
 
 const state = {
     currentUser: null,
-    isAuth: false,
+    isAuth: true,
     userID: null,
     error: null,
-    token: null,
+    access_token: null,
 };
 const getters = {
     GET_CURRENT_USER(state){
         return state.currentUser;
     },
-    GET_USERID(state) {
+    GET_USER_ID(state) {
         return state.userID;
     },
     GET_IS_AUTH(state) {
@@ -31,9 +31,10 @@ const mutations = {
     SET_USER_ID(state, userId) {
         state.userId = userId;
     },
-    SET_TOKEN(state, { token }) {
-        state.token = token;
-        localStorage.setItem('token', token);
+    SET_TOKENS(state, tokens) {
+        state.access_token = tokens.access_token;
+        localStorage.setItem('access_token', tokens.access_token);
+        localStorage.setItem('refresh_token', tokens.refresh_token);
     },
     SET_ERROR(state, error) {
         state.error = error;
@@ -41,10 +42,10 @@ const mutations = {
     CLEAR_AUTH(state) {
         state.currentUser = null;
         state.isAuth = false;
-        state.token = null;
         state.userId = null;
         state.error = null;
-        localStorage.removeItem('token');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
     }
 };
 const actions = {
@@ -52,7 +53,12 @@ const actions = {
         try {
             commit('SET_ERROR', null);
             const response = await userApi.register(payload);
-            console.log(response);
+            if(response.success){
+                commit('SET_CURRENT_USER', {name: response.name, email: response.email});
+                commit('SET_USER_ID', response.id);
+                commit('SET_TOKENS', response.token);
+                commit('SET_AUTH', true);
+            }
         } catch (error) {
             commit('SET_ERROR', error.message || 'Register failed');
             throw error;
@@ -62,14 +68,12 @@ const actions = {
         try {
             commit('SET_ERROR', null);
             const response = await userApi.login(payload);
-            commit('SET_CURRENT_USER', response.user);
-            commit('SET_USER_ID', response.user.id);
-            commit('SET_AUTH', true);
-            commit('SET_TOKEN', {
-                token: response.token
-            });
-
-            return response.user;
+            if(response.success){
+                commit('SET_CURRENT_USER', {name: response.name, email: response.email});
+                commit('SET_USER_ID', response.id);
+                commit('SET_TOKENS', response.token);
+                commit('SET_AUTH', true);
+            }
         } catch (error) {
             commit('SET_ERROR', error.message || 'Login failed');
             throw error;
@@ -88,7 +92,7 @@ const actions = {
             if (response) {
                 commit('SET_CURRENT_USER', response.user);
                 commit('SET_AUTH', true);
-                commit('SET_TOKEN', {token: token});
+                commit('SET_TOKENS', {token: token});
             }
         }
     }

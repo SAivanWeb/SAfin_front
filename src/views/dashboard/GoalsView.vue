@@ -2,7 +2,7 @@
   <MainWrapper>
     <div class="goals__header">
       <MainTitle title="Цели" class="goals__title"/>
-      <MainButton action="add" title="добавить цель" type="secondary" @click="$emit('showGoals')"/>
+      <MainButton class="goals__button" action="add" title="добавить цель" type="secondary" @click="$emit('showGoals')"/>
     </div>
 
 
@@ -26,6 +26,10 @@ import MainButton from "@/components/ui/button/MainButton.vue";
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  &__button{
+    width: fit-content;
   }
 
   &__container{

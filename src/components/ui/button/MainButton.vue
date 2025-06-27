@@ -63,6 +63,7 @@ const classes = computed(() => {
   }
 
   &_secondary {
+    padding: 12px 24px;
     &:hover{
       background: rgba(46, 125, 50, 0.1);
     }

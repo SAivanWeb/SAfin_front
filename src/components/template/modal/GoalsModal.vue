@@ -1,5 +1,5 @@
 <template>
-  <ModalWrapper>
+  <ModalWrapper size="650px">
     <template #header>
       <h2 class="modal__title">Создание цели</h2>
     </template>
@@ -8,9 +8,8 @@
       <div class="modal__goals-container">
         <MainInput label="Наименование" placeholder="Наименование" v-model="goalsData.name"/>
         <MainInput label="Описание" placeholder="Описание" v-model="goalsData.description"/>
-        <MainInput label="Статус" placeholder="Статус"  v-model="goalsData.status" :disabled="true" model-value="Активна"/>
-        <RadioBox/>
-        <MainSelect/>
+        <RadioBox :items="goalsType" :model-value="goalTypeOption" title="Тип цели"/>
+        <MainSelect :items="goalsPriority" :model-value="goalTypeOption"/>
         <InputDate/>
         <InputDate/>
         <MainInput type="number" label="Начальная сумма" placeholder="Начальная сумма" v-model="goalsData.current_amount"/>
@@ -36,20 +35,24 @@ const goalsData = ref({
   start_date: null,
   end_date: null,
   priority: 1,
-  status: '',
   description: '',
 })
 
+const goalTypeOption = ref(goalsData.value.type);
+const goalPriority = ref(goalsData.value.priority);
+
 const goalsType = [
+  { item_title: 'Накопительная', id: 'save', name: 'save', group: 'goal-type' },
+  { item_title: 'Лимитная', id: 'limit', name: 'limit', group: 'goal-type' }
+];
+
+const goalsPriority = [
   {
-    name: "Накопительная",
-    value: "save",
-  },
-  {
-    name: "Лимитная",
-    value: "limit",
+    id: 1,
+    name: ''
   },
 ]
+
 </script>
 
 <style scoped lang="scss">
