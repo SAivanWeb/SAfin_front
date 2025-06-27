@@ -26,7 +26,7 @@ const classes = computed(() => {
   let classes = [];
 
   if (disabled.value) {
-    classes.push(`button_disabled}`);
+    classes.push(`button_disabled`);
   }
   if (type.value) {
     classes.push(`button_${type.value}`);
@@ -40,20 +40,41 @@ const classes = computed(() => {
 
 <style scoped lang="scss">
 .button{
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   cursor: pointer;
+  padding: 18px;
+  border-radius: 12px;
   font-size: 18px;
   font-weight: 500;
-  padding: 8px 12px;
   color: #2E7D32;
-  border-radius: 12px;
   transition: 0.2s;
+
+  &_primary {
+    background: #2E7D32;
+    color: white;
+
+    &:hover {
+      background: #81C784;
+    }
+  }
+
+  &_secondary {
+    &:hover{
+      background: rgba(46, 125, 50, 0.1);
+    }
+
+    &:active{
+      background: rgba(46, 125, 50, 0.3);
+    }
+  }
 
   &_disabled{
     pointer-events: none;
+    background: rgba(46, 125, 50, 0.3);
   }
 
   &_add{
@@ -65,14 +86,6 @@ const classes = computed(() => {
 
   &__icon{
     width: 28px;
-  }
-
-  &:hover{
-    background: rgba(46, 125, 50, 0.1);
-  }
-
-  &:active{
-    background: rgba(46, 125, 50, 0.3);
   }
 }
 </style>

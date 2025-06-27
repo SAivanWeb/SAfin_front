@@ -2,7 +2,7 @@
   <MainWrapper>
     <div class="goals__header">
       <MainTitle title="Цели" class="goals__title"/>
-      <MainButton action="add" title="добавить цель" @click="$emit('showGoals')"/>
+      <MainButton action="add" title="добавить цель" type="secondary" @click="$emit('showGoals')"/>
     </div>
 
 

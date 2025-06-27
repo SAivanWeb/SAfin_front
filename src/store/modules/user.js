@@ -6,8 +6,6 @@ const state = {
     userID: null,
     error: null,
     token: null,
-    accessToken: null,
-    refreshToken: null
 };
 const getters = {
     GET_CURRENT_USER(state){
@@ -22,9 +20,6 @@ const getters = {
     GET_ERROR(state) {
         return state.error;
     },
-    GET_ACCESS_TOKEN(state) {
-        return state.accessToken;
-    }
 };
 const mutations = {
     SET_CURRENT_USER(state, user) {
@@ -36,9 +31,9 @@ const mutations = {
     SET_USER_ID(state, userId) {
         state.userId = userId;
     },
-    SET_TOKENS(state, { accessToken }) {
-        state.accessToken = accessToken;
-        localStorage.setItem('accessToken', accessToken);
+    SET_TOKEN(state, { token }) {
+        state.token = token;
+        localStorage.setItem('token', token);
     },
     SET_ERROR(state, error) {
         state.error = error;
@@ -46,22 +41,32 @@ const mutations = {
     CLEAR_AUTH(state) {
         state.currentUser = null;
         state.isAuth = false;
-        state.accessToken = null;
+        state.token = null;
         state.userId = null;
         state.error = null;
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem('token');
     }
 };
 const actions = {
-    async login({ commit }, credentials) {
+    async register({commit}, payload) {
         try {
             commit('SET_ERROR', null);
-            const response = await userApi.login(credentials);
+            const response = await userApi.register(payload);
+            console.log(response);
+        } catch (error) {
+            commit('SET_ERROR', error.message || 'Register failed');
+            throw error;
+        }
+    },
+    async login({ commit }, payload) {
+        try {
+            commit('SET_ERROR', null);
+            const response = await userApi.login(payload);
             commit('SET_CURRENT_USER', response.user);
             commit('SET_USER_ID', response.user.id);
             commit('SET_AUTH', true);
-            commit('SET_TOKENS', {
-                accessToken: response.meta.tokens.accessToken
+            commit('SET_TOKEN', {
+                token: response.token
             });
 
             return response.user;
@@ -72,24 +77,18 @@ const actions = {
     },
 
     async logout({ commit }) {
-        try {
-            await userApi.logout();
-            commit('CLEAR_AUTH');
-            window.location.href = '/'
-        } catch (error) {
-            commit('SET_ERROR', error.message || 'Logout failed');
-            throw error;
-        }
+        commit('CLEAR_AUTH');
+        window.location.href = '/'
     },
 
     async initializeAuth({ commit }) {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem('token');
         if (token) {
-            const userData = await userApi.getProfile();
-            if (userData) {
-                commit('SET_CURRENT_USER', userData.user);
+            const response = await userApi.getProfile();
+            if (response) {
+                commit('SET_CURRENT_USER', response.user);
                 commit('SET_AUTH', true);
-                commit('SET_TOKENS', {accessToken: token});
+                commit('SET_TOKEN', {token: token});
             }
         }
     }

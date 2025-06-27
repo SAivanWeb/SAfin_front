@@ -3,7 +3,7 @@ import api from '../api.js'
 export default {
     async register(payload) {
         try {
-            const response = await api.post('/user/register', payload);
+            const response = await api.post('/auth/register', payload);
             return response.data;
         } catch (error) {
             throw error.response?.data?.error || error;
@@ -12,25 +12,7 @@ export default {
 
     async login(payload) {
         try {
-            const response = await api.post('/user/login', payload);
-            return response.data;
-        } catch (error) {
-            throw error.response?.data?.error || error;
-        }
-    },
-
-    async refresh() {
-        try {
-            const response = await api.post('/user/refresh');
-            return response.data;
-        } catch (error) {
-            throw error.response?.data?.error || error;
-        }
-    },
-
-    async logout() {
-        try {
-            const response = await api.post('/user/logout');
+            const response = await api.post('/auth/login', payload);
             return response.data;
         } catch (error) {
             throw error.response?.data?.error || error;

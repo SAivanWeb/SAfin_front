@@ -14,37 +14,21 @@
 
         <form @submit.prevent="handleLogin">
           <div class="auth__input-group">
-            <label for="login-email" class="auth__label">Email</label>
-            <input
-                id="login-email"
-                type="email"
-                class="auth__input"
-                v-model="loginForm.email"
-                required
-            >
+            <MainInput label="Почта" id="login-email" type="email" v-model="loginForm.email" placeholder="Почта"/>
           </div>
 
           <div class="auth__input-group">
-            <label for="login-password" class="auth__label">Пароль</label>
-            <input
-                id="login-password"
-                type="password"
-                class="auth__input"
-                v-model="loginForm.password"
-                required
-            >
+            <MainInput label="Пароль" id="login-password" type="password" v-model="loginForm.password" placeholder="Пароль"/>
           </div>
 
-          <button type="submit" class="auth__button auth__button--primary">
-            Войти
-          </button>
+          <MainButton title="Войти" @click="handleLogin" :disabled="disableLogin"/>
 
           <div class="auth__footer">
             <p class="auth__footer-text">Нет аккаунта?</p>
             <button
                 type="button"
                 class="auth__footer-link"
-                @click="isLoginForm = false"
+                @click="toggleForm"
             >
               Зарегистрироваться
             </button>
@@ -58,59 +42,29 @@
 
         <form @submit.prevent="handleRegister">
           <div class="auth__input-group">
-            <label for="reg-name" class="auth__label">Имя</label>
-            <input
-                id="reg-name"
-                type="text"
-                class="auth__input"
-                v-model="registerForm.name"
-                required
-            >
+            <MainInput label="Имя" id="reg-name" type="text" v-model="registerForm.name" placeholder="Имя"/>
           </div>
 
           <div class="auth__input-group">
-            <label for="reg-email" class="auth__label">Email</label>
-            <input
-                id="reg-email"
-                type="email"
-                class="auth__input"
-                v-model="registerForm.email"
-                required
-            >
+            <MainInput label="Почта" id="reg-email" type="email" v-model="registerForm.email" placeholder="Почта"/>
           </div>
 
           <div class="auth__input-group">
-            <label for="reg-password" class="auth__label">Пароль</label>
-            <input
-                id="reg-password"
-                type="password"
-                class="auth__input"
-                v-model="registerForm.password"
-                required
-            >
+            <MainInput label="Пароль" id="reg-password" type="password" v-model="registerForm.password" placeholder="Пароль"/>
           </div>
 
           <div class="auth__input-group">
-            <label for="reg-confirm" class="auth__label">Подтвердите пароль</label>
-            <input
-                id="reg-confirm"
-                type="password"
-                class="auth__input"
-                v-model="registerForm.confirmPassword"
-                required
-            >
+            <MainInput label="Подтвердите пароль" id="reg-confirm" type="password" v-model="registerForm.password_confirmation" placeholder="Подтвердите пароль"/>
           </div>
 
-          <button type="submit" class="auth__button auth__button--primary">
-            Зарегистрироваться
-          </button>
+          <MainButton title="Зарегистрироваться" @click="handleRegister" :disabled="disableRegister"/>
 
           <div class="auth__footer">
             <p class="auth__footer-text">Уже есть аккаунт?</p>
             <button
                 type="button"
                 class="auth__footer-link"
-                @click="isLoginForm = true"
+                @click="toggleForm"
             >
               Войти
             </button>
@@ -125,6 +79,8 @@
 import {computed, ref} from 'vue';
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";
+import MainInput from "@/components/ui/input/MainInput.vue";
+import MainButton from "@/components/ui/button/MainButton.vue";
 
 const store = useStore();
 const router = useRouter();
@@ -138,10 +94,38 @@ const registerForm = ref({
   name: '',
   email: '',
   password: '',
+  password_confirmation: ''
 });
+
+const toggleForm = () => {
+  isLoginForm.value = !isLoginForm.value;
+  loginForm.value = {
+    email: '',
+    password: '',
+  };
+
+  registerForm.value = {
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: ''
+  }
+}
 
 const errors = computed(() => {
   return store.getters['user/GET_ERROR'];
+})
+
+const disableLogin = computed(() => {
+  return !loginForm.value.email || !loginForm.value.password;
+})
+
+const disableRegister = computed(() => {
+  return !registerForm.value.name ||
+      !registerForm.value.email ||
+      !registerForm.value.password ||
+      !registerForm.value.password_confirmation ||
+      registerForm.value.password_confirmation !== registerForm.value.password;
 })
 
 async function handleLogin() {
@@ -193,49 +177,6 @@ async function handleRegister() {
 
   &__input-group {
     margin-bottom: 24px;
-  }
-
-  &__label {
-    display: block;
-    font-size: 18px;
-    color: #4a5568;
-    margin-bottom: 8px;
-  }
-
-  &__input {
-    width: 100%;
-    padding: 16px 20px;
-    border: 1px solid rgba(46, 125, 50, 0.3);
-    border-radius: 12px;
-    font-size: 16px;
-    background: rgba(255, 255, 255, 0.6);
-    transition: all 0.3s;
-
-    &:focus {
-      outline: none;
-      border-color: #2E7D32;
-      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
-    }
-  }
-
-  &__button {
-    width: 100%;
-    padding: 18px;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: none;
-
-    &--primary {
-      background: #2E7D32;
-      color: white;
-
-      &:hover {
-        background: #81C784;
-      }
-    }
   }
 
   &__footer {

@@ -9,12 +9,11 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json'
     },
-    withCredentials: true
 });
 
 // Request interceptor
 api.interceptors.request.use(config => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -25,25 +24,6 @@ api.interceptors.request.use(config => {
 
 api.interceptors.response.use(
     response => response.data,
-    async error => {
-        const originalRequest = error.config;
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            try{
-                originalRequest._retry = true;
-                const data = await api.post('/user/refresh');
-                localStorage.removeItem('accessToken');
-                localStorage.setItem('accessToken', data.meta.tokens.accessToken);
-                return api(originalRequest);
-            } catch (refreshError) {
-                if (refreshError.response?.data?.error?.code === 'INVALID_REFRESH_TOKEN') {
-                    await store.dispatch('user/logout');
-                    window.location.href = '/login';
-                }
-                return Promise.reject(refreshError);
-            }
-        }
-        return Promise.reject(error);
-    }
 );
 
 export default api;
