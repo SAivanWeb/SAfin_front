@@ -56,7 +56,7 @@ function emitValue(input) {
 .input {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
 
   &__field {

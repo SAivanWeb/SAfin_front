@@ -35,7 +35,7 @@ const props = defineProps({
 .radio{
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
 
  &__items{

@@ -92,7 +92,7 @@ const vClickOutside = {
 .select {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   position: relative;
 
   &__field {
@@ -146,7 +146,6 @@ const vClickOutside = {
     padding: 12px 24px;
     cursor: pointer;
     transition: 0.2s;
-    color: #2E7D32;
 
     &:hover {
       background: rgba(46, 125, 50, 0.1);
@@ -154,7 +153,7 @@ const vClickOutside = {
 
     &--selected {
       background: rgba(46, 125, 50, 0.1);
-      font-weight: 500;
+      color: #2E7D32;
     }
   }
 }

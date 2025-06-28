@@ -1,14 +1,16 @@
 <template>
-  <div class="main">
-    <HeaderBar v-if="!isAuthPage"/>
-    <div class="main__container">
-      <MenuBar v-if="isAuth"/>
-      <router-view @show-goals="showGoalsModal = true"/>
-    </div>
-    <FooterBar v-if="!isAuthPage && !isAuth"/>
+  <n-config-provider :locale="ruRU" :date-locale="dateRuRU" :theme-overrides="themeOverrides">
+    <div class="main">
+      <HeaderBar v-if="!isAuthPage"/>
+      <div class="main__container">
+        <MenuBar v-if="isAuth"/>
+        <router-view @show-goals="showGoalsModal = true"/>
+      </div>
+      <FooterBar v-if="!isAuthPage && !isAuth"/>
 
-    <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal"/>
-  </div>
+      <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal"/>
+    </div>
+  </n-config-provider>
 </template>
 
 <script setup>
@@ -19,6 +21,25 @@ import {useStore} from "vuex";
 import {computed, onMounted, ref} from "vue";
 import MenuBar from "@/components/template/MenuBar.vue";
 import GoalsModal from "@/components/template/modal/GoalsModal.vue";
+import { dateRuRU, NConfigProvider, ruRU } from 'naive-ui'
+
+const themeOverrides = {
+  common: {
+    primaryColor: '#2E7D32',
+    primaryColorHover: 'transparent',
+    fontFamily: 'Oswald',
+    borderRadius: '12px',
+    fontSize: '16px',
+  },
+  Input: {
+    heightLarge: '54px',
+    paddingLarge: '16px 20px',
+    border: '1px solid rgba(46, 125, 50, 0.3)',
+    borderFocus: '1px solid #2E7D32',
+    boxShadowFocus: '0 0 0 3px rgba(46, 125, 50, 0.2)',
+    iconSize: '18px',
+  }
+}
 
 const route = useRoute();
 const store = useStore();
