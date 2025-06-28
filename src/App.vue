@@ -14,13 +14,13 @@
 <script setup>
 import HeaderBar from "@/components/template/HeaderBar.vue";
 import FooterBar from "@/components/template/FooterBar.vue";
-import {useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 import {useStore} from "vuex";
 import {computed, onMounted, ref} from "vue";
 import MenuBar from "@/components/template/MenuBar.vue";
 import GoalsModal from "@/components/template/modal/GoalsModal.vue";
 
-const router = useRouter();
+const route = useRoute();
 const store = useStore();
 
 const showGoalsModal = ref(false);
@@ -30,15 +30,16 @@ const hideModal = () => {
 }
 
 const isAuthPage = computed(() => {
-  return router.currentRoute.value.path === "/auth/";
+  return route.path.startsWith('/auth');
 })
 
 const isAuth = computed(() => {
   return store.getters['user/GET_IS_AUTH'];
 })
+
 onMounted(() => {
-  store.dispatch('user/initializeAuth');
-})
+  store.dispatch('user/initAuth');
+});
 </script>
 
 <style scoped lang="scss">

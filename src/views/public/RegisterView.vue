@@ -129,14 +129,17 @@ const disableRegister = computed(() => {
 })
 
 async function handleLogin() {
-  await store.dispatch('user/login', loginForm.value);
-  if(!errors.value){
+  let res = await store.dispatch('user/login', loginForm.value);
+  if(res.success){
     router.push('/dashboard/');
   }
 };
 
 async function handleRegister() {
-  store.dispatch('user/register', registerForm.value);
+  let res = await store.dispatch('user/register', registerForm.value);
+  if(res.success){
+    router.push('/dashboard/');
+  }
 };
 </script>
 
