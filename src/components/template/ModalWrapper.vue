@@ -2,7 +2,7 @@
   <div class="modal__layout" @click.self="$emit('hideModal')">
     <div class="modal__container"  :style="{ 'max-width': size }">
       <button class="modal__close">
-        <Cancel class="modal__close-icon" @click="$emit('hideModal')"/>
+        <Cancel class="modal__close-icon" @click.stop="$emit('hideModal')"/>
       </button>
       <div class="modal__header">
         <slot name="header"/>
@@ -60,12 +60,21 @@ const props = defineProps({
   }
 
   &__close{
-    cursor: pointer;
     position: absolute;
     top: 12px;
     right: 12px;
     width: 32px;
     height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    z-index: 10;
 
     &-icon{
       width: 100%;
@@ -74,13 +83,15 @@ const props = defineProps({
   }
 
   &__body{
-
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 
   &__goals{
     &-container{
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 12px;
     }
   }

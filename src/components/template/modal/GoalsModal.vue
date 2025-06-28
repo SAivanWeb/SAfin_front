@@ -5,11 +5,11 @@
     </template>
 
     <template #body>
+      <RadioBox :items="goalsType" :model-value="goalTypeOption" title="Тип цели"/>
       <div class="modal__goals-container">
         <MainInput label="Наименование" placeholder="Наименование" v-model="goalsData.name"/>
         <MainInput label="Описание" placeholder="Описание" v-model="goalsData.description"/>
-        <RadioBox :items="goalsType" :model-value="goalTypeOption" title="Тип цели"/>
-        <MainSelect :items="goalsPriority" :model-value="goalTypeOption"/>
+        <MainSelect title="Приоритет цели" :items="goalsPriority" :model-value="goalTypeOption"/>
         <InputDate/>
         <InputDate/>
         <MainInput type="number" label="Начальная сумма" placeholder="Начальная сумма" v-model="goalsData.current_amount"/>
@@ -48,8 +48,12 @@ const goalsType = [
 
 const goalsPriority = [
   {
-    id: 1,
-    name: ''
+    value: '1',
+    label: '1'
+  },
+  {
+    value: '2',
+    label: '2'
   },
 ]
 

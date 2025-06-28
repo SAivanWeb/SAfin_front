@@ -41,13 +41,16 @@ const props = defineProps({
  &__items{
    display: flex;
    align-items: center;
-   justify-content: space-between;
+   gap: 24px;
    height: 100%;
  }
 
   &__item {
+    height: 24px;
     padding-left: 28px;
     position: relative;
+    display: flex;
+    align-items: center;
   }
 
   &__input {

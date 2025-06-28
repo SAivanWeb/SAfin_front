@@ -67,6 +67,7 @@ function emitValue(input) {
     font-size: 16px;
     background: rgba(255, 255, 255, 0.6);
     transition: all 0.3s;
+    font-family: 'Oswald';
 
     &:focus {
       outline: none;
@@ -84,7 +85,6 @@ function emitValue(input) {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  /* display: none; <- Crashes Chrome on hover */
   -webkit-appearance: none;
   margin: 0;
 }
