@@ -7,13 +7,13 @@ const router = createRouter({
     {
       path: '/',
       name: 'Home',
-      component: () => import('@/views/Public/HomeView.vue'),
+      component: () => import('@/views/public/HomeView.vue'),
       meta: { requiresGuest: true }
     },
     {
       path: '/auth',
       name: 'Auth',
-      component: () => import('@/views/Public/RegisterView.vue'),
+      component: () => import('@/views/public/RegisterView.vue'),
       meta: { requiresGuest: true }
     },
 
