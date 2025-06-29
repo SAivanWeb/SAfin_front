@@ -90,12 +90,22 @@ const actions = {
     },
 
     async logout({ commit }) {
+        commit('SET_ERROR', null);
         commit('CLEAR_AUTH');
-        window.location.href = '/'
+        window.location.href = '/';
     },
 
-    initAuth({ commit }) {
-        commit('INIT_AUTH');
+    async initAuth({ commit }) {
+        commit('SET_ERROR', null);
+        let token = localStorage.getItem('access_token');
+        if (token) {
+            const response = await userApi.getProfile();
+            if(response.success) {
+                commit('SET_CURRENT_USER', {name: response.data.name, email: response.data.email});
+                commit('SET_USER_ID', response.data.id);
+                commit('INIT_AUTH');
+            }
+        }
     }
 };
 

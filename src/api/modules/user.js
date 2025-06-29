@@ -19,9 +19,18 @@ export default {
         }
     },
 
+    async logout(payload) {
+        try {
+            const response = await api.post('/auth/logout', payload);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.error || error;
+        }
+    },
+
     async getProfile() {
         try {
-            const response = await api.get('/user/profile');
+            const response = await api.get('/auth/me');
             return response.data;
         } catch (error) {
             throw error.response?.data?.error || error;
