@@ -80,6 +80,10 @@ function emitValue(input) {
       pointer-events: none;
       background-color: rgba(46, 125, 50, 0.3);
     }
+
+    &:hover{
+      border-color: #2E7D32;
+    }
   }
 }
 

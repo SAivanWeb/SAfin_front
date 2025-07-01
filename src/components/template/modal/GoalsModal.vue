@@ -27,6 +27,14 @@
           />
 
           <MainSelect
+              v-if="goalsData.type === 'limit'"
+              title="Категория расходов"
+              :items="categories"
+              v-model="goalsData.category_id"
+              placeholder="Выберите категорию"
+          />
+
+          <MainSelect
               title="Приоритет цели"
               :items="priorityOptions"
               v-model="goalsData.priority"
@@ -61,13 +69,6 @@
               required
           />
 
-          <MainSelect
-              v-if="goalsData.type === 'limit'"
-              title="Категория расходов"
-              :items="categories"
-              v-model="goalsData.category_id"
-              placeholder="Выберите категорию"
-          />
         </div>
 
         <div class="modal__actions">

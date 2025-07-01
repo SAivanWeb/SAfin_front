@@ -4,11 +4,15 @@
       <HeaderBar v-if="!isAuthPage"/>
       <div class="main__container">
         <MenuBar v-if="isAuth"/>
-        <router-view @show-goals="showGoalsModal = true"/>
+        <router-view
+            @show-goals="showGoalsModal = true"
+            @show-transaction="showTransactionModal = true"
+        />
       </div>
       <FooterBar v-if="!isAuthPage && !isAuth"/>
 
       <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal"/>
+      <TransactionModal v-if="showTransactionModal" @hide-modal="hideModal"/>
     </div>
   </n-config-provider>
 </template>
@@ -22,11 +26,11 @@ import {computed, onMounted, ref} from "vue";
 import MenuBar from "@/components/template/MenuBar.vue";
 import GoalsModal from "@/components/template/modal/GoalsModal.vue";
 import { dateRuRU, NConfigProvider, ruRU } from 'naive-ui'
+import TransactionModal from "@/components/template/modal/TransactionModal.vue";
 
 const themeOverrides = {
   common: {
     primaryColor: '#2E7D32',
-    primaryColorHover: 'transparent',
     fontFamily: 'Oswald',
     borderRadius: '12px',
     fontSize: '16px',
@@ -45,9 +49,11 @@ const route = useRoute();
 const store = useStore();
 
 const showGoalsModal = ref(false);
+const showTransactionModal = ref(false);
 
 const hideModal = () => {
   showGoalsModal.value = false;
+  showTransactionModal.value = false;
 }
 
 const isAuthPage = computed(() => {

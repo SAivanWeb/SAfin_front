@@ -1,10 +1,5 @@
 export const MENU = [
     {
-        name: 'Категории',
-        link: '/categories/',
-        icon: 'categories'
-    },
-    {
         name: 'Транзакции',
         link: '/transactions/',
         icon: 'transactions'

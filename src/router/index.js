@@ -31,12 +31,6 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
-      path: '/categories',
-      name: 'Categories',
-      component: () => import('@/views/dashboard/CategoriesView.vue'),
-      meta: { requiresAuth: true }
-    },
-    {
       path: '/goals',
       name: 'Goals',
       component: () => import('@/views/dashboard/GoalsView.vue'),

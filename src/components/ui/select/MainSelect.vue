@@ -106,6 +106,10 @@ const vClickOutside = {
     transition: all 0.3s;
     cursor: pointer;
 
+    &:hover{
+      border-color: #2E7D32;
+    }
+
     &_clear {
       color: #757575;
     }

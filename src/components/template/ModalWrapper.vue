@@ -4,12 +4,16 @@
       <button class="modal__close">
         <Cancel class="modal__close-icon" @click.stop="$emit('hideModal')"/>
       </button>
-      <div class="modal__header">
-        <slot name="header"/>
-      </div>
-      <div class="modal__body">
-        <slot name="body"/>
-      </div>
+        <div class="modal__content">
+          <div class="modal__header">
+            <slot name="header"/>
+          </div>
+          <n-scrollbar style="max-height: calc(90vh - 96px)">
+          <div class="modal__body">
+            <slot name="body"/>
+          </div>
+          </n-scrollbar>
+        </div>
     </div>
   </div>
 </template>
@@ -37,6 +41,9 @@ const props = defineProps({
     width: 100%;
     cursor: default;
     max-width: 50vw;
+  }
+
+  &__content{
     display: flex;
     flex-direction: column;
     gap: 24px;

@@ -1,7 +1,9 @@
 <template>
   <MainWrapper>
-    <MainTitle title="Транзакции" class="transactions__title"/>
-
+    <div class="transactions__header">
+      <MainTitle title="Транзакции" class="transactions__title"/>
+      <MainButton class="transactions__button" action="add" title="добавить транзакцию" type="secondary" @click="$emit('showTransaction')"/>
+    </div>
   </MainWrapper>
 </template>
 
@@ -9,12 +11,20 @@
 
 import MainWrapper from "@/components/template/MainWrapper.vue";
 import MainTitle from "@/components/ui/title/MainTitle.vue";
+import MainButton from "@/components/ui/button/MainButton.vue";
 </script>
 
 <style scoped lang="scss">
 .transactions{
-  &__title{
+  &__header{
     margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__button{
+    width: fit-content;
   }
 }
 </style>
