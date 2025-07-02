@@ -42,6 +42,9 @@ const themeOverrides = {
     borderFocus: '1px solid #2E7D32',
     boxShadowFocus: '0 0 0 3px rgba(46, 125, 50, 0.2)',
     iconSize: '18px',
+  },
+  Checkbox: {
+    sizeLarge: '20px'
   }
 }
 

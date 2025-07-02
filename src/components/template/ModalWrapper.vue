@@ -100,6 +100,7 @@ const props = defineProps({
       display: grid;
       grid-template-columns: 1fr;
       gap: 12px;
+      padding: 0 4px;
     }
   }
 }

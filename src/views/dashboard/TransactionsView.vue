@@ -2,7 +2,7 @@
   <MainWrapper>
     <div class="transactions__header">
       <MainTitle title="Транзакции" class="transactions__title"/>
-      <MainButton class="transactions__button" action="add" title="добавить транзакцию" type="secondary" @click="$emit('showTransaction')"/>
+      <MainButton class="transactions__button" action="add" title="создать транзакцию" type="secondary" @click="$emit('showTransaction')"/>
     </div>
   </MainWrapper>
 </template>

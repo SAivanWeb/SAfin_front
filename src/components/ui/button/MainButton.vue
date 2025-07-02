@@ -1,7 +1,7 @@
 <template>
   <button class="button" :class="classes" @click="$emit('click')">
     <plus v-if="action && action === 'add'" class="button__icon"/>
-    {{ title }}
+    <span v-if="title">{{ title }}</span>
   </button>
 </template>
 
@@ -18,9 +18,10 @@ const props = defineProps({
     default: 'primary',
   },
   action: String,
+  size: String,
 })
 
-const {disabled, type, action} = toRefs(props)
+const {disabled, type, action, size} = toRefs(props)
 
 const classes = computed(() => {
   let classes = [];
@@ -33,6 +34,9 @@ const classes = computed(() => {
   }
   if (action.value) {
     classes.push(`button_${action.value}`);
+  }
+  if (size.value) {
+    classes.push(`button_${size.value}`);
   }
   return classes;
 })
@@ -82,6 +86,14 @@ const classes = computed(() => {
 
     & .button__icon{
 
+    }
+  }
+
+  &_small{
+    padding: 10px;
+    font-size: 16px;
+    & .button__icon{
+      width: 24px;
     }
   }
 

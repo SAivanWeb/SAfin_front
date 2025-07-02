@@ -13,11 +13,12 @@
         />
 
         <div class="modal__goals-container">
+          <CheckBox title="Основная цель" label="Основная цель" v-model="goalsData.is_main"/>
+
           <MainInput
               label="Наименование"
               placeholder="Введите название цели"
               v-model="goalsData.name"
-              required
           />
 
           <MainInput
@@ -42,13 +43,13 @@
 
           <InputDate
               label="Дата начала"
-              v-model="goalsData.start_date"
+              v-model="goalsData.start_at"
               format="yyyy-MM-dd"
           />
 
           <InputDate
               :label="goalsData.type === 'save' ? 'Дата завершения' : 'Ограничивающий срок'"
-              v-model="goalsData.end_date"
+              v-model="goalsData.end_at"
               format="yyyy-MM-dd"
           />
 
@@ -66,7 +67,6 @@
               placeholder="Введите сумму"
               v-model="goalsData.target_amount"
               :min="goalsData.type === 'save' ? goalsData.current_amount + 1 : 0"
-              required
           />
 
         </div>
@@ -81,39 +81,35 @@
 <script setup>
 import ModalWrapper from "@/components/template/ModalWrapper.vue";
 import MainInput from "@/components/ui/input/MainInput.vue";
-import { ref, computed, onMounted } from "vue";
+import {ref, computed, onMounted, toRefs} from "vue";
 import RadioBox from "@/components/ui/box/RadioBox.vue";
 import MainSelect from "@/components/ui/select/MainSelect.vue";
 import InputDate from "@/components/ui/input/InputDate.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
+import CheckBox from "@/components/ui/box/CheckBox.vue";
 
 const props = defineProps({
-  // goalData: {
-  //   type: Object,
-  //   default: () => ({})
-  // },
-  // isEditMode: {
-  //   type: Boolean,
-  //   default: false
-  // },
-  // categories: {
-  //   type: Array,
-  //   default: () => []
-  // }
+  isEditMode: {
+    type: Boolean,
+    default: false
+  },
 });
 
 const emit = defineEmits('hide-modal');
 
+const {isEditMode} = toRefs(props);
+
 const goalsData = ref({
+  is_main: false,
   name: '',
-  type: 'save',
-  current_amount: 0,
-  target_amount: null,
-  start_date: new Date(),
-  end_date: null,
-  priority: 1,
   description: '',
-  category_id: null
+  type: 'save',
+  category_id: null,
+  target_amount: null,
+  current_amount: 0,
+  start_at: new Date().toISOString().split('T')[0],
+  end_at: null,
+  priority: 1,
 });
 
 const goalsType = [
@@ -133,15 +129,6 @@ const categories = [
   { value: 3, label: 'Высокий' }
 ];
 
-onMounted(() => {
-  if (props.isEditMode) {
-    goalsData.value = {
-      ...goalsData.value,
-      ...props.goalData
-    };
-  }
-});
-
 const handleTypeChange = (type) => {
   if (type === 'save') {
     goalsData.value.category_id = null;
@@ -152,6 +139,15 @@ const handleTypeChange = (type) => {
 };
 
 const handleSubmit = () => {
+  goalsData.value.target_amount*=10
+  goalsData.value.current_amount*=10
+
   console.log(goalsData.value);
 };
+
+onMounted(() => {
+  if (isEditMode.value) {
+    console.log('редактирование')
+  }
+})
 </script>

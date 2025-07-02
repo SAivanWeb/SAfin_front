@@ -2,12 +2,12 @@
   <MainWrapper>
     <div class="goals__header">
       <MainTitle title="Цели" class="goals__title"/>
-      <MainButton class="goals__button" action="add" title="добавить цель" type="secondary" @click="$emit('showGoals')"/>
+      <MainButton class="goals__button" action="add" title="создать цель" type="secondary" @click="$emit('showGoals')"/>
     </div>
 
 
     <div class="goals__container">
-
+      <GoalCard/>
     </div>
   </MainWrapper>
 </template>
@@ -17,6 +17,7 @@ import MainWrapper from "@/components/template/MainWrapper.vue";
 import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainCard from "@/components/ui/card/MainCard.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
+import GoalCard from "@/components/ui/card/GoalCard.vue";
 </script>
 
 <style scoped lang="scss">
@@ -34,7 +35,8 @@ import MainButton from "@/components/ui/button/MainButton.vue";
 
   &__container{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
   }
 }
 </style>

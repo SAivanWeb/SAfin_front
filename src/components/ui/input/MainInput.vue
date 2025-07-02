@@ -31,7 +31,7 @@ const props = defineProps({
     default: 'text',
   },
   disabled: Boolean,
-  modelValue: String,
+  modelValue: String | Number,
 })
 const { modelValue, id, name, type, placeholder, disabled } = toRefs(props);
 
