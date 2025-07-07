@@ -48,6 +48,10 @@ const themeOverrides = {
   },
   Checkbox: {
     sizeLarge: '20px'
+  },
+  Carousel: {
+    dotColor: 'rgba(46, 125, 50, 0.4)',
+    dotColorActive: 'rgba(46, 125, 50, 1)'
   }
 }
 

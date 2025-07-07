@@ -1,17 +1,15 @@
 <template>
   <MainWrapper>
     <MainTitle title="Профиль" class="profile__title"/>
-    <div v-if="profileData" class="profile__container">
-      <MainCard class="profile__container-item">
-        <template #header>
-          <div class="card__title">Цели</div>
-        </template>
-        <template #body>
-          <div class="card__body-row">
 
-          </div>
-        </template>
-      </MainCard>
+      <div class="profile__levels">
+        <h3 class="profile__levels-title">Уровни</h3>
+        <n-carousel draggable :space-between="12" :show-dots="true">
+          <LevelCard/>
+          <LevelCard/>
+        </n-carousel>
+      </div>
+    <div v-if="profileData" class="profile__container">
       <MainCard class="profile__container-item">
         <template #header>
           <div class="card__title">Профиль</div>
@@ -80,6 +78,7 @@ import Cancel from "@/assets/icons/cancel.vue";
 import Check from "@/assets/icons/check.vue";
 import {computed, ref, watch} from "vue";
 import {useStore} from "vuex"
+import LevelCard from "@/components/ui/card/LevelCard.vue";
 const store = useStore();
 
 const userProfile = computed(() => store.getters['user/GET_CURRENT_USER'] || {});
@@ -125,17 +124,25 @@ const editProfileData = async () => {
     margin-bottom: 48px;
   }
 
+  &__levels{
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    &-title{
+      font-size: 24px;
+      color: #2E7D32;
+    }
+  }
+
   &__container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     grid-gap: 24px;
 
     &-item:nth-of-type(1) {
-      grid-column: span 3;
-    }
-
-    &-item:nth-of-type(2) {
       grid-column: span 3;
     }
   }
