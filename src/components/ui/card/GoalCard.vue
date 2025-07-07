@@ -6,7 +6,7 @@
         <div class="goal-card__header-button" @click="">
           <Edit class="goal-card__icon"/>
         </div>
-        <div class="goal-card__header-button" @click="">
+        <div class="goal-card__header-button" @click="emitShowAmountGoal">
           <Plus class="goal-card__icon"/>
         </div>
       </div>
@@ -44,6 +44,16 @@ import Edit from "@/assets/icons/edit.vue";
 import Plus from "@/assets/icons/plus.vue";
 
 const percentage = 20;
+
+const props = defineProps({
+  goal: Object,
+})
+const emit = defineEmits(['showAmountGoal']);
+
+const emitShowAmountGoal = () => {
+  emit('showAmountGoal', props.goal);
+};
+
 </script>
 
 <style scoped lang="scss">

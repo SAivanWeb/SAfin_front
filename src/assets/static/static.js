@@ -15,6 +15,11 @@ export const MENU = [
         icon: 'goals'
     },
     {
+        name: 'Категории',
+        link: '/category/',
+        icon: 'categories'
+    },
+    {
         name: 'Профиль',
         link: '/profile/',
         icon: 'profile'

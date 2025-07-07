@@ -33,6 +33,7 @@
               :items="categories"
               v-model="goalsData.category_id"
               placeholder="Выберите категорию"
+              :is-category="true"
           />
 
           <MainSelect

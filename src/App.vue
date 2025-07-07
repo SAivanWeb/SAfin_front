@@ -7,12 +7,14 @@
         <router-view
             @show-goals="showGoalsModal = true"
             @show-transaction="showTransactionModal = true"
+            @show-amount-goal="openAmountGoal"
         />
       </div>
       <FooterBar v-if="!isAuthPage && !isAuth"/>
 
       <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal"/>
       <TransactionModal v-if="showTransactionModal" @hide-modal="hideModal"/>
+      <AmountGoalModal v-if="showAmountGoal" @hide-modal="hideModal" :goal="amountGoalData"/>
     </div>
   </n-config-provider>
 </template>
@@ -27,6 +29,7 @@ import MenuBar from "@/components/template/MenuBar.vue";
 import GoalsModal from "@/components/template/modal/GoalsModal.vue";
 import { dateRuRU, NConfigProvider, ruRU } from 'naive-ui'
 import TransactionModal from "@/components/template/modal/TransactionModal.vue";
+import AmountGoalModal from "@/components/template/modal/AmountGoalModal.vue";
 
 const themeOverrides = {
   common: {
@@ -53,10 +56,19 @@ const store = useStore();
 
 const showGoalsModal = ref(false);
 const showTransactionModal = ref(false);
+const showAmountGoal = ref(false);
+
+const amountGoalData = ref(null);
 
 const hideModal = () => {
   showGoalsModal.value = false;
   showTransactionModal.value = false;
+  showAmountGoal.value = false;
+}
+
+const openAmountGoal = (goal) => {
+  amountGoalData.value = goal;
+  showAmountGoal.value = true;
 }
 
 const isAuthPage = computed(() => {

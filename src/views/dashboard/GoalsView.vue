@@ -7,7 +7,7 @@
 
 
     <div class="goals__container">
-      <GoalCard/>
+      <GoalCard @show-amount-goal="(goal) => $emit('showAmountGoal', goal)"/>
     </div>
   </MainWrapper>
 </template>
@@ -18,6 +18,8 @@ import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainCard from "@/components/ui/card/MainCard.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import GoalCard from "@/components/ui/card/GoalCard.vue";
+
+defineEmits(['showAmountGoal']);
 </script>
 
 <style scoped lang="scss">

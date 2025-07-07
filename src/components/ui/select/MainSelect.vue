@@ -21,6 +21,9 @@
         >
           {{ item.label }}
         </div>
+        <div v-if="isCategory" class="select__option select__option_button">
+          <MainButton title="Добавить категорию" type="secondary" size="small"/>
+        </div>
       </div>
     </div>
   </div>
@@ -28,6 +31,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
+import MainButton from "@/components/ui/button/MainButton.vue";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -44,7 +48,8 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: 'Не выбрано'
-  }
+  },
+  isCategory: Boolean,
 });
 
 const showOptions = ref(false);
@@ -158,6 +163,12 @@ const vClickOutside = {
     &--selected {
       background: rgba(46, 125, 50, 0.1);
       color: #2E7D32;
+    }
+
+    &_button{
+      &:hover {
+        background: transparent;
+      }
     }
   }
 }
