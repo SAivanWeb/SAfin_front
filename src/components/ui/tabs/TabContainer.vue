@@ -22,7 +22,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import TabItem from "@/components/ui/Tabs/TabItem.vue"
+import TabItem from "@/components/ui/tabs/TabItem.vue"
 
 const props = defineProps({
   headers: {
