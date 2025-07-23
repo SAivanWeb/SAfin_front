@@ -48,13 +48,13 @@ import Calendar from "@/assets/icons/calendar.vue";
   }
 
   &__title {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 500;
     color: #2E7D32;
   }
 
   &__level {
-    font-size: 16px;
+    font-size: 18px;
     color: #616161;
   }
 

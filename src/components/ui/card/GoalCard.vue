@@ -3,7 +3,7 @@
     <div class="goal-card__header">
       <div class="goal-card__name">Машина</div>
       <div class="goal-card__icon-group">
-        <div class="goal-card__header-button" @click="">
+        <div v-if="editable" class="goal-card__header-button" @click="">
           <Edit class="goal-card__icon"/>
         </div>
         <div class="goal-card__header-button" @click="emitShowAmountGoal">
@@ -47,6 +47,10 @@ const percentage = 20;
 
 const props = defineProps({
   goal: Object,
+  editable: {
+    type: Boolean,
+    default: true,
+  },
 })
 const emit = defineEmits(['showAmountGoal']);
 
