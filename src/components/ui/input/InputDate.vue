@@ -1,12 +1,12 @@
 <template>
   <div class="datepicker">
-    <div class="datepicker__title">{{ label }}</div>
+    <div class="datepicker__title" v-if="label">{{ label }}</div>
     <n-date-picker
         v-model:value="timestampValue"
-        type="date"
+        :type="type"
         clearable
         @update:value="handleDateUpdate"
-        size="large"
+        :size="type === 'daterange' ? 'medium' : 'large'"
         value-format="yyyy-MM-dd"
     />
   </div>
@@ -18,6 +18,10 @@ import { ref, watch } from 'vue';
 const props = defineProps({
   label: String,
   modelValue: [Date, String],
+  type: {
+    type: String,
+    default: 'date',
+  }
 });
 
 const emit = defineEmits(['update:modelValue']);

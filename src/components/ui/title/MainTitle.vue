@@ -13,6 +13,7 @@ const props = defineProps({
 <style scoped lang="scss">
 .title{
   font-size: 42px;
+  line-height: 50px;
   font-weight: 500;
   color: #2E7D32;
 }

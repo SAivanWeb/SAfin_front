@@ -1,5 +1,5 @@
 <template>
-  <div class="select" v-click-outside="closeSelect">
+  <div class="select" :class="classes" v-click-outside="closeSelect">
     <div class="select__title">{{ title }}</div>
     <div class="select__container">
       <div
@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import {ref, computed, watch, toRefs} from 'vue';
 import MainButton from "@/components/ui/button/MainButton.vue";
 
 const emit = defineEmits(["update:modelValue"]);
@@ -50,7 +50,23 @@ const props = defineProps({
     default: 'Не выбрано'
   },
   isCategory: Boolean,
+  size: {
+    type: String,
+    default: 'default'
+  }
 });
+
+const {size} = toRefs(props);
+
+const classes = computed(() => {
+  let classes = [];
+
+  if (size.value) {
+    classes.push(`select_${size.value}`);
+  }
+
+  return classes;
+})
 
 const showOptions = ref(false);
 const internalValue = ref(props.modelValue);
@@ -99,6 +115,18 @@ const vClickOutside = {
   flex-direction: column;
   gap: 8px;
   position: relative;
+
+  &_small{
+    & .select__field {
+      padding: 10px;
+      text-align: left;
+    }
+
+    & .select__option {
+      padding: 10px;
+      text-align: left;
+    }
+  }
 
   &__field {
     width: 100%;
@@ -155,6 +183,7 @@ const vClickOutside = {
     padding: 12px 24px;
     cursor: pointer;
     transition: 0.2s;
+    font-size: 16px;
 
     &:hover {
       background: rgba(46, 125, 50, 0.1);

@@ -1,21 +1,25 @@
 <template>
   <n-config-provider :locale="ruRU" :date-locale="dateRuRU" :theme-overrides="themeOverrides">
-    <div class="main">
-      <HeaderBar v-if="!isAuthPage"/>
-      <div class="main__container">
-        <MenuBar v-if="isAuth"/>
-        <router-view
-            @show-goals="showGoalsModal = true"
-            @show-transaction="showTransactionModal = true"
-            @show-amount-goal="openAmountGoal"
-        />
-      </div>
-      <FooterBar v-if="!isAuthPage && !isAuth"/>
+    <n-message-provider>
+      <div class="main">
+        <HeaderBar v-if="!isAuthPage"/>
+        <div class="main__container">
+          <MenuBar v-if="isAuth"/>
+          <router-view
+              @show-goals="showGoalsModal = true"
+              @show-transaction="showTransactionModal = true"
+              @show-amount-goal="openAmountGoal"
+          />
+        </div>
+        <FooterBar v-if="!isAuthPage && !isAuth"/>
 
-      <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal"/>
-      <TransactionModal v-if="showTransactionModal" @hide-modal="hideModal"/>
-      <AmountGoalModal v-if="showAmountGoal" @hide-modal="hideModal" :goal="amountGoalData"/>
-    </div>
+        <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal"/>
+        <TransactionModal v-if="showTransactionModal" @hide-modal="hideModal"/>
+        <AmountGoalModal v-if="showAmountGoal" @hide-modal="hideModal" :goal="amountGoalData"/>
+
+        <Chat v-if="isAuth && !isChatPage && !isProfilePage" class="main__chat"/>
+      </div>
+    </n-message-provider>
   </n-config-provider>
 </template>
 
@@ -30,6 +34,7 @@ import GoalsModal from "@/components/template/modal/GoalsModal.vue";
 import { dateRuRU, NConfigProvider, ruRU } from 'naive-ui'
 import TransactionModal from "@/components/template/modal/TransactionModal.vue";
 import AmountGoalModal from "@/components/template/modal/AmountGoalModal.vue";
+import Chat from "@/components/template/Chat.vue";
 
 const themeOverrides = {
   common: {
@@ -52,6 +57,9 @@ const themeOverrides = {
   Carousel: {
     dotColor: 'rgba(46, 125, 50, 0.4)',
     dotColorActive: 'rgba(46, 125, 50, 1)'
+  },
+  Result: {
+    fontSizeMedium: '24px'
   }
 }
 
@@ -79,13 +87,21 @@ const isAuthPage = computed(() => {
   return route.path.startsWith('/auth');
 })
 
+const isChatPage = computed(() => {
+  return route.path.startsWith('/chat');
+})
+
+const isProfilePage = computed(() => {
+  return route.path.startsWith('/profile');
+})
+
 const isAuth = computed(() => {
   return store.getters['user/GET_IS_AUTH'];
 })
 
-onMounted(() => {
-  store.dispatch('user/initAuth');
-});
+// onMounted(() => {
+//   store.dispatch('user/initAuth');
+// });
 </script>
 
 <style scoped lang="scss">
@@ -102,6 +118,12 @@ onMounted(() => {
     width: 100%;
     height: 100%;
     display: flex;
+  }
+
+  &__chat{
+    position: absolute;
+    bottom: 140px;
+    right: 140px;
   }
 }
 </style>

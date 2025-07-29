@@ -24,6 +24,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
 
   &__header{
     display: flex;
@@ -86,6 +87,13 @@
   &__title{
     font-size: 24px;
     color: #2E7D32;
+  }
+
+  &__category{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 20px;
   }
 }
 </style>

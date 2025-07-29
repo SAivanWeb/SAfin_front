@@ -1,30 +1,59 @@
 <template>
   <MainWrapper>
-    <MainTitle title="Главная" class="dashboard__title"/>
+    <MainTitle title="Статистика" class="dashboard__title"/>
 
-    <div class="dashboard__goal">
+    <div class="dashboard__section">
+      <h3 class="dashboard__sub-title">Основная цель</h3>
       <GoalCard :editable="false"/>
     </div>
 
-    <div class="dashboard__statistic">
-      <TabContainer :headers="tabHeaders" title="Статистика">
+    <div class="dashboard__section">
+      <TabContainer :headers="tabHeaders" title="Транзакции">
         <template #chart>
           <div class="dashboard__statistic-item">
             <Chart :items="transactions"/>
           </div>
         </template>
         <template #diagram>
-          <div class="tasks__list">
-            Диаграмма
-          </div>
+          <Diagram :items="transactions"/>
         </template>
         <template #list>
-          <div class="tasks__list">
-            Список
+          <div class="dashboard__statistic-item">
+            <Filter/>
+            <TransactionList :items="transactions" :height="420"/>
           </div>
         </template>
       </TabContainer>
+    </div>
 
+    <div class="dashboard__section">
+      <h3 class="dashboard__sub-title">Категории</h3>
+      <div class="dashboard__categories">
+        <MainCard>
+          <template #header>
+            <div class="card__title">Самая затратная категория</div>
+          </template>
+          <template #body>
+            <div class="card__category">
+              <div class="card__category-name">Название: Еда</div>
+              <div class="card__category-amount">Количество транзакций: 100</div>
+              <div class="card__category-count">Потрачено: 10 000</div>
+            </div>
+          </template>
+        </MainCard>
+        <MainCard>
+          <template #header>
+            <div class="card__title">Самая прибыльная категория</div>
+          </template>
+          <template #body>
+            <div class="card__category">
+              <div class="card__category-name">Название: Зарплата</div>
+              <div class="card__category-amount">Количество транзакций: 2</div>
+              <div class="card__category-count">Прибыль: 100 000</div>
+            </div>
+          </template>
+        </MainCard>
+      </div>
     </div>
   </MainWrapper>
 </template>
@@ -37,6 +66,10 @@ import TabContainer from "@/components/ui/tabs/TabContainer.vue";
 import TabItem from "@/components/ui/tabs/TabItem.vue";
 import {ref} from "vue";
 import Chart from "@/components/ui/chart/Chart.vue";
+import TransactionList from "@/components/transaction/TransactionList.vue";
+import Diagram from "@/components/ui/chart/Diagram.vue";
+import Filter from "@/components/template/Filter.vue";
+import MainCard from "@/components/ui/card/MainCard.vue";
 
 const tabHeaders = ref([
   {
@@ -78,19 +111,39 @@ const transactions = [
 </script>
 
 <style scoped lang="scss">
-.dashboard{
-  &__title{
+.dashboard {
+  &__title {
     margin-bottom: 48px;
   }
 
-  &__goal{
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     margin-bottom: 48px;
   }
 
-  &__statistic{
-    &-item{
+  &__sub-title {
+    font-size: 28px;
+  }
+
+  &__goal {
+    margin-bottom: 48px;
+  }
+
+  &__statistic {
+    &-item {
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
+  }
+
+  &__categories{
+    display: flex;
+    gap: 24px;
+    width: 100%;
   }
 }
 </style>

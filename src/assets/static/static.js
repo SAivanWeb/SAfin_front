@@ -1,26 +1,26 @@
 export const MENU = [
     {
-        name: 'Транзакции',
+        name: 'ТРАНЗАКЦИИ',
         link: '/transactions/',
         icon: 'transactions'
     },
     {
-        name: 'Главная',
+        name: 'ГЛАВНАЯ',
         link: '/dashboard/',
         icon: 'dashboard'
     },
     {
-        name: 'Цели',
+        name: 'ЦЕЛИ',
         link: '/goals/',
         icon: 'goals'
     },
     {
-        name: 'Категории',
+        name: 'КАТЕГОРИИ',
         link: '/category/',
         icon: 'categories'
     },
     {
-        name: 'Профиль',
+        name: 'ПРОФИЛЬ',
         link: '/profile/',
         icon: 'profile'
     },

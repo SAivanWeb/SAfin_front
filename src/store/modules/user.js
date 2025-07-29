@@ -2,7 +2,7 @@ import userApi from '@/api/modules/user.js';
 
 const state = {
     currentUser: null,
-    isAuth: false,
+    isAuth: true,
     userID: null,
     error: null,
     access_token: null,

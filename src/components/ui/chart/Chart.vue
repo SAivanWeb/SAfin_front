@@ -56,7 +56,7 @@ const tooltipConfig = ref({
   date: { hide: true },
   balance: { hide: true },
   description: { hide: true },
-  amount: { label: 'сумма', color: '#2E7D32' },
+  amount: { label: 'Cумма', color: '#2E7D32' },
   type: { hide: true },
   displayType: { label: 'Тип', color: '#2E7D32' },
   category: { label: 'Категория', color: '#2E7D32' },

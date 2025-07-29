@@ -1,7 +1,9 @@
 <template>
  <div class="header">
    <div class="header__container" :class="{'header__container_dashboard' : isAuth}">
-    <div class="header__logo"></div>
+    <div class="header__logo" @click="logoRoute">
+      <img src="@/assets/icons/logo.svg" alt="safin">
+    </div>
     <div class="header__menu">
       <div class="header__menu-link" v-if="!isAuth">F&Q</div>
       <button class="header__menu-button" @click="toAuth" v-if="!isAuth">войти</button>
@@ -30,6 +32,14 @@ const toAuth = () => {
 const logout = () => {
   store.dispatch("user/logout");
 }
+
+const logoRoute = () => {
+  if(isAuth) {
+    router.push("/dashboard/");
+  } else {
+    router.push("/");
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -54,6 +64,17 @@ const logout = () => {
 
     &_dashboard {
       width: 100%;
+    }
+  }
+
+  &__logo{
+    height: 30px;
+    cursor: pointer;
+
+    & img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 

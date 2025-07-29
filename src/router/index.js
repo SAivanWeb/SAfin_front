@@ -48,7 +48,12 @@ const router = createRouter({
       component: () => import('@/views/dashboard/TransactionsView.vue'),
       meta: { requiresAuth: true }
     },
-
+    {
+      path: '/chat',
+      name: 'Chat',
+      component: () => import('@/views/dashboard/ChatView.vue'),
+      meta: { requiresAuth: true }
+    },
     // FALLBACK
     {
       path: '/:pathMatch(.*)*',

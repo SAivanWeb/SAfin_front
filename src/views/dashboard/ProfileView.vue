@@ -1,6 +1,9 @@
 <template>
   <MainWrapper>
-    <MainTitle title="Профиль" class="profile__title"/>
+    <div class="profile__header">
+      <MainTitle title="Профиль" class="profile__title"/>
+      <MainButton class="profile__button" title="получить отчет" type="secondary" @click="toChat"/>
+    </div>
 
       <div class="profile__levels">
         <h3 class="profile__levels-title">Уровни</h3>
@@ -79,6 +82,10 @@ import Check from "@/assets/icons/check.vue";
 import {computed, ref, watch} from "vue";
 import {useStore} from "vuex"
 import LevelCard from "@/components/ui/card/LevelCard.vue";
+import MainButton from "@/components/ui/button/MainButton.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 const store = useStore();
 
 const userProfile = computed(() => store.getters['user/GET_CURRENT_USER'] || {});
@@ -87,6 +94,10 @@ const profileData = ref({
   name: '',
   email: ''
 });
+
+const toChat = () => {
+  router.push("/chat");
+}
 
 watch(userProfile, (newVal) => {
   if (newVal) {
@@ -120,8 +131,15 @@ const editProfileData = async () => {
 
 <style scoped lang="scss">
 .profile {
-  &__title {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 48px;
+  }
+
+  &__button{
+    width: fit-content;
   }
 
   &__levels{

@@ -1,6 +1,6 @@
 <template>
   <div class="checkbox">
-    <div class="checkbox__title">{{title}}</div>
+    <div class="checkbox__title" v-if="title">{{title}}</div>
     <div class="checkbox__container">
       <n-checkbox
           v-model:checked="internalValue"
@@ -38,5 +38,7 @@ const handleChange = (newValue) => {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex-wrap: nowrap;
+
 }
 </style>

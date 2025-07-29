@@ -38,7 +38,7 @@ const iconComponent = computed(() => icons[props.icon]);
   gap: 24px;
   padding: 24px;
   border-bottom: 1px solid rgba(209, 213, 219, 0.3);
-
+  font-weight: 500;
   font-size: 28px;
 
   &.router-link-active{

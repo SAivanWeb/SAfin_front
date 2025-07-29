@@ -51,8 +51,9 @@ const isTabVisible = (name) => activeTab.value === name
   &__header{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
   }
 
   &__menu{
@@ -62,7 +63,7 @@ const isTabVisible = (name) => activeTab.value === name
   }
 
   &__title{
-    font-size: 24px;
+    font-size: 28px;
   }
 }
 </style>
