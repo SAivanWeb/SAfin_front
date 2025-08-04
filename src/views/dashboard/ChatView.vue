@@ -16,7 +16,7 @@
           <MainSelect
               :items="periods"
               v-model="selectedPeriod"
-              placeholder="Выберите период"
+              placeholder="Период"
               size="small"
               class="chat__select"
           />

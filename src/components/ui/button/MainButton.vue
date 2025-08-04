@@ -64,6 +64,10 @@ const classes = computed(() => {
     &:hover {
       background: #81C784;
     }
+
+    &:active{
+      background: #6ca66f;
+    }
   }
 
   &_secondary {

@@ -2,9 +2,54 @@
   <MainWrapper>
     <MainTitle title="Статистика" class="dashboard__title"/>
 
+    <n-alert class="dashboard__section" :show-icon="false" type="success" closable>
+      <div class="dashboard__alert">
+<!--          <info class="dashboard__alert-icon"/>-->
+        <question class="dashboard__alert-icon"/>
+        <div class="dashboard__alert-content">
+          <div class="dashboard__alert-title">Финансовая подушка безопасности</div>
+          <div class="dashboard__alert-text">Накопите 3 месячных дохода для защиты от неожиданностей</div>
+          <div class="dashboard__alert-button-group">
+            <MainButton size="small" title="Уже есть" type="secondary" />
+            <MainButton size="small" title="Создать подушку" />
+          </div>
+        </div>
+      </div>
+    </n-alert>
+
     <div class="dashboard__section">
       <h3 class="dashboard__sub-title">Основная цель</h3>
       <GoalCard :editable="false"/>
+    </div>
+
+    <div class="dashboard__section">
+      <h3 class="dashboard__sub-title">Период</h3>
+      <div class="dashboard__period">
+        <MainCard>
+          <template #header>
+            <div class="card__title">Текущий месяц</div>
+          </template>
+          <template #body>
+            <div class="card__period">
+              <div>Количество транзакций: 100</div>
+              <div class="card__period_worse">Потрачено: 100 000 <span>(на 10% больше)</span></div>
+              <div class="card__period_better">Заработано: 110 000 <span>(на 20% больше)</span></div>
+            </div>
+          </template>
+        </MainCard>
+        <MainCard>
+          <template #header>
+            <div class="card__title">Текущая неделя</div>
+          </template>
+          <template #body>
+            <div class="card__period">
+              <div>Количество транзакций: 40</div>
+              <div class="card__period_worse">Потрачено: 20 000 <span>(на 20% больше)</span></div>
+              <div class="card__period_better">Заработано: 0</div>
+            </div>
+          </template>
+        </MainCard>
+      </div>
     </div>
 
     <div class="dashboard__section">
@@ -70,6 +115,9 @@ import TransactionList from "@/components/transaction/TransactionList.vue";
 import Diagram from "@/components/ui/chart/Diagram.vue";
 import Filter from "@/components/template/Filter.vue";
 import MainCard from "@/components/ui/card/MainCard.vue";
+import Info from "@/assets/icons/info.vue";
+import MainButton from "@/components/ui/button/MainButton.vue";
+import Question from "@/assets/icons/question.vue";
 
 const tabHeaders = ref([
   {
@@ -144,6 +192,47 @@ const transactions = [
     display: flex;
     gap: 24px;
     width: 100%;
+  }
+
+  &__period{
+    display: flex;
+    gap: 24px;
+    width: 100%;
+  }
+
+  &__alert{
+    display: flex;
+    align-items: start;
+    gap: 12px;
+    width: 100%;
+
+    &-icon{
+      color: #2E7D32;
+      width: 48px;
+    }
+
+    &-content{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    &-title{
+      font-size: 24px;
+      font-weight: 500;
+
+    }
+
+    &-text{
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    &-button-group{
+      display: flex;
+      gap: 12px;
+    }
   }
 }
 </style>

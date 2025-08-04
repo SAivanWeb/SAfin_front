@@ -8,7 +8,7 @@
       </template>
       <div class="chat__text">
         Получите полный финансовый отчет за текущий месяц – переходите в чат для детальной аналитики!
-        <MainButton size="small" type="secondary" title="Перейти" @click="toChat"/>
+        <MainButton size="small" title="Перейти" @click="toChat"/>
       </div>
     </n-popover>
   </div>

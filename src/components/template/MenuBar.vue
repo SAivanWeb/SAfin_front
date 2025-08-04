@@ -12,7 +12,7 @@ import {computed} from "vue";
 const sortedMenu = computed(() => {
   let newMenu = [];
   MENU.forEach((item) => {
-    if (window.innerWidth > 768 && item.name === "Главная") {
+    if (window.innerWidth > 768 && item.name.toLowerCase() === "главная") {
       return;
     }
     newMenu.push(item);

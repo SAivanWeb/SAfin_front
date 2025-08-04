@@ -60,6 +60,10 @@ const themeOverrides = {
   },
   Result: {
     fontSizeMedium: '24px'
+  },
+  Alert: {
+    closeIconSize: '20px',
+    closeSize: '28px',
   }
 }
 

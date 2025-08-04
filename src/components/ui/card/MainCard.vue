@@ -95,5 +95,24 @@
     gap: 12px;
     font-size: 20px;
   }
+
+  &__period{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 20px;
+
+    &_worse{
+      & span{
+        color: red;
+      }
+    }
+
+    &_better{
+      & span {
+        color: #2E7D32;
+      }
+    }
+  }
 }
 </style>
