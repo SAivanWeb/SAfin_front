@@ -5,13 +5,31 @@
       <MainButton class="profile__button" title="получить отчет" type="secondary" @click="toChat"/>
     </div>
 
-      <div class="profile__levels">
-        <h3 class="profile__levels-title">Уровни</h3>
-        <n-carousel draggable :space-between="12" :show-dots="true">
-          <LevelCard/>
-          <LevelCard/>
-        </n-carousel>
-      </div>
+    <div class="profile__levels">
+      <h3 class="profile__levels-title">Уровни</h3>
+      <n-carousel draggable :space-between="12" :show-dots="true">
+        <LevelCard/>
+        <LevelCard/>
+      </n-carousel>
+    </div>
+
+    <div class="profile__levels">
+      <h3 class="profile__levels-title">Задания</h3>
+      <n-scrollbar style="max-height: 340px">
+        <div class="profile__tasks">
+          <n-alert v-for="task in tasks" :title="task.status === 'done' ? 'Завершено' : 'В процессе'" :type="task.status === 'done' ? 'success' : 'default'">
+            <template #icon v-if="task.status === 'processing'">
+              <n-icon>
+                <process/>
+              </n-icon>
+            </template>
+            {{ task.name }}<br/>
+            Баллы: {{ task.points }}
+          </n-alert>
+        </div>
+      </n-scrollbar>
+    </div>
+
     <div v-if="profileData" class="profile__container">
       <MainCard class="profile__container-item">
         <template #header>
@@ -59,11 +77,11 @@
       </MainCard>
       <MainCard class="profile__container-item">
         <template #header>
-          <div class="card__title">На проектe</div>
+          <div class="card__title">Баллы</div>
         </template>
         <template #body>
           <div class="card__body-row card__body-row_center">
-            <span class="card__body-statistic">{{differenceDate(userProfile.registration_date)}}</span>
+            <span class="card__body-statistic">25</span>
           </div>
         </template>
       </MainCard>
@@ -84,6 +102,7 @@ import {useStore} from "vuex"
 import LevelCard from "@/components/ui/card/LevelCard.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import {useRouter} from "vue-router";
+import Process from "@/assets/icons/process.vue";
 
 const router = useRouter();
 const store = useStore();
@@ -94,6 +113,29 @@ const profileData = ref({
   name: '',
   email: ''
 });
+
+const tasks = [
+  {
+    name: 'Выполнить 1 цель',
+    status: 'processing',
+    points: '50'
+  },
+  {
+    name: 'Выполнить 3 цели',
+    status: 'processing',
+    points: '30'
+  },
+  {
+    name: 'Добавить 50 транзакций',
+    status: 'done',
+    points: '10'
+  },
+  {
+    name: 'Вести статистику 3 дня подряд',
+    status: 'done',
+    points: '20'
+  },
+]
 
 const toChat = () => {
   router.push("/chat");
@@ -108,14 +150,6 @@ watch(userProfile, (newVal) => {
   }
 }, { immediate: true });
 
-function differenceDate(date) {
-  if (!date) return 0;
-
-  const now = new Date();
-  const regDate = new Date(date);
-  return Math.floor((now - regDate) / (1000 * 60 * 60 * 24));
-}
-
 const isFieldDisabled = ref(true);
 
 const clearProfileData = () => {
@@ -129,7 +163,7 @@ const editProfileData = async () => {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .profile {
   &__header {
     display: flex;
@@ -139,7 +173,7 @@ const editProfileData = async () => {
   }
 
   &__button{
-    width: fit-content;
+    width: fit-content !important;
   }
 
   &__levels{
@@ -151,6 +185,16 @@ const editProfileData = async () => {
     &-title{
       font-size: 24px;
       color: #2E7D32;
+    }
+  }
+
+  &__tasks{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    & .n-alert-body__title{
+      font-size: 20px !important;
     }
   }
 

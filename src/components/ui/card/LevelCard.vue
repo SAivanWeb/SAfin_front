@@ -2,7 +2,7 @@
   <div class="level-card">
     <div class="level-card__header">
       <div class="level-card__title">Финансовый головастик</div>
-      <div class="level-card__progress">25/150 очков</div>
+      <div class="level-card__progress">25/150 баллов</div>
     </div>
     <div class="level-card__body">
       <div class="level-card__level">Уровень 1</div>
