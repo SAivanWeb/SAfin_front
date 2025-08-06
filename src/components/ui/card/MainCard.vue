@@ -23,7 +23,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   width: 100%;
 
   &__header{
@@ -78,7 +78,7 @@
     }
 
     &-statistic{
-      font-size: 32px;
+      font-size: 80px;
       font-weight: 600;
       color: #2E7D32;
     }

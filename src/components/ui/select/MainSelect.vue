@@ -11,6 +11,8 @@
           @click="toggleOptions"
       >
         {{ selectedLabel || placeholder }}
+
+        <select-arrow class="select__field-ico"/>
       </div>
       <div v-if="showOptions" class="select__options">
         <div
@@ -21,9 +23,6 @@
         >
           {{ item.label }}
         </div>
-        <div v-if="isCategory" class="select__option select__option_button">
-          <MainButton title="Добавить категорию" type="secondary" size="small"/>
-        </div>
       </div>
     </div>
   </div>
@@ -32,6 +31,7 @@
 <script setup>
 import {ref, computed, watch, toRefs} from 'vue';
 import MainButton from "@/components/ui/button/MainButton.vue";
+import SelectArrow from "@/assets/icons/select-arrow.vue";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -49,7 +49,6 @@ const props = defineProps({
     type: String,
     default: 'Не выбрано'
   },
-  isCategory: Boolean,
   size: {
     type: String,
     default: 'default'
@@ -133,11 +132,22 @@ const vClickOutside = {
     padding: 16px 20px;
     border: 1px solid rgba(46, 125, 50, 0.3);
     border-radius: 12px;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.5;
     background: rgba(255, 255, 255, 0.6);
     transition: all 0.3s;
     cursor: pointer;
+    position: relative;
+
+    &-ico{
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 18px;
+      width: 32px;
+      color: #2E7D32;
+      transition: 0.2s;
+    }
 
     &:hover{
       border-color: #2E7D32;
@@ -150,6 +160,10 @@ const vClickOutside = {
     &_opened {
       border-color: #2E7D32;
       box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+
+      & .select__field-ico{
+        transform: translateY(-50%) rotate(180deg);
+      }
     }
 
     &:focus {
@@ -183,7 +197,7 @@ const vClickOutside = {
     padding: 12px 24px;
     cursor: pointer;
     transition: 0.2s;
-    font-size: 16px;
+    font-size: 18px;
 
     &:hover {
       background: rgba(46, 125, 50, 0.1);

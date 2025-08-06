@@ -101,6 +101,9 @@ const axis = ref({
     type: 'linear',
     ticks: 8,
     format: (val) => `${val.toLocaleString()} ₽`
+  },
+  style: {
+    fontSize: '18px',
   }
 })
 
@@ -128,6 +131,12 @@ onBeforeUnmount(() => {
 
   &:deep() svg {
     display: block;
+  }
+
+  &:deep() .axis {
+    text {
+      font-size: 12px;
+    }
   }
 }
 </style>

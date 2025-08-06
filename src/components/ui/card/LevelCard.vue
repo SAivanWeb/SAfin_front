@@ -59,7 +59,7 @@ import Calendar from "@/assets/icons/calendar.vue";
   }
 
   &__progress {
-    font-size: 14px;
+    font-size: 18px;
     color: #757575;
     text-align: right;
   }

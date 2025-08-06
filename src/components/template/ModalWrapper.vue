@@ -67,6 +67,10 @@ const props = defineProps({
     position: relative;
   }
 
+  &__title{
+    font-size: 28px;
+  }
+
   &__close{
     position: absolute;
     top: 12px;

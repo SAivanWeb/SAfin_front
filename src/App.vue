@@ -41,7 +41,7 @@ const themeOverrides = {
     primaryColor: '#2E7D32',
     fontFamily: 'Oswald',
     borderRadius: '12px',
-    fontSize: '16px',
+    fontSize: '18px',
   },
   Input: {
     heightLarge: '54px',
@@ -127,7 +127,7 @@ const isAuth = computed(() => {
   &__chat{
     position: absolute;
     bottom: 140px;
-    right: 140px;
+    right: 80px;
   }
 }
 </style>

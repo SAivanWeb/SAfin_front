@@ -20,7 +20,7 @@
               size="small"
               class="chat__select"
           />
-          <MainButton title="Получить" size="small"/>
+          <MainButton title="Получить" />
         </template>
       </n-result>
     </div>

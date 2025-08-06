@@ -1,7 +1,7 @@
 <template>
   <div class="goal-card">
     <div class="goal-card__header">
-      <div class="goal-card__name">Машина</div>
+      <h4 class="goal-card__name">Машина</h4>
       <div class="goal-card__icon-group">
         <div v-if="editable" class="goal-card__header-button" @click="">
           <Edit class="goal-card__icon"/>
@@ -71,7 +71,7 @@ const emitShowAmountGoal = () => {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 
   &__header {
     display: flex;
@@ -104,7 +104,7 @@ const emitShowAmountGoal = () => {
   }
 
   &__name{
-    font-size: 28px;
+    font-size: 24px;
   }
 
   &__body{

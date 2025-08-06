@@ -50,7 +50,7 @@ const toChat = () => {
 
   &__text{
     padding: 12px;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 30px;
     display: flex;
     flex-direction: column;

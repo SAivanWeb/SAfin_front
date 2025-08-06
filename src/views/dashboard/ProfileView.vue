@@ -13,27 +13,10 @@
       </n-carousel>
     </div>
 
-    <div class="profile__levels">
-      <h3 class="profile__levels-title">Задания</h3>
-      <n-scrollbar style="max-height: 340px">
-        <div class="profile__tasks">
-          <n-alert v-for="task in tasks" :title="task.status === 'done' ? 'Завершено' : 'В процессе'" :type="task.status === 'done' ? 'success' : 'default'">
-            <template #icon v-if="task.status === 'processing'">
-              <n-icon>
-                <process/>
-              </n-icon>
-            </template>
-            {{ task.name }}<br/>
-            Баллы: {{ task.points }}
-          </n-alert>
-        </div>
-      </n-scrollbar>
-    </div>
-
     <div v-if="profileData" class="profile__container">
       <MainCard class="profile__container-item">
         <template #header>
-          <div class="card__title">Профиль</div>
+          <h4 class="card__title">Персональные данные</h4>
           <div class="card__header-buttons">
             <div v-if="isFieldDisabled" class="card__header-button" @click="isFieldDisabled = false">
               <Edit class="card__header-icon"/>
@@ -57,7 +40,7 @@
       </MainCard>
       <MainCard class="profile__container-item">
         <template #header>
-          <div class="card__title">Цели</div>
+          <h4 class="card__title">Цели</h4>
         </template>
         <template #body>
           <div class="card__body-row card__body-row_center">
@@ -67,7 +50,7 @@
       </MainCard>
       <MainCard class="profile__container-item">
         <template #header>
-          <div class="card__title">Транзакции</div>
+          <h4 class="card__title">Транзакции</h4>
         </template>
         <template #body>
           <div class="card__body-row card__body-row_center">
@@ -77,7 +60,7 @@
       </MainCard>
       <MainCard class="profile__container-item">
         <template #header>
-          <div class="card__title">Баллы</div>
+          <h4 class="card__title">Баллы</h4>
         </template>
         <template #body>
           <div class="card__body-row card__body-row_center">
@@ -85,6 +68,25 @@
           </div>
         </template>
       </MainCard>
+    </div>
+
+    <div class="profile__levels">
+      <h3 class="profile__levels-title">Задания</h3>
+      <n-scrollbar style="max-height: 340px">
+        <div class="profile__tasks">
+          <n-alert v-for="task in tasks" :title="task.status === 'done' ? 'Завершено' : 'В процессе'" :type="task.status === 'done' ? 'success' : 'default'">
+            <template #icon v-if="task.status === 'processing'">
+              <n-icon>
+                <process/>
+              </n-icon>
+            </template>
+            <div class="profile__tasks-content">
+              {{ task.name }}<br/>
+              Баллы: {{ task.points }}
+            </div>
+          </n-alert>
+        </div>
+      </n-scrollbar>
     </div>
   </MainWrapper>
 </template>
@@ -183,7 +185,7 @@ const editProfileData = async () => {
     gap: 24px;
 
     &-title{
-      font-size: 24px;
+      font-size: 28px;
       color: #2E7D32;
     }
   }
@@ -194,7 +196,11 @@ const editProfileData = async () => {
     gap: 12px;
 
     & .n-alert-body__title{
-      font-size: 20px !important;
+      font-size: 24px !important;
+    }
+
+    &-content{
+      font-size: 18px;
     }
   }
 
@@ -203,6 +209,7 @@ const editProfileData = async () => {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     grid-gap: 24px;
+    margin-bottom: 24px;
 
     &-item:nth-of-type(1) {
       grid-column: span 3;

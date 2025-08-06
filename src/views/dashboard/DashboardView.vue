@@ -224,8 +224,6 @@ const transactions = [
     }
 
     &-text{
-      font-size: 20px;
-      font-weight: 400;
       margin-bottom: 12px;
     }
 

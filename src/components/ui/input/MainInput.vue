@@ -64,7 +64,7 @@ function emitValue(input) {
     padding: 16px 20px;
     border: 1px solid rgba(46, 125, 50, 0.3);
     border-radius: 12px;
-    font-size: 16px;
+    font-size: 18px;
     background: rgba(255, 255, 255, 0.6);
     transition: all 0.3s;
     font-family: 'Oswald';

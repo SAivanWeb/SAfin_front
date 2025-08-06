@@ -46,7 +46,7 @@ const transactions = [
 <style scoped lang="scss">
 .transactions{
   &__header{
-    margin-bottom: 48px;
+    margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -59,7 +59,7 @@ const transactions = [
   &__container{
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 12px;
   }
 }
 </style>

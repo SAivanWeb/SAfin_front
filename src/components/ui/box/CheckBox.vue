@@ -33,12 +33,16 @@ const handleChange = (newValue) => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .checkbox{
   display: flex;
   flex-direction: column;
   gap: 8px;
   flex-wrap: nowrap;
 
+  & .n-checkbox__label{
+    font-size: 18px !important;
+    line-height: 24px;
+  }
 }
 </style>

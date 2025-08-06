@@ -17,4 +17,16 @@ const props = defineProps({
   font-weight: 500;
   color: #2E7D32;
 }
+
+@media (max-width: 992px) {
+  .title{
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .title{
+    font-size: 24px;
+  }
+}
 </style>
