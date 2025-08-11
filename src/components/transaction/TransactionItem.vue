@@ -8,7 +8,7 @@
     </div>
     <div class="transaction__amount" :class="item.type === 'income' ? 'transaction__amount_up' : 'transaction__amount_down'">
       <arrow class="transaction__amount-icon"/>
-      {{ formatAmount(item.amount) }}
+      {{ formatAmount(item.amount) }}₽
     </div>
   </div>
 </template>

@@ -1,21 +1,22 @@
 <template>
   <MainWrapper>
-    <MainTitle title="Статистика" class="dashboard__title"/>
+    <MainTitle title="Главная" class="dashboard__title"/>
 
-    <n-alert class="dashboard__section" :show-icon="false" type="success" closable>
-      <div class="dashboard__alert">
-<!--          <info class="dashboard__alert-icon"/>-->
-        <question class="dashboard__alert-icon"/>
-        <div class="dashboard__alert-content">
-          <div class="dashboard__alert-title">Финансовая подушка безопасности</div>
-          <div class="dashboard__alert-text">Накопите 3 месячных дохода для защиты от неожиданностей</div>
-          <div class="dashboard__alert-button-group">
-            <MainButton size="small" title="Уже есть" type="secondary" />
-            <MainButton size="small" title="Создать подушку" />
-          </div>
-        </div>
+    <PageAlert class="dashboard__alert"/>
+
+    <div class="dashboard__section dashboard__section_row dashboard__section_user">
+      <div class="dashboard__user-info">
+        <h3 class="dashboard__sub-title">Уровень</h3>
+        <p class="dashboard__user-value">Зеленый гоблин</p>
       </div>
-    </n-alert>
+      <div class="dashboard__user-img">
+        <img src="/goblin.png">
+      </div>
+      <div class="dashboard__user-info">
+        <h3 class="dashboard__sub-title">Баланс</h3>
+        <p class="dashboard__user-value">100 000₽</p>
+      </div>
+    </div>
 
     <div class="dashboard__section">
       <h3 class="dashboard__sub-title">Основная цель</h3>
@@ -82,7 +83,7 @@
             <div class="card__category">
               <div class="card__category-name">Название: Еда</div>
               <div class="card__category-amount">Количество транзакций: 100</div>
-              <div class="card__category-count">Потрачено: 10 000</div>
+              <div class="card__category-count">Потрачено: 10 000₽</div>
             </div>
           </template>
         </MainCard>
@@ -94,7 +95,7 @@
             <div class="card__category">
               <div class="card__category-name">Название: Зарплата</div>
               <div class="card__category-amount">Количество транзакций: 2</div>
-              <div class="card__category-count">Прибыль: 100 000</div>
+              <div class="card__category-count">Прибыль: 100 000₽</div>
             </div>
           </template>
         </MainCard>
@@ -118,6 +119,7 @@ import MainCard from "@/components/ui/card/MainCard.vue";
 import Info from "@/assets/icons/info.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import Question from "@/assets/icons/question.vue";
+import PageAlert from "@/components/template/PageAlert.vue";
 
 const tabHeaders = ref([
   {
@@ -161,7 +163,11 @@ const transactions = [
 <style scoped lang="scss">
 .dashboard {
   &__title {
-    margin-bottom: 48px;
+    margin-bottom: 24px;
+  }
+
+  &__alert{
+    margin-bottom: 24px;
   }
 
   &__section {
@@ -169,6 +175,76 @@ const transactions = [
     flex-direction: column;
     gap: 24px;
     margin-bottom: 48px;
+    position: relative;
+    z-index: 10;
+
+    &_row{
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+
+    &_user{
+      &:before{
+        content: '';
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        filter: blur(60px);
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, rgba(95, 255, 100, 0.2), transparent 90%);
+        z-index: -1;
+      }
+    }
+  }
+
+  &__user{
+    &-img{
+      width: 40%;
+      min-width: 400px;
+      height: 500px;
+
+      & img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    &-info{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+      aspect-ratio: 1/1;
+
+      &:before{
+        content: '';
+        width: 60%;
+        height: 60%;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: transparent;
+        border-image: linear-gradient(to top, rgba(46, 125, 50, 0.2) 0%, rgba(58, 78, 213, 0) 100%) 1;
+        border-width: 10px;
+        border-style: solid;
+      }
+    }
+
+    &-value{
+      font-size: 24px;
+      margin-top: 24px;
+    }
   }
 
   &__sub-title {
@@ -200,37 +276,6 @@ const transactions = [
     width: 100%;
   }
 
-  &__alert{
-    display: flex;
-    align-items: start;
-    gap: 12px;
-    width: 100%;
 
-    &-icon{
-      color: #2E7D32;
-      width: 48px;
-    }
-
-    &-content{
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
-
-    &-title{
-      font-size: 24px;
-      font-weight: 500;
-
-    }
-
-    &-text{
-      margin-bottom: 12px;
-    }
-
-    &-button-group{
-      display: flex;
-      gap: 12px;
-    }
-  }
 }
 </style>

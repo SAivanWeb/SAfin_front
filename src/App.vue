@@ -128,6 +128,7 @@ const isAuth = computed(() => {
     position: absolute;
     bottom: 140px;
     right: 80px;
+    z-index: 100;
   }
 }
 </style>

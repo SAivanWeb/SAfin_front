@@ -4,6 +4,7 @@
       <MainTitle title="Профиль" class="profile__title"/>
       <MainButton class="profile__button" title="получить отчет" type="secondary" @click="toChat"/>
     </div>
+    <PageAlert class="profile__alert"/>
 
     <div class="profile__levels">
       <h3 class="profile__levels-title">Уровни</h3>
@@ -105,6 +106,7 @@ import LevelCard from "@/components/ui/card/LevelCard.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import {useRouter} from "vue-router";
 import Process from "@/assets/icons/process.vue";
+import PageAlert from "@/components/template/PageAlert.vue";
 
 const router = useRouter();
 const store = useStore();
@@ -171,7 +173,11 @@ const editProfileData = async () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
+  }
+
+  &__alert{
+    margin-bottom: 24px;
   }
 
   &__button{

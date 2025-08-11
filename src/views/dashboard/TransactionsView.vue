@@ -4,8 +4,11 @@
       <MainTitle title="Транзакции" class="transactions__title"/>
       <MainButton class="transactions__button" action="add" title="создать транзакцию" type="secondary" @click="$emit('showTransaction')"/>
     </div>
-    <div class="transactions__container">
+    <PageAlert class="transactions__alert"/>
+    <div class="transactions__menu">
       <Filter/>
+    </div>
+    <div class="transactions__container">
       <TransactionList :items="transactions"/>
     </div>
   </MainWrapper>
@@ -18,6 +21,7 @@ import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import Filter from "@/components/template/Filter.vue";
 import TransactionList from "@/components/transaction/TransactionList.vue";
+import PageAlert from "@/components/template/PageAlert.vue";
 
 const transactions = [
   { id: 1, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-01-05', category: 'Еда', description: 'Продукты' },
@@ -46,20 +50,30 @@ const transactions = [
 <style scoped lang="scss">
 .transactions{
   &__header{
-    margin-bottom: 12px;
+    margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  &__alert{
+    margin-bottom: 24px;
   }
 
   &__button{
     width: fit-content;
   }
 
-  &__container{
+  &__menu{
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  &__container{
+
   }
 }
 </style>
