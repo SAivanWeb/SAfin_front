@@ -100,16 +100,16 @@ const emit = defineEmits('hide-modal');
 const {isEditMode} = toRefs(props);
 
 const goalsData = ref({
-  is_main: false,
   name: '',
   description: '',
   type: 'save',
   category_id: null,
-  target_amount: null,
   current_amount: 0,
+  target_amount: null,
   start_at: new Date().toISOString().split('T')[0],
   end_at: null,
   priority: 1,
+  is_main: false,
 });
 
 const goalsType = [

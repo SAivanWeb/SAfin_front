@@ -6,7 +6,7 @@
     </div>
     <PageAlert class="goals__alert"/>
     <div class="goals__container">
-      <GoalCard @show-amount-goal="(goal) => $emit('showAmountGoal', goal)"/>
+      <GoalCard v-for="item in goals" :goal="item" @show-amount-goal="(goal) => $emit('showAmountGoal', goal)"/>
     </div>
   </MainWrapper>
 </template>
@@ -18,8 +18,24 @@ import MainCard from "@/components/ui/card/MainCard.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import GoalCard from "@/components/ui/card/GoalCard.vue";
 import PageAlert from "@/components/template/PageAlert.vue";
+import {onMounted, inject, ref} from "vue";
+
+const { api } = inject('plugins');
 
 defineEmits(['showAmountGoal']);
+
+const goals = ref(null);
+
+async function getGoals() {
+  const res = await api.goals.getGoals();
+  if (res.success) {
+    goals.value = res;
+  }
+}
+
+onMounted(() => {
+  getGoals()
+})
 </script>
 
 <style scoped lang="scss">

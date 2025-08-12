@@ -1,7 +1,7 @@
 import api from '../api.js'
 
 export default {
-    async getGoals(payload) {
+    async getGoals() {
         try {
             const response = await api.get(`/goals`);
             return response.data;

@@ -25,7 +25,6 @@ api.interceptors.response.use(
     async error => {
         const originalRequest = error.config;
 
-        // Проверяем, что это 401 ошибка и запрос еще не повторялся
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
@@ -54,7 +53,6 @@ api.interceptors.response.use(
             }
         }
 
-        // Для всех других ошибок просто пробрасываем дальше
         return Promise.reject(error);
     }
 );

@@ -1,7 +1,7 @@
 <template>
   <div class="goal-card">
     <div class="goal-card__header">
-      <h4 class="goal-card__name">Машина</h4>
+      <h4 class="goal-card__name">{{goal.name}}</h4>
       <div class="goal-card__icon-group">
         <div v-if="editable" class="goal-card__header-button" @click="">
           <Edit class="goal-card__icon"/>
@@ -18,7 +18,7 @@
           <n-progress
               type="line"
               :height="24"
-              :percentage="percentage"
+              :percentage="progressMoney"
               indicator-placement="inside"
               color='#2E7D32'
           />
@@ -28,7 +28,7 @@
           <n-progress
               type="line"
               :height="24"
-              :percentage="percentage"
+              :percentage="progressTime"
               indicator-placement="inside"
               color='#FFA726'
           />
@@ -42,8 +42,7 @@
 import MainButton from "@/components/ui/button/MainButton.vue";
 import Edit from "@/assets/icons/edit.vue";
 import Plus from "@/assets/icons/plus.vue";
-
-const percentage = 20;
+import {computed, ref} from "vue";
 
 const props = defineProps({
   goal: Object,
@@ -57,6 +56,25 @@ const emit = defineEmits(['showAmountGoal']);
 const emitShowAmountGoal = () => {
   emit('showAmountGoal', props.goal);
 };
+
+const progressMoney = computed(() => {
+  const current = props.goal.current_amount || 0
+  const target = props.goal.target_amount || 0
+  if (target <= 0) return 0
+  return Math.min(((current / target) * 100).toFixed(2), 100)
+})
+
+const progressTime = computed(() => {
+  const start = props.goal.start_at ? new Date(props.goal.start_at) : new Date()
+  const end = props.goal.end_at ? new Date(props.goal.end_at) : null
+  if (!end) return 0
+
+  const total = end.getTime() - start.getTime()
+  const elapsed = Date.now() - start.getTime()
+  if (total <= 0) return 0
+
+  return Math.min(((elapsed / total) * 100).toFixed(2), 100)
+})
 
 </script>
 
