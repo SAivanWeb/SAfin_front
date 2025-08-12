@@ -9,6 +9,7 @@
               @show-goals="showGoalsModal = true"
               @show-transaction="showTransactionModal = true"
               @show-amount-goal="openAmountGoal"
+              @show-account="showAccountModal = true"
           />
         </div>
         <FooterBar v-if="!isAuthPage && !isAuth"/>
@@ -16,6 +17,7 @@
         <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal"/>
         <TransactionModal v-if="showTransactionModal" @hide-modal="hideModal"/>
         <AmountGoalModal v-if="showAmountGoal" @hide-modal="hideModal" :goal="amountGoalData"/>
+        <AccountModal v-if="showAccountModal" @hide-modal="hideModal"/>
 
         <Chat v-if="isAuth && !isChatPage && !isProfilePage" class="main__chat"/>
       </div>
@@ -35,6 +37,7 @@ import { dateRuRU, NConfigProvider, ruRU } from 'naive-ui'
 import TransactionModal from "@/components/template/modal/TransactionModal.vue";
 import AmountGoalModal from "@/components/template/modal/AmountGoalModal.vue";
 import Chat from "@/components/template/Chat.vue";
+import AccountModal from "@/components/template/modal/AccountModal.vue";
 
 const themeOverrides = {
   common: {
@@ -50,6 +53,7 @@ const themeOverrides = {
     borderFocus: '1px solid #2E7D32',
     boxShadowFocus: '0 0 0 3px rgba(46, 125, 50, 0.2)',
     iconSize: '18px',
+    fontSizeLarge: '18px'
   },
   Checkbox: {
     sizeLarge: '20px'
@@ -64,6 +68,10 @@ const themeOverrides = {
   Alert: {
     closeIconSize: '20px',
     closeSize: '28px',
+  },
+  Button: {
+    paddingTiny: '4px 8px',
+    fontSizeTiny: '14px'
   }
 }
 
@@ -73,6 +81,7 @@ const store = useStore();
 const showGoalsModal = ref(false);
 const showTransactionModal = ref(false);
 const showAmountGoal = ref(false);
+const showAccountModal = ref(false);
 
 const amountGoalData = ref(null);
 
@@ -80,6 +89,7 @@ const hideModal = () => {
   showGoalsModal.value = false;
   showTransactionModal.value = false;
   showAmountGoal.value = false;
+  showAccountModal.value = false;
 }
 
 const openAmountGoal = (goal) => {
@@ -126,7 +136,7 @@ const isAuth = computed(() => {
 
   &__chat{
     position: absolute;
-    bottom: 140px;
+    bottom: 100px;
     right: 80px;
     z-index: 100;
   }

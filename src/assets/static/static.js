@@ -1,6 +1,6 @@
 export const MENU = [
     {
-        name: 'ТРАНЗАКЦИИ',
+        name: 'ФИНАНСЫ',
         link: '/transactions/',
         icon: 'transactions'
     },

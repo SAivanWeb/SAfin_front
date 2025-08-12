@@ -1,6 +1,6 @@
 <template>
   <div class="tabs">
-    <div class="tabs__header">
+    <div class="tabs__header" :class="main ? 'tabs__header_main' : ''">
       <h3 class="tabs__title" v-if="title">{{title}}</h3>
       <div class="tabs__menu">
         <TabItem
@@ -8,7 +8,7 @@
             :key="item.name"
             :item="item"
             :is-active="item.name === activeTab"
-            @click="activeTab = item.name"
+            @click="setActive(item.name)"
         />
       </div>
     </div>
@@ -29,9 +29,19 @@ const props = defineProps({
     type: Array
   },
   title: String,
+  active: {
+    type: String,
+    default: ''
+  },
+  main: {
+    type: Boolean,
+    default: false
+  }
 })
 
-const activeTab = ref('')
+const emit = defineEmits(['update:active'])
+
+const activeTab = ref(props.active || '')
 
 watch(
     () => props.headers,
@@ -42,6 +52,20 @@ watch(
     },
     { immediate: true }
 )
+
+watch(
+    () => props.active,
+    (val) => {
+      if (val !== activeTab.value) {
+        activeTab.value = val
+      }
+    }
+)
+
+const setActive = (name) => {
+  activeTab.value = name
+  emit('update:active', name)
+}
 
 const isTabVisible = (name) => activeTab.value === name
 </script>
@@ -54,6 +78,25 @@ const isTabVisible = (name) => activeTab.value === name
     align-items: center;
     width: 100%;
     margin-bottom: 24px;
+    
+    &_main{
+      & .tabs__menu{
+        width: 100%;
+        
+        & .tab-item{
+          display: flex;
+          justify-content: center;
+          padding: 12px;
+          font-size: 24px;
+          
+          &_active{
+            background-color: rgba(46, 125, 50, 0.1);
+            color: #2E7D32;
+            padding: 12px;
+          }
+        }
+      }
+    }
   }
 
   &__menu{

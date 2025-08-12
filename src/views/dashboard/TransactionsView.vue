@@ -1,27 +1,76 @@
 <template>
   <MainWrapper>
     <div class="transactions__header">
-      <MainTitle title="Транзакции" class="transactions__title"/>
-      <MainButton class="transactions__button" action="add" title="создать транзакцию" type="secondary" @click="$emit('showTransaction')"/>
+      <MainTitle title="Финансы" class="transactions__title"/>
+      <MainButton v-if="activeTab === 'transactions'" class="transactions__button" action="add" title="создать транзакцию" type="secondary" @click="$emit('showTransaction')"/>
+      <MainButton v-else class="transactions__button" action="add" title="создать счет" type="secondary" @click="$emit('showAccount')"/>
     </div>
     <PageAlert class="transactions__alert"/>
-    <div class="transactions__menu">
-      <Filter/>
-    </div>
     <div class="transactions__container">
-      <TransactionList :items="transactions"/>
+      <TabContainer :headers="tabHeadersMain" v-model:active="activeTab" :main="true">
+          <template #transactions>
+              <TabContainer :headers="tabHeadersTransactions">
+                <template #chart>
+                  <div class="transactions__statistic-item">
+                    <Chart :items="transactions"/>
+                  </div>
+                </template>
+                <template #diagram>
+                  <Diagram :items="transactions"/>
+                </template>
+                <template #list>
+                  <div class="transactions__statistic-item">
+                    <Filter/>
+                    <TransactionList :items="transactions"/>
+                  </div>
+                </template>
+              </TabContainer>
+          </template>
+          
+          <template #accounts>
+            <div class="transactions__accounts">
+              <AccountCard v-for="item in accounts" :item="item"/>
+            </div>
+          </template>
+      </TabContainer>
     </div>
   </MainWrapper>
 </template>
 
 <script setup>
-
 import MainWrapper from "@/components/template/MainWrapper.vue";
 import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import Filter from "@/components/template/Filter.vue";
 import TransactionList from "@/components/transaction/TransactionList.vue";
 import PageAlert from "@/components/template/PageAlert.vue";
+import Chart from "@/components/ui/chart/Chart.vue";
+import TabContainer from "@/components/ui/tabs/TabContainer.vue";
+import Diagram from "@/components/ui/chart/ProgressList.vue";
+import {ref} from "vue";
+import AccountCard from "@/components/ui/card/AccountCard.vue";
+
+const activeTab = ref('transactions');
+
+const tabHeadersMain = ref([
+  { name: 'transactions', value: 'Транзакции' },
+  { name: 'accounts', value: 'Счета' }
+])
+
+const tabHeadersTransactions = ref([
+  {
+    name: 'list',
+    value: 'Список'
+  },
+  {
+    name: 'chart',
+    value: 'График'
+  },
+  {
+    name: 'diagram',
+    value: 'Диаграмма'
+  },
+])
 
 const transactions = [
   { id: 1, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-01-05', category: 'Еда', description: 'Продукты' },
@@ -45,6 +94,11 @@ const transactions = [
   { id: 19, displayType: 'Списание', type: 'expense', amount: 3000, date: '2023-04-20', category: 'Одежда', description: 'Обувь' },
   { id: 20, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-04-25', category: 'Здоровье', description: 'Витамины' }
 ]
+
+const accounts = [
+  { id: 1, name: 'Карта Тинькофф', balance: 50000},
+  { id: 2, name: 'Наличные', balance: 20000},
+];
 </script>
 
 <style scoped lang="scss">
@@ -73,7 +127,23 @@ const transactions = [
   }
 
   &__container{
-
+    
   }
+
+  &__statistic {
+    &-item {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+  
+  &__accounts{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
 }
 </style>

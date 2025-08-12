@@ -7,7 +7,9 @@
         clearable
         @update:value="handleDateUpdate"
         :size="type === 'daterange' ? 'medium' : 'large'"
-        value-format="yyyy-MM-dd"
+        :format="type === 'month' ? 'y MMMM' : 'yyyy-MM-dd'"
+        :value-format="type === 'month' ? 'y MMM' : 'yyyy-MM-dd'"
+        :month-format="type === 'month' ? 'MMMM' : 'MMM'"
     />
   </div>
 </template>
