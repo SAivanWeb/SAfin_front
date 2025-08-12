@@ -113,9 +113,9 @@ const isAuth = computed(() => {
   return store.getters['user/GET_IS_AUTH'];
 })
 
-// onMounted(() => {
-//   store.dispatch('user/initAuth');
-// });
+onMounted(() => {
+  store.dispatch('user/initAuth');
+});
 </script>
 
 <style scoped lang="scss">

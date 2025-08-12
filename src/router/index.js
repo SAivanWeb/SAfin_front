@@ -62,19 +62,19 @@ const router = createRouter({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   const isAuthenticated = localStorage.getItem('access_token');
-//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-//   const requiresGuest = to.matched.some(record => record.meta.requiresGuest);
-//
-//   if (isAuthenticated && requiresGuest) {
-//     return next('/dashboard');
-//   }
-//
-//   if (requiresAuth && !isAuthenticated) {
-//     return next({ path: '/auth', replace: true });
-//   }
-//
-//   next();
-// });
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('access_token');
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const requiresGuest = to.matched.some(record => record.meta.requiresGuest);
+
+  if (isAuthenticated && requiresGuest) {
+    return next('/dashboard');
+  }
+
+  if (requiresAuth && !isAuthenticated) {
+    return next({ path: '/auth', replace: true });
+  }
+
+  next();
+});
 export default router
