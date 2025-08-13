@@ -1,7 +1,7 @@
 <template>
   <div class="goal-card">
     <div class="goal-card__header">
-      <h4 class="goal-card__name">{{goal.name}}</h4>
+      <h4 class="goal-card__name">Машина</h4>
       <div class="goal-card__icon-group">
         <div v-if="editable" class="goal-card__header-button" @click="">
           <Edit class="goal-card__icon"/>
@@ -18,7 +18,7 @@
           <n-progress
               type="line"
               :height="24"
-              :percentage="progressMoney"
+              :percentage="20"
               indicator-placement="inside"
               color='#2E7D32'
           />
@@ -28,7 +28,7 @@
           <n-progress
               type="line"
               :height="24"
-              :percentage="progressTime"
+              :percentage="20"
               indicator-placement="inside"
               color='#FFA726'
           />

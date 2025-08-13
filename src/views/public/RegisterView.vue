@@ -133,14 +133,14 @@ async function handleLogin() {
   if(res.success){
     router.push('/dashboard/');
   }
-};
+}
 
 async function handleRegister() {
   let res = await store.dispatch('user/register', registerForm.value);
   if(res.success){
     router.push('/dashboard/');
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
