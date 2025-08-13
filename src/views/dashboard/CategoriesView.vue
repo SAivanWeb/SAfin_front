@@ -9,6 +9,9 @@
       <Filter/>
       <InputSearch class="categories__menu-search" placeholder="поиск категории" :items="categories" v-model="searchedValue"/>
     </div>
+    <div class="categories__container">
+      <CategoryCard v-for="item in categories" :category="item"/>
+    </div>
   </MainWrapper>
 </template>
 
@@ -20,6 +23,7 @@ import Filter from "@/components/template/Filter.vue";
 import InputSearch from "@/components/ui/input/InputSearch.vue";
 import {inject, onMounted, ref} from "vue";
 import PageAlert from "@/components/template/PageAlert.vue";
+import CategoryCard from "@/components/ui/card/CategoryCard.vue";
 const { api } = inject('plugins');
 
 const categories = ref([])
@@ -29,7 +33,7 @@ const searchedValue = ref('');
 async function getCategories() {
   const res = await api.category.getCategories();
   if (res.success) {
-    categories.value = res;
+    categories.value = res.data;
   }
 }
 
@@ -66,6 +70,12 @@ onMounted(() => {
       width: 100%;
       max-width: 300px;
     }
+  }
+
+  &__container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
   }
 }
 </style>
