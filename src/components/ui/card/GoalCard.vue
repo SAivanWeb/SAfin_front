@@ -42,7 +42,7 @@
 import MainButton from "@/components/ui/button/MainButton.vue";
 import Edit from "@/assets/icons/edit.vue";
 import Plus from "@/assets/icons/plus.vue";
-import {computed, ref} from "vue";
+import {computed, ref, inject} from "vue";
 
 const props = defineProps({
   goal: Object,

@@ -13,22 +13,29 @@
 </template>
 
 <script setup>
-
 import MainWrapper from "@/components/template/MainWrapper.vue";
 import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import Filter from "@/components/template/Filter.vue";
 import InputSearch from "@/components/ui/input/InputSearch.vue";
-import {ref} from "vue";
+import {inject, onMounted, ref} from "vue";
 import PageAlert from "@/components/template/PageAlert.vue";
+const { api } = inject('plugins');
 
-const categories = [
-  { id: 1, value: 1, label: 'Еда' },
-  { id: 2, value: 2, label: 'Транспорт' },
-  { id: 3, value: 3, label: 'Развлечение' }
-]
+const categories = ref([])
 
 const searchedValue = ref('');
+
+async function getCategories() {
+  const res = await api.category.getCategories();
+  if (res.success) {
+    categories.value = res;
+  }
+}
+
+onMounted(() => {
+  getCategories()
+})
 </script>
 
 <style scoped lang="scss">

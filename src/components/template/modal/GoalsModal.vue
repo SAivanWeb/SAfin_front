@@ -12,7 +12,7 @@
             @update:modelValue="handleTypeChange"
         />
 
-        <div class="modal__goals-container">
+        <div class="modal__fields-container">
           <CheckBox title="Основная цель" label="Основная цель" v-model="goalsData.is_main"/>
 
           <MainInput
@@ -81,7 +81,7 @@
 <script setup>
 import ModalWrapper from "@/components/template/ModalWrapper.vue";
 import MainInput from "@/components/ui/input/MainInput.vue";
-import {ref, computed, onMounted, toRefs} from "vue";
+import {ref, computed, onMounted, toRefs, inject} from "vue";
 import RadioBox from "@/components/ui/box/RadioBox.vue";
 import MainSelect from "@/components/ui/select/MainSelect.vue";
 import InputDate from "@/components/ui/input/InputDate.vue";
@@ -94,6 +94,8 @@ const props = defineProps({
     default: false
   },
 });
+
+const { api } = inject('plugins');
 
 const emit = defineEmits('hide-modal');
 
@@ -139,9 +141,6 @@ const handleTypeChange = (type) => {
 };
 
 const handleSubmit = () => {
-  goalsData.value.target_amount*=10
-  goalsData.value.current_amount*=10
-
   console.log(goalsData.value);
 };
 

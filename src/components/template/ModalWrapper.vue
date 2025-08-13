@@ -100,7 +100,7 @@ const props = defineProps({
     gap: 24px;
   }
 
-  &__goals{
+  &__fields{
     &-container{
       display: grid;
       grid-template-columns: 1fr;
@@ -108,5 +108,6 @@ const props = defineProps({
       padding: 0 4px;
     }
   }
+  
 }
 </style>

@@ -10,6 +10,7 @@
               @show-transaction="showTransactionModal = true"
               @show-amount-goal="openAmountGoal"
               @show-account="showAccountModal = true"
+              @show-category="showCategoryModal = true"
           />
         </div>
         <FooterBar v-if="!isAuthPage && !isAuth"/>
@@ -18,6 +19,7 @@
         <TransactionModal v-if="showTransactionModal" @hide-modal="hideModal"/>
         <AmountGoalModal v-if="showAmountGoal" @hide-modal="hideModal" :goal="amountGoalData"/>
         <AccountModal v-if="showAccountModal" @hide-modal="hideModal"/>
+        <CategoryModal v-if="showCategoryModal" @hide-modal="hideModal"/>
 
         <Chat v-if="isAuth && !isChatPage && !isProfilePage" class="main__chat"/>
       </div>
@@ -38,6 +40,7 @@ import TransactionModal from "@/components/template/modal/TransactionModal.vue";
 import AmountGoalModal from "@/components/template/modal/AmountGoalModal.vue";
 import Chat from "@/components/template/Chat.vue";
 import AccountModal from "@/components/template/modal/AccountModal.vue";
+import CategoryModal from "@/components/template/modal/CategoryModal.vue";
 
 const themeOverrides = {
   common: {
@@ -82,6 +85,7 @@ const showGoalsModal = ref(false);
 const showTransactionModal = ref(false);
 const showAmountGoal = ref(false);
 const showAccountModal = ref(false);
+const showCategoryModal = ref(false);
 
 const amountGoalData = ref(null);
 
@@ -90,6 +94,7 @@ const hideModal = () => {
   showTransactionModal.value = false;
   showAmountGoal.value = false;
   showAccountModal.value = false;
+  showCategoryModal.value = false;
 }
 
 const openAmountGoal = (goal) => {
