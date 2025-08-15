@@ -38,11 +38,11 @@ const { modelValue, id, name, type, placeholder, disabled } = toRefs(props);
 const inputValue = ref('');
 
 watch(modelValue, (newVal) => {
-  inputValue.value = newVal || '';
+  inputValue.value = newVal !== null && newVal !== undefined ? newVal : '';
 });
 
 onMounted(() => {
-  if(modelValue.value) {
+  if (modelValue.value !== null && modelValue.value !== undefined) {
     inputValue.value = modelValue.value;
   }
 })

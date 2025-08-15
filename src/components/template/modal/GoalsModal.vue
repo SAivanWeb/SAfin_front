@@ -28,7 +28,7 @@
           />
 
           <MainSelect
-              v-if="goalsData.type === 'limit'"
+              v-if="goalsData.type === 'limiting'"
               title="Категория расходов"
               :items="categories"
               v-model="goalsData.category_id"
@@ -48,31 +48,29 @@
           />
 
           <InputDate
-              :label="goalsData.type === 'save' ? 'Дата завершения' : 'Ограничивающий срок'"
+              :label="goalsData.type === 'saving' ? 'Дата завершения' : 'Ограничивающий срок'"
               v-model="goalsData.end_at"
               format="yyyy-MM-dd"
           />
 
           <MainInput
               type="number"
-              :label="goalsData.type === 'save' ? 'Текущая сумма' : 'Текущий расход'"
-              placeholder="0"
+              :label="goalsData.type === 'saving' ? 'Текущая сумма' : 'Текущий расход'"
+              placeholder="Введите сумму"
               v-model="goalsData.current_amount"
-              min="0"
           />
 
           <MainInput
               type="number"
-              :label="goalsData.type === 'save' ? 'Желаемая сумма' : 'Лимит расходов'"
+              :label="goalsData.type === 'saving' ? 'Желаемая сумма' : 'Лимит расходов'"
               placeholder="Введите сумму"
               v-model="goalsData.target_amount"
-              :min="goalsData.type === 'save' ? goalsData.current_amount + 1 : 0"
           />
 
         </div>
 
         <div class="modal__actions">
-          <MainButton title="Создать" @click="handleSubmit"/>
+          <MainButton title="Создать" @click="createGoal" :disabled="disableButton"/>
         </div>
     </template>
   </ModalWrapper>
@@ -87,6 +85,9 @@ import MainSelect from "@/components/ui/select/MainSelect.vue";
 import InputDate from "@/components/ui/input/InputDate.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import CheckBox from "@/components/ui/box/CheckBox.vue";
+import {useStore} from "vuex";
+
+const store = useStore();
 
 const props = defineProps({
   isEditMode: {
@@ -104,9 +105,9 @@ const {isEditMode} = toRefs(props);
 const goalsData = ref({
   name: '',
   description: '',
-  type: 'save',
+  type: 'saving',
   category_id: null,
-  current_amount: 0,
+  current_amount: null,
   target_amount: null,
   start_at: new Date().toISOString().split('T')[0],
   end_at: null,
@@ -114,9 +115,43 @@ const goalsData = ref({
   is_main: false,
 });
 
+const clearForm = () => {
+  goalsData.value = {
+    name: '',
+    description: '',
+    type: goalsData.value.type,
+    category_id: null,
+    current_amount: null,
+    target_amount: null,
+    start_at: new Date().toISOString().split('T')[0],
+    end_at: null,
+    priority: 1,
+    is_main: false,
+  };
+};
+
+const disableButton = computed(() => {
+  if (goalsData.value.type === "saving") {
+    return !goalsData.value.name ||
+        (!goalsData.value.current_amount && goalsData.value.current_amount !== 0) ||
+        !goalsData.value.target_amount ||
+        !goalsData.value.start_at ||
+        !goalsData.value.end_at ||
+        !goalsData.value.priority;
+  } else {
+    return !goalsData.value.name ||
+        !goalsData.value.category_id ||
+        !goalsData.value.current_amount ||
+        !goalsData.value.target_amount ||
+        !goalsData.value.start_at ||
+        !goalsData.value.end_at ||
+        !goalsData.value.priority;
+  }
+})
+
 const goalsType = [
-  { item_title: 'Накопительная', id: 'save', name: 'save', group: 'goal-type' },
-  { item_title: 'Лимитная', id: 'limit', name: 'limit', group: 'goal-type' }
+  { item_title: 'Накопительная', id: 'saving', name: 'saving', group: 'goal-type' },
+  { item_title: 'Лимитная', id: 'limiting', name: 'limiting', group: 'goal-type' }
 ];
 
 const priorityOptions = [
@@ -125,24 +160,25 @@ const priorityOptions = [
   { value: 3, label: 'Высокий' }
 ];
 
-const categories = [
-  { value: 1, label: 'Низкий' },
-  { value: 2, label: 'Средний' },
-  { value: 3, label: 'Высокий' }
-];
+const categories = computed(() => {
+  const raw = store.getters.GET_CATEGORIES || [];
+  return raw.map(item => ({
+    value: item.id,
+    label: item.name
+  }));
+});
 
 const handleTypeChange = (type) => {
-  if (type === 'save') {
-    goalsData.value.category_id = null;
-  }
-  if (type === 'limit') {
-    goalsData.value.current_amount = 0;
-  }
+  clearForm();
+  goalsData.value.type = type;
 };
 
-const handleSubmit = () => {
-  console.log(goalsData.value);
-};
+async function createGoal() {
+  const res = await api.goals.createGoal(goalsData.value);
+  if (res.success) {
+    emit('hide-modal');
+  }
+}
 
 onMounted(() => {
   if (isEditMode.value) {

@@ -119,7 +119,7 @@ const isAuth = computed(() => {
 })
 
 onMounted(() => {
-  store.dispatch('user/initAuth');
+  store.dispatch('initAuth');
 });
 </script>
 

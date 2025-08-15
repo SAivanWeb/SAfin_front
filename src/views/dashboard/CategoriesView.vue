@@ -10,7 +10,7 @@
       <InputSearch class="categories__menu-search" placeholder="поиск категории" :items="categories" v-model="searchedValue"/>
     </div>
     <div class="categories__container">
-      <CategoryCard v-for="item in categories" :category="item"/>
+      <CategoryCard v-for="item in filteredCategories" :category="item"/>
     </div>
   </MainWrapper>
 </template>
@@ -21,25 +21,23 @@ import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import Filter from "@/components/template/Filter.vue";
 import InputSearch from "@/components/ui/input/InputSearch.vue";
-import {inject, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 import PageAlert from "@/components/template/PageAlert.vue";
 import CategoryCard from "@/components/ui/card/CategoryCard.vue";
-const { api } = inject('plugins');
+import {useStore} from "vuex";
 
-const categories = ref([])
-
+const store = useStore();
+const categories = computed(() => store.getters.GET_CATEGORIES || []);
 const searchedValue = ref('');
 
-async function getCategories() {
-  const res = await api.category.getCategories();
-  if (res.success) {
-    categories.value = res.data;
-  }
-}
+const filteredCategories = computed(() => {
+  const list = categories.value || [];
+  if (!searchedValue.value.trim()) return list;
+  return list.filter(item =>
+      item.name.toLowerCase().includes(searchedValue.value.toLowerCase())
+  );
+});
 
-onMounted(() => {
-  getCategories()
-})
 </script>
 
 <style scoped lang="scss">

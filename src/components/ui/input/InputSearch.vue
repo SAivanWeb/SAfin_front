@@ -1,42 +1,50 @@
 <template>
-  <div class="input">
+  <div class="input" ref="inputWrapper">
     <div class="input__wrapper">
       <input
           v-model="inputValue"
           class="input__field"
           lang="ru-Ru"
-          @input="filterValue(inputValue)"
+          @input="filterValue"
           :placeholder="placeholder"
           @click="showOptions = true"
       >
       <search-ico class="input__ico"/>
-
     </div>
     <div v-if="showOptions" class="input__options">
-      <div v-for="item in searchOptions" class="input__options-option" @click="selectOption(item.label)">{{ item.label }}</div>
+      <div
+          v-for="item in searchOptions"
+          :key="item.name"
+          class="input__options-option"
+          @click="selectOption(item.name)"
+      >
+        {{ item.name }}
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {onMounted, ref, toRefs, watch, computed} from "vue";
+import { onMounted, onBeforeUnmount, ref, toRefs, watch, computed } from "vue";
 import SearchIco from "@/assets/icons/search-ico.vue";
+
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   items: Array,
   placeholder: String,
   modelValue: String | Number,
-})
+});
 
 const { modelValue, placeholder, items } = toRefs(props);
 
 const inputValue = ref('');
 const showOptions = ref(false);
+const inputWrapper = ref(null);
 
 const searchOptions = computed(() => {
   if (!inputValue.value) return props.items || [];
   return (props.items || []).filter(item =>
-      item.label.toLowerCase().includes(inputValue.value.toLowerCase())
+      item.name.toLowerCase().includes(inputValue.value.toLowerCase())
   );
 });
 
@@ -45,23 +53,32 @@ watch(modelValue, (newVal) => {
 });
 
 onMounted(() => {
-  if(modelValue.value) {
+  if (modelValue.value) {
     inputValue.value = modelValue.value;
   }
-})
 
-function filterValue(input) {
-  searchOptions.value = items.value.filter((item) => {
-    return item.label.toLowerCase().indexOf(input.toLowerCase()) > -1;
-  })
-  return searchOptions.value;
+  document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
+function handleClickOutside(event) {
+  if (inputWrapper.value && !inputWrapper.value.contains(event.target)) {
+    showOptions.value = false;
+  }
 }
 
-const selectOption = (label) => {
-  inputValue.value = label;
-  showOptions.value = false;
+function filterValue() {
+  emitValue(); // теперь эмитим сразу
+}
+
+const selectOption = (name) => {
+  inputValue.value = name;
   emitValue();
-}
+  showOptions.value = false;
+};
 
 function emitValue() {
   emit('update:modelValue', inputValue.value);
