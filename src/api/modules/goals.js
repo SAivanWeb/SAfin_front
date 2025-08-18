@@ -28,18 +28,18 @@ export default {
         }
     },
 
-    async deleteGoal(payload) {
+    async deleteGoal(id) {
         try {
-            const response = await api.delete(`/goals/${payload}`);
+            const response = await api.delete(`/goals/${id}`);
             return response.data;
         } catch (error) {
             throw error.response?.data?.error || error;
         }
     },
 
-    async addToGoal(payload, id) {
+    async addToGoal(id, current_amount ) {
         try {
-            const response = await api.put(`api/goals/current/${id}`, payload);
+            const response = await api.put(`/goals/current/${id}`, {current_amount });
             return response.data;
         } catch (error) {
             throw error.response?.data?.error || error;

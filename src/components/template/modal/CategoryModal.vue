@@ -51,7 +51,6 @@ const categoryData = ref({
 
 async function createGoal() {
   const res = await api.category.createCategory(categoryData.value);
-  console.log(res)
   if (res.success) {
     emit('hide-modal');
   }

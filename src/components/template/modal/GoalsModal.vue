@@ -70,7 +70,9 @@
         </div>
 
         <div class="modal__actions">
-          <MainButton title="Создать" @click="createGoal" :disabled="disableButton"/>
+          <MainButton v-if="!isEditMode" title="Создать" @click="createGoal" :disabled="disableButton"/>
+          <MainButton v-if="isEditMode" title="Удалить" @click="deleteGoal" type="secondary"/>
+          <MainButton v-if="isEditMode" title="Обновить" @click=""/>
         </div>
     </template>
   </ModalWrapper>
@@ -90,6 +92,9 @@ import {useStore} from "vuex";
 const store = useStore();
 
 const props = defineProps({
+  editGoal: {
+    type: Object,
+  },
   isEditMode: {
     type: Boolean,
     default: false
@@ -177,12 +182,21 @@ async function createGoal() {
   const res = await api.goals.createGoal(goalsData.value);
   if (res.success) {
     emit('hide-modal');
+    store.dispatch("getGoals");
+  }
+}
+
+async function deleteGoal() {
+  const res = await api.goals.deleteGoal(props.editGoal.id);
+  if (res.success) {
+    emit('hide-modal');
+    store.dispatch("getGoals");
   }
 }
 
 onMounted(() => {
   if (isEditMode.value) {
-    console.log('редактирование')
+
   }
 })
 </script>

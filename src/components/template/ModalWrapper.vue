@@ -108,6 +108,11 @@ const props = defineProps({
       padding: 0 4px;
     }
   }
-  
+
+  &__actions{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 }
 </style>

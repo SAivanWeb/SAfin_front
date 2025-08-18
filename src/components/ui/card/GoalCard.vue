@@ -1,9 +1,9 @@
 <template>
   <div class="goal-card">
     <div class="goal-card__header">
-      <h4 class="goal-card__name">Машина</h4>
+      <h4 class="goal-card__name">{{goal.name}}</h4>
       <div class="goal-card__icon-group">
-        <div v-if="editable" class="goal-card__header-button" @click="">
+        <div v-if="editable" class="goal-card__header-button" @click="emitShowEditGoal">
           <Edit class="goal-card__icon"/>
         </div>
         <div class="goal-card__header-button" @click="emitShowAmountGoal">
@@ -13,12 +13,15 @@
     </div>
     <div class="goal-card__body">
       <div class="goal-card__container">
+        <div v-if="goal.description" class="goal-card__description">
+          {{goal.description}}
+        </div>
         <div class="goal-card__statistic">
           <img src="@/assets/icons/money.svg" class="goal-card__statistic-icon">
           <n-progress
               type="line"
               :height="24"
-              :percentage="20"
+              :percentage="progressMoney"
               indicator-placement="inside"
               color='#2E7D32'
           />
@@ -28,7 +31,7 @@
           <n-progress
               type="line"
               :height="24"
-              :percentage="20"
+              :percentage="progressTime"
               indicator-placement="inside"
               color='#FFA726'
           />
@@ -39,10 +42,9 @@
 </template>
 
 <script setup>
-import MainButton from "@/components/ui/button/MainButton.vue";
 import Edit from "@/assets/icons/edit.vue";
 import Plus from "@/assets/icons/plus.vue";
-import {computed, ref, inject} from "vue";
+import {computed} from "vue";
 
 const props = defineProps({
   goal: Object,
@@ -51,10 +53,14 @@ const props = defineProps({
     default: true,
   },
 })
-const emit = defineEmits(['showAmountGoal']);
+const emit = defineEmits(['showAmountGoal', 'showEditGoal']);
 
 const emitShowAmountGoal = () => {
   emit('showAmountGoal', props.goal);
+};
+
+const emitShowEditGoal = () => {
+  emit('showEditGoal', props.goal);
 };
 
 const progressMoney = computed(() => {

@@ -39,6 +39,7 @@ export default createStore({
                     commit('user/SET_USER_ID', response.data.id);
                     commit('user/INIT_AUTH');
                     await dispatch('getCategories');
+                    await dispatch('getGoals');
                 }
             }
         },

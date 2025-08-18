@@ -11,13 +11,14 @@
               @show-amount-goal="openAmountGoal"
               @show-account="showAccountModal = true"
               @show-category="showCategoryModal = true"
+              @show-edit-goal="openEditGoal"
           />
         </div>
         <FooterBar v-if="!isAuthPage && !isAuth"/>
 
-        <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal"/>
+        <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal" :is-edit-mode="editGoalMode" :edit-goal="goalData"/>
         <TransactionModal v-if="showTransactionModal" @hide-modal="hideModal"/>
-        <AmountGoalModal v-if="showAmountGoal" @hide-modal="hideModal" :goal="amountGoalData"/>
+        <AmountGoalModal v-if="showAmountGoal" @hide-modal="hideModal" :goal="goalData"/>
         <AccountModal v-if="showAccountModal" @hide-modal="hideModal"/>
         <CategoryModal v-if="showCategoryModal" @hide-modal="hideModal"/>
 
@@ -86,8 +87,8 @@ const showTransactionModal = ref(false);
 const showAmountGoal = ref(false);
 const showAccountModal = ref(false);
 const showCategoryModal = ref(false);
-
-const amountGoalData = ref(null);
+const editGoalMode = ref(false);
+const goalData = ref(null);
 
 const hideModal = () => {
   showGoalsModal.value = false;
@@ -95,11 +96,18 @@ const hideModal = () => {
   showAmountGoal.value = false;
   showAccountModal.value = false;
   showCategoryModal.value = false;
+  editGoalMode.value = false;
 }
 
 const openAmountGoal = (goal) => {
-  amountGoalData.value = goal;
+  goalData.value = goal;
   showAmountGoal.value = true;
+}
+
+const openEditGoal = (goal) => {
+  goalData.value = goal;
+  editGoalMode.value = true;
+  showGoalsModal.value = true;
 }
 
 const isAuthPage = computed(() => {
