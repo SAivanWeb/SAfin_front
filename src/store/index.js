@@ -3,6 +3,8 @@ import user from './modules/user.js'
 import userApi from "@/api/modules/user.js";
 import categoryApi from "@/api/modules/category.js";
 import goalsApi from "@/api/modules/goals.js"
+import transactionsApi from "@/api/modules/transactions.js"
+
 export default createStore({
     state: {
         message: {
@@ -11,11 +13,13 @@ export default createStore({
         },
         categories: null,
         goals: null,
+        transactions: null,
     },
     getters: {
         GET_MESSAGE: (state) => state.message,
         GET_CATEGORIES: (state) => state.categories,
         GET_GOALS: (state) => state.goals,
+        GET_TRANSACTIONS: (state) => state.transactions,
     },
     mutations: {
         SET_MESSAGE: (state, message) => {
@@ -26,6 +30,9 @@ export default createStore({
         },
         SET_GOALS: (state, goals) => {
             state.goals = goals;
+        },
+        SET_TRANSACTIONS: (state, transactions) => {
+            state.transactions = transactions;
         }
     },
     actions: {
@@ -39,7 +46,7 @@ export default createStore({
                     commit('user/SET_USER_ID', response.data.id);
                     commit('user/INIT_AUTH');
                     await dispatch('getCategories');
-                    await dispatch('getGoals');
+                    await dispatch('getTransactions');
                 }
             }
         },
@@ -53,6 +60,13 @@ export default createStore({
             const res = await goalsApi.getGoals();
             if (res.success) {
                 commit('SET_GOALS', res.data);
+            }
+        },
+        async getTransactions({ commit }) {
+            const res = await transactionsApi.getTransactions();
+            if (res.success) {
+                console.log(res.data)
+                commit('SET_TRANSACTIONS', res.data);
             }
         }
     },

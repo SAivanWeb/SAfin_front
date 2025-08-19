@@ -27,7 +27,15 @@ import CategoryCard from "@/components/ui/card/CategoryCard.vue";
 import {useStore} from "vuex";
 
 const store = useStore();
-const categories = computed(() => store.getters.GET_CATEGORIES || []);
+
+const categories = computed(() => {
+    const categoriesArr = store.getters.GET_CATEGORIES || [];
+    if (categoriesArr.length === 0) {
+      store.dispatch("getCategories");
+    }
+    return store.getters.GET_CATEGORIES || [];
+});
+
 const searchedValue = ref('');
 
 const filteredCategories = computed(() => {

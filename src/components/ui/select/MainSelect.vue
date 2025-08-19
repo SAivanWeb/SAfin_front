@@ -182,7 +182,7 @@ const vClickOutside = {
     top: 105%;
     left: 0;
     width: 100%;
-    max-height: 240px;
+    max-height: 175px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;

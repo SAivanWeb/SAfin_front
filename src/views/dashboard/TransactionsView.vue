@@ -12,16 +12,16 @@
               <TabContainer :headers="tabHeadersTransactions">
                 <template #chart>
                   <div class="transactions__statistic-item">
-                    <Chart :items="transactions"/>
+                    <Chart :items="transactionsEx"/>
                   </div>
                 </template>
                 <template #diagram>
-                  <Diagram :items="transactions"/>
+                  <Diagram :items="transactionsEx"/>
                 </template>
                 <template #list>
                   <div class="transactions__statistic-item">
                     <Filter/>
-                    <TransactionList :items="transactions"/>
+                    <TransactionList :items="transactionsEx"/>
                   </div>
                 </template>
               </TabContainer>
@@ -47,8 +47,11 @@ import PageAlert from "@/components/template/PageAlert.vue";
 import Chart from "@/components/ui/chart/Chart.vue";
 import TabContainer from "@/components/ui/tabs/TabContainer.vue";
 import Diagram from "@/components/ui/chart/ProgressList.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import AccountCard from "@/components/ui/card/AccountCard.vue";
+import {useStore} from "vuex";
+
+const store = useStore();
 
 const activeTab = ref('transactions');
 
@@ -72,7 +75,17 @@ const tabHeadersTransactions = ref([
   },
 ])
 
-const transactions = [
+const transactions = computed(() => {
+  const transactionsArr = store.getters.GET_TRANSACTIONS || [];
+  if (transactionsArr.length === 0) {
+    store.dispatch("getTransactions");
+  }
+  return store.getters.GET_TRANSACTIONS || [];
+});
+
+console.log(transactions.value)
+
+const transactionsEx = [
   { id: 1, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-01-05', category: 'Еда', description: 'Продукты' },
   { id: 2, displayType: 'Списание', type: 'expense', amount: 500, date: '2023-01-10', category: 'Транспорт', description: 'Такси' },
   { id: 3, displayType: 'Пополнение', type: 'income', amount: 45000, date: '2023-01-15', category: 'Зарплата', description: 'Зарплата за январь' },

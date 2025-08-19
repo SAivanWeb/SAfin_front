@@ -25,6 +25,10 @@ const store = useStore();
 defineEmits(['showAmountGoal', 'showEditGoal']);
 
 const goals = computed(() => {
+  const goalsArr = store.getters.GET_GOALS || [];
+  if (goalsArr.length === 0) {
+    store.dispatch("getGoals");
+  }
   return store.getters.GET_GOALS || [];
 });
 

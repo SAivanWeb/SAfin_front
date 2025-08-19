@@ -72,7 +72,7 @@
         <div class="modal__actions">
           <MainButton v-if="!isEditMode" title="Создать" @click="createGoal" :disabled="disableButton"/>
           <MainButton v-if="isEditMode" title="Удалить" @click="deleteGoal" type="secondary"/>
-          <MainButton v-if="isEditMode" title="Обновить" @click=""/>
+          <MainButton v-if="isEditMode" title="Обновить" @click="updateGoal" :disabled="disableButton"/>
         </div>
     </template>
   </ModalWrapper>
@@ -194,9 +194,26 @@ async function deleteGoal() {
   }
 }
 
+// async function updateGoal() {
+//   const res = await api.goals.deleteGoal(props.editGoal.id);
+//   if (res.success) {
+//     emit('hide-modal');
+//     store.dispatch("getGoals");
+//   }
+// }
+
 onMounted(() => {
   if (isEditMode.value) {
-
+    handleTypeChange(props.editGoal.type)
+    goalsData.value.is_main = props.editGoal.is_main;
+    goalsData.value.name = props.editGoal.name;
+    goalsData.value.description = props.editGoal.description;
+    goalsData.value.category_id = props.editGoal.category_id ? props.editGoal.category_id : null;
+    goalsData.value.current_amount = props.editGoal.current_amount;
+    goalsData.value.target_amount = props.editGoal.target_amount;
+    goalsData.value.start_at = props.editGoal.start_at;
+    goalsData.value.end_at = props.editGoal.end_at;
+    goalsData.value.priority = props.editGoal.priority;
   }
 })
 </script>
