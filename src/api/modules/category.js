@@ -39,7 +39,7 @@ export default {
 
     async updateCategory(payload, id) {
         try {
-            const response = await api.put(`api/transaction-categories/${id}`, payload);
+            const response = await api.put(`/transaction-categories/${id}`, payload);
             return response.data;
         } catch (error) {
             throw error.response?.data?.error || error;
