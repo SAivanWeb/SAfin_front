@@ -20,7 +20,7 @@
 
     <div class="dashboard__section">
       <h3 class="dashboard__sub-title">Основная цель</h3>
-      <GoalCard :editable="false"/>
+<!--      <GoalCard :editable="false"/>-->
     </div>
 
     <div class="dashboard__section">

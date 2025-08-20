@@ -1,7 +1,7 @@
 <template>
   <ModalWrapper size="650px">
     <template #header>
-      <h2 class="modal__title">Создание цели</h2>
+      <h2 class="modal__title">{{isEditMode ? 'Обновление цели' : 'Создание цели'}}</h2>
     </template>
 
     <template #body>

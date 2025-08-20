@@ -28,9 +28,9 @@ export default {
         }
     },
 
-    async deleteCategory(payload) {
+    async deleteCategory(id) {
         try {
-            const response = await api.delete(`/transaction-categories/${payload}`);
+            const response = await api.delete(`/transaction-categories/${id}`);
             return response.data;
         } catch (error) {
             throw error.response?.data?.error || error;

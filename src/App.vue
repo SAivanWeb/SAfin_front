@@ -12,6 +12,7 @@
               @show-account="showAccountModal = true"
               @show-category="showCategoryModal = true"
               @show-edit-goal="openEditGoal"
+              @show-edit-category="openEditCategory"
           />
         </div>
         <FooterBar v-if="!isAuthPage && !isAuth"/>
@@ -20,7 +21,7 @@
         <TransactionModal v-if="showTransactionModal" @hide-modal="hideModal"/>
         <AmountGoalModal v-if="showAmountGoal" @hide-modal="hideModal" :goal="goalData"/>
         <AccountModal v-if="showAccountModal" @hide-modal="hideModal"/>
-        <CategoryModal v-if="showCategoryModal" @hide-modal="hideModal"/>
+        <CategoryModal v-if="showCategoryModal" @hide-modal="hideModal" :category="categoryData" :edit="editCategoryMode"/>
 
         <Chat v-if="isAuth && !isChatPage && !isProfilePage" class="main__chat"/>
       </div>
@@ -76,6 +77,10 @@ const themeOverrides = {
   Button: {
     paddingTiny: '4px 8px',
     fontSizeTiny: '14px'
+  },
+  Collapse: {
+    titleFontSize: '18px',
+    fontSize: '18px'
   }
 }
 
@@ -89,6 +94,8 @@ const showAccountModal = ref(false);
 const showCategoryModal = ref(false);
 const editGoalMode = ref(false);
 const goalData = ref(null);
+const categoryData = ref(null);
+const editCategoryMode = ref(false);
 
 const hideModal = () => {
   showGoalsModal.value = false;
@@ -97,6 +104,8 @@ const hideModal = () => {
   showAccountModal.value = false;
   showCategoryModal.value = false;
   editGoalMode.value = false;
+  editCategoryMode.value = false;
+  showCategoryModal.value = false;
 }
 
 const openAmountGoal = (goal) => {
@@ -108,6 +117,12 @@ const openEditGoal = (goal) => {
   goalData.value = goal;
   editGoalMode.value = true;
   showGoalsModal.value = true;
+}
+
+const openEditCategory = (category) => {
+  categoryData.value = category;
+  editCategoryMode.value = true;
+  showCategoryModal.value = true;
 }
 
 const isAuthPage = computed(() => {
