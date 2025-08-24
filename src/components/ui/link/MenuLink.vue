@@ -1,7 +1,7 @@
 <template>
   <router-link :to="link" class="menu-link">
     <component :is="iconComponent" class="menu-link__icon"/>
-    {{ name }}
+    <span>{{ name }}</span>
   </router-link>
 </template>
 
@@ -59,6 +59,40 @@ const iconComponent = computed(() => icons[props.icon]);
   &__icon{
     width: 32px;
     fill: #212121;
+  }
+}
+
+@media (max-width: 1280px) {
+  .menu-link{
+    font-size: 24px;
+    gap: 12px;
+    padding: 18px 24px;
+
+    &__icon{
+      width: 24px;
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+  .menu-link{
+
+    &__icon{
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .menu-link{
+    width: fit-content;
+    padding: 14px 18px;
+    &__icon{
+      display: block;
+    }
+    & span{
+      display: none;
+    }
   }
 }
 </style>

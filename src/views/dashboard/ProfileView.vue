@@ -185,7 +185,6 @@ const editProfileData = async () => {
   }
 
   &__levels{
-    margin-bottom: 24px;
     display: flex;
     flex-direction: column;
     gap: 24px;

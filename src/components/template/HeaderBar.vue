@@ -1,5 +1,5 @@
 <template>
- <div class="header">
+ <div v-if="isAuth && screenSize > 768" class="header">
    <div class="header__container" :class="{'header__container_dashboard' : isAuth}">
     <div class="header__logo" @click="logoRoute">
       <img src="@/assets/icons/logo.svg" alt="safin">
@@ -24,6 +24,8 @@ const store = useStore();
 const isAuth = computed(() => {
   return store.getters['user/GET_IS_AUTH'];
 })
+
+const screenSize = window.innerWidth;
 
 const toAuth = () => {
   router.push("/auth/");

@@ -13,13 +13,20 @@
 <style scoped lang="scss">
 .main-wrapper{
   width: 100%;
-  padding: 48px;
+  padding: 48px 24px;
   overflow-y: auto;
   height: calc(100vh - 68px);
 
   &__container{
     max-width: 1200px;
     margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-wrapper{
+    padding: 24px 10px 66px;
+
   }
 }
 </style>

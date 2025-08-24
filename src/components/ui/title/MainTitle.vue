@@ -13,20 +13,14 @@ const props = defineProps({
 <style scoped lang="scss">
 .title{
   font-size: 42px;
-  line-height: 50px;
   font-weight: 500;
   color: #2E7D32;
+  line-height: 1.2;
 }
 
 @media (max-width: 992px) {
   .title{
     font-size: 32px;
-  }
-}
-
-@media (max-width: 768px) {
-  .title{
-    font-size: 24px;
   }
 }
 </style>

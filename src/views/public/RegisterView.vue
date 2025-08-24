@@ -329,7 +329,7 @@ async function handleRegister() {
     }
 
     &__additional {
-      display: none;
+      animation: none;
     }
   }
 }
