@@ -48,11 +48,14 @@ const logoRoute = () => {
   padding: 12px 24px;
   backdrop-filter: blur(10px) saturate(168%);
   -webkit-backdrop-filter: blur(10px) saturate(168%);
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(209, 213, 219, 0.3);
   position: relative;
   overflow: hidden;
   height: 68px;
+  z-index: 99;
+  display: flex;
+  align-items: center;
 
   &__container {
     width: 1440px;
@@ -105,6 +108,19 @@ const logoRoute = () => {
 
       &:hover{
         background: #81C784;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .header{
+    padding: 12px 10px;
+    &__menu{
+      gap: 24px;
+
+      &-button{
+        padding: 8px 16px;
       }
     }
   }

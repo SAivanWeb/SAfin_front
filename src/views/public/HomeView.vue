@@ -1,11 +1,11 @@
 <template>
   <div class="home">
     <div class="home__additional home__additional--1"></div>
-    <div class="home__additional home__additional--2"></div>
+    <div v-if="!hideAdditional" class="home__additional home__additional--2"></div>
     <div class="home__additional home__additional--3"></div>
-    <div class="home__additional home__additional--4"></div>
+    <div v-if="!hideAdditional" class="home__additional home__additional--4"></div>
     <div class="home__additional home__additional--5"></div>
-    <div class="home__additional home__additional--6"></div>
+    <div v-if="!hideAdditional" class="home__additional home__additional--6"></div>
 
     <div class="home__container">
       <!-- Hero секция -->
@@ -57,7 +57,7 @@
       <div class="home__cta">
         <h2 class="home__section-title">Готовы взять финансы под контроль?</h2>
         <p class="home__cta-text">Начните прямо сейчас — это бесплатно и займет меньше минуты</p>
-        <button class="home__cta-button">Зарегистрироваться</button>
+        <button class="home__promo-button">Зарегистрироваться</button>
         <div class="home__cta-pwa">
           <button class="home__cta-pwa-button">Установить приложение</button>
           <p class="home__cta-pwa-text">Доступно в браузере. Нажмите "Установить", затем "Добавить на главный экран"</p>
@@ -89,18 +89,24 @@ const features = ref([
 
 const steps = ref([
   {
-    title: 'Добавьте транзакцию',
+    title: 'Добавьте транзакции',
     description: 'Просто введите сумму и категорию — система сделает все остальное'
   },
   {
     title: 'Настройте категории',
-    description: 'Создайте собственные категории или используйте готовые шаблоны'
+    description: 'Создайте собственные категории или используйте готовые'
+  },
+  {
+    title: 'Создайте цели',
+    description: 'Добавьте свои цели и фиксируйте результат по ним'
   },
   {
     title: 'Анализируйте статистику',
-    description: 'Получайте детальные отчеты о ваших финансах в удобном формате'
+    description: 'Получайте детальные данные о ваших финансах в удобном формате'
   }
 ]);
+
+const hideAdditional = window.innerWidth < 768
 </script>
 
 <style scoped lang="scss">
@@ -134,6 +140,7 @@ const steps = ref([
       color: #2E7D32;
       position: relative;
       z-index: 2;
+      line-height: 1.2;
 
       &::after {
         content: '';
@@ -196,6 +203,7 @@ const steps = ref([
     }
 
     &-button {
+      font-family: Oswald;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -223,7 +231,7 @@ const steps = ref([
     z-index: 1;
     filter: blur(60px);
     transition: all 3s ease-in-out;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); // Плавное ускорение/замедление
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
     &--1 {
       width: 400px;
@@ -257,7 +265,6 @@ const steps = ref([
       animation: float-4 40s infinite;
     }
 
-    // Новые элементы
     &--5 {
       width: 350px;
       height: 350px;
@@ -314,8 +321,8 @@ const steps = ref([
       img {
         position: relative;
         z-index: 2;
-        width: 60px;
-        height: 60px;
+        width: 100%;
+        height: 100%;
         transition: transform 0.3s ease;
       }
 
@@ -407,7 +414,6 @@ const steps = ref([
     background-color: rgba(255, 255, 255, 0.6);
     border-radius: 30px;
     border: 1px solid rgba(209, 213, 219, 0.3);
-    margin-top: 40px;
     position: relative;
     overflow: hidden;
 
@@ -423,7 +429,7 @@ const steps = ref([
       font-size: 24px;
       color: #4a5568;
       max-width: 600px;
-      line-height: 1.5;
+      line-height: 1.2;
       position: relative;
       z-index: 2;
     }
@@ -433,24 +439,23 @@ const steps = ref([
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      margin-top: 16px;
       position: relative;
       z-index: 2;
 
       &-button {
+        font-family: Oswald;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 12px 24px 12px;
+        padding: 16px 24px 18px;
+        text-transform: uppercase;
         cursor: pointer;
-        background: transparent;
         border-radius: 12px;
-        border: 2px solid #81C784;
-        color: #81C784;
-        font-size: 26px;
+        background: rgba(46, 125, 50, 0.1);
+        color: #2E7D32;
+        font-size: 24px;
         line-height: 100%;
         font-weight: 500;
-        text-transform: lowercase;
         transition: all 0.3s;
 
       }
@@ -523,5 +528,276 @@ const steps = ref([
   25% { transform: translate(40vw, 0) scale(1.2); opacity: 0.8; }
   50% { transform: translate(1vw, 10vh) scale(0.8); opacity: 0.4; }
   75% { transform: translate(80vw, 80vh) scale(1.1); opacity: 1; }
+}
+
+@media (max-width: 1280px) {
+  .home{
+    padding: 60px 20px;
+
+    &__container{
+      gap: 60px;
+    }
+
+    &__promo{
+      &-title{
+        font-size: 130px;
+      }
+
+      &-button{
+        font-size: 32px;
+      }
+    }
+
+    &__section{
+      gap: 24px;
+      &-title{
+        font-size: 38px;
+      }
+    }
+
+    &__advantages{
+      &-container{
+        gap: 18px;
+      }
+
+      &-item{
+        padding: 18px;
+      }
+
+      &-icon-container{
+        width: 60px;
+        height: 60px;
+        margin-bottom: 12px;
+      }
+
+      &-title{
+        font-size: 24px;
+      }
+
+      &-text{
+        font-size: 18px;
+      }
+    }
+
+    &__steps{
+      &-container{
+        gap: 18px;
+      }
+    }
+
+    &__step{
+      gap: 18px;
+      padding: 18px;
+
+      &-title{
+        font-size: 24px;
+      }
+
+      &-text{
+        font-size: 18px;
+      }
+    }
+
+    &__cta{
+      gap: 18px;
+      padding: 40px 20px;
+
+      &-text{
+        font-size: 20px;
+      }
+
+      &-pwa{
+        gap: 12px;
+        &-button{
+          font-size: 18px;
+        }
+
+        &-text{
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 999px) {
+  .home{
+    padding: 40px 20px;
+    &__container{
+      gap: 40px;
+    }
+
+    &__promo{
+      &-title{
+        font-size: 100px;
+      }
+
+      &-description{
+        font-size: 24px;
+      }
+
+      &-button{
+        font-size: 24px;
+        padding: 16px 32px !important;
+      }
+    }
+
+    &__section{
+      gap: 24px;
+      &-title{
+        font-size: 32px;
+      }
+    }
+
+    &__advantages{
+      &-container{
+        gap: 12px;
+      }
+
+      &-item{
+        padding: 18px;
+      }
+
+      &-icon-container{
+        width: 40px;
+        height: 40px;
+        margin-bottom: 12px;
+      }
+
+      &-title{
+        font-size: 20px;
+      }
+
+      &-text{
+        font-size: 16px;
+      }
+    }
+
+    &__steps{
+      &-container{
+        gap: 12px;
+        max-width: 100%;
+      }
+    }
+
+    &__step{
+      gap: 12px;
+      padding: 18px;
+
+      &-number{
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+
+      &-title{
+        font-size: 20px;
+      }
+
+      &-text{
+        font-size: 16px;
+      }
+    }
+
+    &__cta{
+      gap: 16px;
+      padding: 20px 18px;
+
+      &-text{
+        font-size: 20px;
+      }
+
+      &-pwa{
+        gap: 12px;
+        &-button{
+          font-size: 16px;
+          padding: 14px;
+        }
+
+        &-text{
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .home{
+    padding: 40px 10px;
+    &__promo{
+      &-title{
+        font-size: 80px;
+        margin-bottom: 18px;
+      }
+
+      &-description{
+        font-size: 18px;
+        margin-bottom: 18px;
+      }
+
+      &-button{
+        font-size: 20px;
+        padding: 14px 20px !important;
+      }
+    }
+
+    &__section{
+      gap: 24px;
+
+      &-title{
+        font-size: 26px;
+      }
+    }
+
+    &__advantages{
+      &-container{
+        flex-direction: column;
+      }
+
+      &-item{
+        padding: 18px;
+      }
+
+      &-icon-container{
+        width: 40px;
+        height: 40px;
+        margin-bottom: 12px;
+      }
+
+      &-title{
+        font-size: 20px;
+      }
+
+      &-text{
+        font-size: 18px;
+      }
+    }
+
+    &__cta{
+      padding: 16px;
+      & button{
+        width: 100% !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 520px) {
+  .home{
+    &__promo{
+      &-title{
+        font-size: 54px;
+      }
+
+      &-description{
+        font-size: 16px;
+      }
+
+      &-button{
+        font-size: 18px;
+      }
+    }
+  }
 }
 </style>
