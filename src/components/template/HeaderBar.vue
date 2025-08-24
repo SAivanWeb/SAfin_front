@@ -115,7 +115,8 @@ const logoRoute = () => {
 
 @media (max-width: 768px) {
   .header{
-    padding: 12px 10px;
+    padding: 10px;
+    height: auto;
     &__menu{
       gap: 24px;
 
