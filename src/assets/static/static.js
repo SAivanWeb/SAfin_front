@@ -5,14 +5,14 @@ export const MENU = [
         icon: 'transactions'
     },
     {
-        name: 'ГЛАВНАЯ',
-        link: '/dashboard/',
-        icon: 'dashboard'
-    },
-    {
         name: 'ЦЕЛИ',
         link: '/goals/',
         icon: 'goals'
+    },
+    {
+        name: 'ГЛАВНАЯ',
+        link: '/dashboard/',
+        icon: 'dashboard'
     },
     {
         name: 'КАТЕГОРИИ',

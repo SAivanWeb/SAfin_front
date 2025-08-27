@@ -315,8 +315,9 @@ const hideAdditional = window.innerWidth < 768
 
     &-icon-container {
       position: relative;
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
+      margin-bottom: 12px;
 
       img {
         position: relative;

@@ -5,14 +5,14 @@
     <PageAlert class="dashboard__alert"/>
 
     <div class="dashboard__section dashboard__section_row dashboard__section_user">
-      <div class="dashboard__user-info">
+      <div class="dashboard__user-info level">
         <h3 class="dashboard__sub-title">Уровень</h3>
         <p class="dashboard__user-value">Зеленый гоблин</p>
       </div>
       <div class="dashboard__user-img">
         <img src="/goblin.png">
       </div>
-      <div class="dashboard__user-info">
+      <div class="dashboard__user-info balance">
         <h3 class="dashboard__sub-title">Баланс</h3>
         <p class="dashboard__user-value">100 000₽</p>
       </div>
@@ -133,6 +133,10 @@ const toTransactions = () => {
     position: relative;
     z-index: 10;
 
+    &:last-of-type {
+      margin: 0 !important;
+    }
+
     &_row{
       flex-direction: row;
       justify-content: center;
@@ -141,7 +145,10 @@ const toTransactions = () => {
     }
 
     &_user{
-      margin-top: -80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-areas: 'level img balance';
+
       &:before{
         content: '';
         width: 100%;
@@ -160,9 +167,9 @@ const toTransactions = () => {
 
   &__user{
     &-img{
+      grid-area: img;
       width: 40%;
       min-width: 400px;
-      height: 500px;
 
       & img{
         width: 100%;
@@ -179,12 +186,10 @@ const toTransactions = () => {
       justify-content: center;
       width: 100%;
       position: relative;
-      aspect-ratio: 1/1;
 
       &:before{
         content: '';
         width: 100%;
-        height: 100%;
         border-radius: 50%;
         position: absolute;
         top: 50%;
@@ -194,11 +199,21 @@ const toTransactions = () => {
         background: radial-gradient(circle, rgba(95, 255, 100, 0.2), transparent 90%);
         z-index: -1;
       }
+
+      &.level{
+        grid-area: level;
+      }
+
+      &.balance{
+        grid-area: balance;
+        white-space: nowrap;
+      }
     }
 
     &-value{
       font-size: 32px;
       font-weight: 700;
+      line-height: 1.2;
       color: #2E7D32;
       text-transform: uppercase;
       margin-top: 24px;
@@ -220,5 +235,59 @@ const toTransactions = () => {
     grid-gap: 12px;
   }
   
+}
+
+@media (max-width: 1280px) {
+  .dashboard {
+    &__sub-title {
+      font-size: 24px;
+    }
+
+    &__user{
+      &-value{
+        font-size: 28px;
+        margin-top: 12px;
+      }
+
+      &-img{
+        min-width: 350px;
+      }
+    }
+  }
+}
+
+@media (max-width: 999px) {
+  .dashboard {
+
+    &__section{
+      &_user{
+        gap: 12px;
+        grid-template-columns: 1fr 1fr;
+        margin-top: 0;
+        grid-template-areas: 'level balance'
+                              'img img';
+      }
+    }
+
+    &__user{
+      &-img{
+        margin: 0 auto;
+      }
+      &-value{
+        font-size: 20px;
+      }
+    }
+
+    &__cards{
+      grid-template-columns: 1fr;
+    }
+
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboard {
+
+  }
 }
 </style>

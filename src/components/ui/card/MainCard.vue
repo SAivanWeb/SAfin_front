@@ -115,4 +115,36 @@
     }
   }
 }
+
+@media (max-width: 1280px) {
+
+}
+
+@media (max-width: 999px) {
+  .card{
+    padding: 16px;
+
+    &__period{
+      font-size: 18px;
+
+      & span{
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .card{
+
+    &__period{
+      font-size: 16px;
+      gap: 8px;
+
+      & span{
+        font-size: 14px;
+      }
+    }
+  }
+}
 </style>

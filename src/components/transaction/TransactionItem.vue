@@ -44,6 +44,7 @@ const formatAmount = (value) => {
   display: grid;
   grid-template-columns: 30% 1fr 1fr;
   align-items: center;
+  gap: 6px;
 
   &__text{
     font-size: 18px;
@@ -68,6 +69,22 @@ const formatAmount = (value) => {
 
     &-icon{
       width: 32px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .transaction{
+    padding: 16px;
+    &__text{
+      font-size: 16px;
+    }
+    &__amount{
+      font-size: 16px;
+
+      &-icon{
+        width: 24px;
+      }
     }
   }
 }

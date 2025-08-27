@@ -163,6 +163,7 @@ onMounted(() => {
   }
 
   &__chat{
+    display: none;
     position: absolute;
     bottom: 100px;
     right: 80px;
