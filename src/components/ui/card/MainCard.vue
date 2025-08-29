@@ -117,18 +117,34 @@
 }
 
 @media (max-width: 1280px) {
-
+  .card{
+    &__title{
+      font-size: 20px;
+    }
+    
+    &__body{
+      &-statistic{
+        font-size: 64px;
+      }
+    }
+  }
 }
 
 @media (max-width: 999px) {
   .card{
     padding: 16px;
-
+    gap: 12px;
     &__period{
       font-size: 18px;
 
       & span{
         font-size: 16px;
+      }
+    }
+
+    &__body{
+      &-statistic{
+        font-size: 36px;
       }
     }
   }
@@ -143,6 +159,12 @@
 
       & span{
         font-size: 14px;
+      }
+    }
+    
+    &__body{
+      &-row{
+        flex-direction: column;
       }
     }
   }

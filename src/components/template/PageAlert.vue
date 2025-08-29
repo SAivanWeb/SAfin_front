@@ -20,7 +20,7 @@ import MainButton from "@/components/ui/button/MainButton.vue";
 import Question from "@/assets/icons/question.vue";
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .alert{
   display: flex;
   align-items: start;
@@ -41,7 +41,7 @@ import Question from "@/assets/icons/question.vue";
   &__title{
     font-size: 24px;
     font-weight: 500;
-
+    line-height: 1.2;
   }
 
   &__text{
@@ -51,6 +51,58 @@ import Question from "@/assets/icons/question.vue";
   &__button-group{
     display: flex;
     gap: 12px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .alert{
+    &__icon{
+      width: 34px;
+    }
+    &__title{
+      font-size: 24px;
+    }
+    &__text{
+      font-size: 18px;
+    }
+  }
+}
+
+@media (max-width: 999px) {
+  .alert{
+    gap: 6px;
+    &__icon{
+      width: 28px;
+    }
+    &__title{
+      font-size: 20px;
+    }
+    &__text{
+      font-size: 18px;
+    }
+  }
+
+  .n-alert.n-alert--right-adjust .n-alert-body{
+    padding-right: 24px !important;
+  }
+
+  .n-alert .n-alert__close{
+    right: -12px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .alert {
+    &__icon {
+      display: none;
+    }
+
+    &__title{
+      font-size: 18px;
+    }
+    &__text{
+      font-size: 16px;
+    }
   }
 }
 </style>

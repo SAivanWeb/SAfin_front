@@ -1,7 +1,7 @@
 <template>
   <MainWrapper>
     <div class="categories__header">
-      <MainTitle title="Категории" class="goals__title"/>
+      <MainTitle title="Категории" class="categories__title"/>
       <MainButton class="categories__button" action="add" title="создать категорию" type="secondary" @click="$emit('showCategory')"/>
     </div>
     <PageAlert class="categories__alert"/>
@@ -125,6 +125,7 @@ async function deleteCategory(id) {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
   }
 
   &__alert{
@@ -221,6 +222,39 @@ async function deleteCategory(id) {
       gap: 12px;
     }
 
+  }
+}
+
+@media (max-width: 767px) {
+  .categories{
+    &__header{
+      flex-direction: column;
+      align-items: start;
+      
+      & button{
+        margin-left: auto;
+      }
+    }
+
+    &__item{
+      &-statistic{
+        font-size: 16px;
+        gap: 8px;
+      }
+
+      &-menu{
+        &-item{
+          font-size: 16px;
+        }
+        &-icon{
+          width: 20px;
+          
+          &.trash{
+            width: 16px;
+          }
+        }
+      }
+    }
   }
 }
 </style>

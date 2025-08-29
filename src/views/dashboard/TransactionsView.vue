@@ -121,6 +121,7 @@ const accounts = [
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
   }
 
   &__alert{
@@ -158,5 +159,18 @@ const accounts = [
     gap: 24px;
   }
 
+}
+
+@media (max-width: 767px) {
+  .transactions{
+    &__header{
+      flex-direction: column;
+      align-items: start;
+
+      & button{
+        margin-left: auto;
+      }
+    }
+  }
 }
 </style>

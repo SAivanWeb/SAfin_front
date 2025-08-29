@@ -87,10 +87,7 @@ const classes = computed(() => {
   }
 
   &_add{
-
-    & .button__icon{
-
-    }
+    
   }
 
   &_small{
@@ -103,6 +100,27 @@ const classes = computed(() => {
 
   &__icon{
     width: 28px;
+  }
+}
+
+@media (max-width: 999px) {
+  .button{
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .button{
+    gap: 4px;
+    padding: 12px;
+    
+    &_small{
+      font-size: 14px;
+    }
+    
+    &__icon{
+      width: 20px;
+    }
   }
 }
 </style>

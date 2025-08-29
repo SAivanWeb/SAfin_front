@@ -210,6 +210,7 @@ const editProfileData = async () => {
   }
 
   &__container {
+    margin-top: 24px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -221,5 +222,40 @@ const editProfileData = async () => {
     }
   }
 
+}
+
+@media (max-width: 1280px) {
+  .profile {
+    &__levels{
+      &-title{
+        font-size: 24px;
+      }
+    }
+
+    &__tasks{
+
+      & .n-alert-body__title{
+        font-size: 20px !important;
+      }
+
+      &-content{
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .profile {
+    &__container {
+      grid-template-columns: 1fr;
+      grid-template-rows: initial;
+      grid-gap: 12px;
+
+      &-item:nth-of-type(1) {
+        grid-column: initial;
+      }
+    }
+  }
 }
 </style>

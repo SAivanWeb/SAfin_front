@@ -26,7 +26,6 @@ const sortedMenu = computed(() => {
 .menu{
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 68px);
   width: 100%;
   max-width: 20vw;
   border-right: 1px solid rgba(209, 213, 219, 0.3);

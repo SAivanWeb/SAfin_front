@@ -158,4 +158,48 @@ const progressTime = computed(() => {
     margin-left: auto;
   }
 }
+
+@media (max-width: 1280px) {
+  .goal-card{
+    &__name{
+      font-size: 20px;
+    }
+
+    &__body{
+      &-statistic{
+        font-size: 64px;
+      }
+    }
+  }
+}
+
+  @media (max-width: 999px) {
+    .goal-card{
+      padding: 16px;
+      gap: 12px;
+
+      &__icon-group{
+        gap: 12px;
+      }
+
+      &__header {
+        &-button {
+          width: 20px;
+          height: 24px;
+          padding: 0;
+        }
+      }
+      &__body{
+        gap: 12px;
+      }
+
+      &__statistic{
+        gap: 6px;
+
+        &-icon{
+          width: 24px;
+        }
+      }
+    }
+  }
 </style>

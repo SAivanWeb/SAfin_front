@@ -14,7 +14,7 @@ body {
   padding: 0;
   font-size: 18px;
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.2;
   overflow-x: hidden;
 // overflow-x: hidden;
 
@@ -29,6 +29,12 @@ body {
   & {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+}
+
+@media (max-width: 767px) {
+  body{
+    font-size: 16px;
   }
 }
 

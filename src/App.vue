@@ -2,7 +2,7 @@
   <n-config-provider :locale="ruRU" :date-locale="dateRuRU" :theme-overrides="themeOverrides">
     <n-message-provider>
       <div class="main">
-        <HeaderBar v-if="!isAuthPage"/>
+        <HeaderBar v-if="showHeader"/>
         <div class="main__container">
           <MenuBar v-if="isAuth"/>
           <router-view
@@ -139,6 +139,18 @@ const isProfilePage = computed(() => {
 
 const isAuth = computed(() => {
   return store.getters['user/GET_IS_AUTH'];
+})
+
+const screenSize = window.innerWidth;
+
+const showHeader = computed(() => {
+  if(isAuthPage.value) {
+    return false
+  } else if(isAuth.value && screenSize < 768 && !isProfilePage.value) {
+    return false
+  } else {
+    return true
+  } 
 })
 
 onMounted(() => {

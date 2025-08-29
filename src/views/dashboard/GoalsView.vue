@@ -57,4 +57,20 @@ const goals = computed(() => {
     gap: 24px;
   }
 }
+
+@media (max-width: 999px) {
+  .goals{
+    &__container{
+      gap: 12px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .goals{
+    &__container{
+      grid-template-columns: 1fr;
+    }
+  }
+}
 </style>

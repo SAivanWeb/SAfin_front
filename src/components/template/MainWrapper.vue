@@ -15,7 +15,6 @@
   width: 100%;
   padding: 48px 24px;
   overflow-y: auto;
-  height: calc(100vh - 68px);
 
   &__container{
     max-width: 1200px;

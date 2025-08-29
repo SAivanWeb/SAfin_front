@@ -31,7 +31,6 @@ import Calendar from "@/assets/icons/calendar.vue";
   border-radius: 24px;
   padding: 24px;
   border: 2px solid #2E7D32;
-  height: 192px;
   box-shadow: 0 4px 12px rgba(46, 125, 50, 0.1);
 
   &__header {
@@ -45,6 +44,7 @@ import Calendar from "@/assets/icons/calendar.vue";
     display: flex;
     flex-direction: column;
     gap: 24px;
+    padding-bottom: 12px;
   }
 
   &__title {
@@ -62,6 +62,30 @@ import Calendar from "@/assets/icons/calendar.vue";
     font-size: 18px;
     color: #757575;
     text-align: right;
+  }
+}
+
+@media (max-width: 1280px) {
+  .level-card {
+    padding: 16px;
+    &__header{
+      margin-bottom: 12px;
+    }
+    &__body{
+      gap: 12px;
+    }
+    
+    &__title{
+      font-size: 20px;
+    }
+    
+    &__level {
+      font-size: 16px;
+    }
+
+    &__progress {
+      font-size: 16px;
+    }
   }
 }
 </style>
