@@ -15,8 +15,8 @@
                     <Chart :items="transactionsEx"/>
                   </div>
                 </template>
-                <template #diagram>
-                  <Diagram :items="transactionsEx"/>
+                <template #progress>
+                  <ProgressList :items="transactionsEx"/>
                 </template>
                 <template #list>
                   <div class="transactions__statistic-item">
@@ -46,7 +46,7 @@ import TransactionList from "@/components/transaction/TransactionList.vue";
 import PageAlert from "@/components/template/PageAlert.vue";
 import Chart from "@/components/ui/chart/Chart.vue";
 import TabContainer from "@/components/ui/tabs/TabContainer.vue";
-import Diagram from "@/components/ui/chart/ProgressList.vue";
+import ProgressList from "@/components/ui/chart/ProgressList.vue";
 import {computed, ref} from "vue";
 import AccountCard from "@/components/ui/card/AccountCard.vue";
 import {useStore} from "vuex";
@@ -70,8 +70,8 @@ const tabHeadersTransactions = ref([
     value: 'График'
   },
   {
-    name: 'diagram',
-    value: 'Диаграмма'
+    name: 'progress',
+    value: 'Прогресс'
   },
 ])
 
@@ -82,8 +82,6 @@ const transactions = computed(() => {
   }
   return store.getters.GET_TRANSACTIONS || [];
 });
-
-console.log(transactions.value)
 
 const transactionsEx = [
   { id: 1, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-01-05', category: 'Еда', description: 'Продукты' },
@@ -170,6 +168,11 @@ const accounts = [
       & button{
         margin-left: auto;
       }
+    }
+
+    &__accounts{
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
   }
 }

@@ -29,7 +29,6 @@ const props = defineProps({
   }
 })
 
-// Общая сумма списаний
 const totalExpense = computed(() => {
   return props.items
       .filter(item => item.type === 'expense')
@@ -86,6 +85,18 @@ const chartData = computed(() => {
       background: #2E7D32;
       height: 100%;
       transition: width 0.3s ease;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .progress {
+    &__label {
+      font-size: 16px;
+    }
+
+    &__bar {
+      height: 18px;
     }
   }
 }

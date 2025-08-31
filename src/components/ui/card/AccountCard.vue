@@ -94,4 +94,48 @@ const formatAmount = (value) => {
   }
   
 }
+
+@media (max-width: 1280px) {
+  .account-card{
+    &__name{
+      font-size: 20px;
+    }
+
+  }
+}
+
+@media (max-width: 999px) {
+  .account-card{
+    padding: 16px;
+    gap: 12px;
+
+    &__body{
+      gap: 12px;
+
+      &-value{
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .account-card{
+    &__name{
+      font-size: 18px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &-button{
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+      }
+    }
+  }
+}
 </style>

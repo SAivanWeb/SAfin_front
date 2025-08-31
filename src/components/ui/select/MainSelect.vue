@@ -215,4 +215,24 @@ const vClickOutside = {
     }
   }
 }
+
+@media (max-width: 767px) {
+  .select{
+    &__field {
+      padding: 10px 16px;
+      font-size: 16px;
+      line-height: 1.2;
+
+      &-ico{
+        right: 12px;
+        width: 26px;
+      }
+    }
+
+    &__option {
+      font-size: 16px;
+      padding: 12px;
+    }
+  }
+}
 </style>

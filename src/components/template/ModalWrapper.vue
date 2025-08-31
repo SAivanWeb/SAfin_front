@@ -57,7 +57,7 @@ const props = defineProps({
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 20;
+    z-index: 999;
   }
 
   &__header{
@@ -113,6 +113,26 @@ const props = defineProps({
     display: flex;
     flex-direction: column;
     gap: 12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .modal{
+    &__container {
+      padding: 12px;
+    }
+
+    &__content{
+      gap: 12px;
+    }
+
+    &__body{
+      gap: 12px;
+    }
+
+    &__title{
+      font-size: 24px;
+    }
   }
 }
 </style>

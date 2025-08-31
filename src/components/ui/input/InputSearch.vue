@@ -172,4 +172,16 @@ function emitValue() {
   }
 }
 
+@media (max-width: 767px) {
+  .input{
+    &__field {
+      padding: 10px 16px;
+      font-size: 16px;
+    }
+
+    &__label{
+      font-size: 16px;
+    }
+  }
+}
 </style>

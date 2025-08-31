@@ -49,16 +49,16 @@ const themeOverrides = {
     primaryColor: '#2E7D32',
     fontFamily: 'Oswald',
     borderRadius: '12px',
-    fontSize: '18px',
+    fontSize: window.innerWidth < 768 ? '16px' : '18px',
   },
   Input: {
-    heightLarge: '54px',
-    paddingLarge: '16px 20px',
+    heightLarge: window.innerWidth < 768 ? '46px' : '54px',
+    paddingLarge: window.innerWidth < 768 ? '10px 16px' : '16px 20px',
     border: '1px solid rgba(46, 125, 50, 0.3)',
     borderFocus: '1px solid #2E7D32',
     boxShadowFocus: '0 0 0 3px rgba(46, 125, 50, 0.2)',
     iconSize: '18px',
-    fontSizeLarge: '18px'
+    fontSizeLarge: window.innerWidth < 768 ? '16px' : '18px'
   },
   Checkbox: {
     sizeLarge: '20px'
@@ -141,7 +141,9 @@ const isAuth = computed(() => {
   return store.getters['user/GET_IS_AUTH'];
 })
 
-const screenSize = window.innerWidth;
+const screenSize = computed(()=>{
+  return window.innerWidth;
+})
 
 const showHeader = computed(() => {
   if(isAuthPage.value) {

@@ -11,18 +11,18 @@
             v-model="transactionData.type"
         />
 
-        <MainInput
-            type="number"
-            label="Сумма"
-            placeholder="Введите сумму"
-            v-model="transactionData.amount"
-        />
-
         <MainSelect
             title="Категория"
             :items="categories"
             v-model="transactionData.category_id"
             placeholder="Выберите категорию"
+        />
+
+        <MainInput
+            type="number"
+            label="Сумма"
+            placeholder="Введите сумму"
+            v-model="transactionData.amount"
         />
 
         <MainInput

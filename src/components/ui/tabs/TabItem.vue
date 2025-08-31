@@ -6,7 +6,7 @@
   >
     <list-chart class="tab-item__icon" v-if="item.name === 'list'"/>
     <chart-tab class="tab-item__icon" v-if="item.name === 'chart'"/>
-    <diagram-tab class="tab-item__icon" v-if="item.name === 'diagram'"/>
+    <diagram-tab class="tab-item__icon" v-if="item.name === 'progress'"/>
     {{ item.value }}
   </div>
 </template>
@@ -49,6 +49,13 @@ const props = defineProps({
 
   &__icon{
     width: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  .tab-item{
+    font-size: 16px;
+    padding: 6px 8px;
   }
 }
 </style>

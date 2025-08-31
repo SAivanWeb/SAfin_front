@@ -109,4 +109,18 @@ const isTabVisible = (name) => activeTab.value === name
     font-size: 28px;
   }
 }
+
+@media (max-width: 767px) {
+  .tabs {
+    &__header {
+      &_main {
+        & .tabs__menu {
+          & .tab-item {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

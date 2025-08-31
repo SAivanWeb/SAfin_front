@@ -42,7 +42,19 @@ const handleChange = (newValue) => {
 
   & .n-checkbox__label{
     font-size: 18px !important;
-    line-height: 24px;
+    line-height: 1.2;
+  }
+
+  & .n-checkbox{
+    align-items: center !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .checkbox{
+    & .n-checkbox__label{
+      font-size: 16px !important;
+    }
   }
 }
 </style>

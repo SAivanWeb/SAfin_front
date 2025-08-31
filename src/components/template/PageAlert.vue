@@ -88,14 +88,13 @@ import Question from "@/assets/icons/question.vue";
 
   .n-alert .n-alert__close{
     right: -12px !important;
+    top: -10px !important;
   }
 }
 
 @media (max-width: 767px) {
   .alert {
-    &__icon {
-      display: none;
-    }
+    flex-direction: column;
 
     &__title{
       font-size: 18px;
