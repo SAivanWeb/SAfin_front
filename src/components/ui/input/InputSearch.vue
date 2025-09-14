@@ -14,11 +14,11 @@
     <div v-if="showOptions" class="input__options">
       <div
           v-for="item in searchOptions"
-          :key="item.name"
+          :key="item.title"
           class="input__options-option"
-          @click="selectOption(item.name)"
+          @click="selectOption(item.title)"
       >
-        {{ item.name }}
+        {{ item.title }}
       </div>
     </div>
   </div>

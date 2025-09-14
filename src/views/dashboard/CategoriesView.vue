@@ -11,8 +11,8 @@
     </div>
     <div class="categories__container">
       <n-collapse :trigger-areas="triggerAreas">
-        <n-collapse-item v-for="item in filteredCategories" :title="item.name" :name="item.id">
-          <template #header-extra>
+        <n-collapse-item v-for="item in filteredCategories" :title="item.title" :name="item.id">
+          <template #header-extra v-if="item.type !== 'system'">
             <div class="categories__item-menu" :class="{ active: showCategoryMenu === item.id }">
               <menu-vertical
                   class="categories__item-icon"
@@ -34,8 +34,8 @@
             </div>
           </template>
           <div class="categories__item">
-            <div v-if="item.description" class="categories__item">
-              {{ item.description }}
+            <div v-if="item.description" class="categories__item-descripiton">
+              Описание: {{ item.description }}
             </div>
             <div class="categories__item-statistic">
               <p>Потрачено в этом месяце: <span>20 000</span></p>
@@ -87,7 +87,7 @@ const filteredCategories = computed(() => {
   const list = categories.value || [];
   if (!searchedValue.value.trim()) return list;
   return list.filter(item =>
-      item.name.toLowerCase().includes(searchedValue.value.toLowerCase())
+      item.title.toLowerCase().includes(searchedValue.value.toLowerCase())
   );
 });
 
@@ -153,6 +153,7 @@ async function deleteCategory(id) {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding-left: 22px;
 
     &-menu{
       width: 36px;
