@@ -8,7 +8,7 @@
         <MainInput
             label="Наименование"
             placeholder="Введите название категории"
-            v-model="categoryData.name"
+            v-model="categoryData.title"
         />
 
         <MainInput
@@ -48,12 +48,12 @@ const props = defineProps({
 })
 
 const categoryData = ref({
-  name: '',
+  title: '',
   description: '',
 })
 
 const clearData = () => {
-  categoryData.value.name = '';
+  categoryData.value.title = '';
   categoryData.value.description = '';
 }
 
@@ -77,7 +77,7 @@ async function updateCategory() {
 
 onMounted(() => {
   if (props.edit) {
-    categoryData.value.name = props.category.name;
+    categoryData.value.title = props.category.title;
     categoryData.value.description = props.category.description;
   }
 })

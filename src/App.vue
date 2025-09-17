@@ -10,6 +10,7 @@
               @show-transaction="showTransactionModal = true"
               @show-amount-goal="openAmountGoal"
               @show-account="showAccountModal = true"
+              @show-edit-account="openEditAccount"
               @show-category="showCategoryModal = true"
               @show-edit-goal="openEditGoal"
               @show-edit-category="openEditCategory"
@@ -20,7 +21,7 @@
         <GoalsModal v-if="showGoalsModal" @hide-modal="hideModal" :is-edit-mode="editGoalMode" :edit-goal="goalData"/>
         <TransactionModal v-if="showTransactionModal" @hide-modal="hideModal"/>
         <AmountGoalModal v-if="showAmountGoal" @hide-modal="hideModal" :goal="goalData"/>
-        <AccountModal v-if="showAccountModal" @hide-modal="hideModal"/>
+        <AccountModal v-if="showAccountModal" @hide-modal="hideModal" :edit="editAccountMode" :account="accountData" :edit-type="accountEditType"/>
         <CategoryModal v-if="showCategoryModal" @hide-modal="hideModal" :category="categoryData" :edit="editCategoryMode"/>
 
         <Chat v-if="isAuth && !isChatPage && !isProfilePage" class="main__chat"/>
@@ -96,6 +97,9 @@ const editGoalMode = ref(false);
 const goalData = ref(null);
 const categoryData = ref(null);
 const editCategoryMode = ref(false);
+const accountData = ref(null);
+const accountEditType = ref('');
+const editAccountMode = ref(false);
 
 const hideModal = () => {
   showGoalsModal.value = false;
@@ -106,6 +110,10 @@ const hideModal = () => {
   editGoalMode.value = false;
   editCategoryMode.value = false;
   showCategoryModal.value = false;
+
+  accountData.value = null;
+  accountEditType.value = '';
+  editAccountMode.value = false;
 }
 
 const openAmountGoal = (goal) => {
@@ -117,6 +125,13 @@ const openEditGoal = (goal) => {
   goalData.value = goal;
   editGoalMode.value = true;
   showGoalsModal.value = true;
+}
+
+const openEditAccount = (data) => {
+  accountData.value = data.account;
+  accountEditType.value = data.type;
+  editAccountMode.value = true;
+  showAccountModal.value = true;
 }
 
 const openEditCategory = (category) => {

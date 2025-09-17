@@ -1,17 +1,35 @@
 <template>
   <div class="account-card">
     <div class="account-card__header">
-      <h4 class="account-card__name">{{ item.name }}</h4>
-      <div class="account-card__icon-group">
-        <div class="account-card__header-button" @click="">
-          <Edit class="account-card__icon"/>
-        </div>
-        <div class="account-card__header-button" >
-          <Plus class="account-card__icon"/>
+      <h4 class="account-card__name">{{ item.title }}</h4>
+      <div class="account-card__menu" :class="{ active: showMenu }">
+        <menu-vertical
+            class="account-card__menu-icon"
+            @click.stop="showMenu = !showMenu"
+        />
+        <div
+            v-if="showMenu"
+            class="account-card__menu-list"
+        >
+          <div class="account-card__menu-item" @click="emitShowEditAccount('part')">
+            <plus class="account-card__menu-icon"/>
+            Пополнить
+          </div>
+          <div class="account-card__menu-item" @click="emitShowEditAccount('all')">
+            <edit class="account-card__menu-icon"/>
+            Редактировать
+          </div>
+          <div class="account-card__menu-item" @click="deleteAccount(item.id)">
+            <trash class="account-card__menu-icon trash"/>
+            Удалить
+          </div>
         </div>
       </div>
     </div>
     <div class="account-card__body">
+      <div v-if="item.description" class="account-card__body-value">
+        {{item.description}}
+      </div>
       <div class="account-card__body-value">
         Баланс: {{ formatAmount(item.balance) }}₽
       </div>
@@ -22,10 +40,19 @@
 <script setup>
 import Edit from "@/assets/icons/edit.vue";
 import Plus from "@/assets/icons/plus.vue";
+import Star from "@/assets/icons/star.vue";
+import MenuVertical from "@/assets/icons/menu-vertical.vue";
+import Trash from "@/assets/icons/trash.vue";
+import {inject, onBeforeUnmount, onMounted, ref} from "vue";
+import {useStore} from "vuex";
 
+const store = useStore();
+const { api } = inject('plugins');
 const props = defineProps({
   item: Object,
 })
+
+const showMenu = ref(false);
 
 const formatAmount = (value) => {
   return value.toLocaleString('ru-RU', {
@@ -33,6 +60,34 @@ const formatAmount = (value) => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2
   }).replace(/,/g, ' ');
+}
+
+const emit = defineEmits(['showEditAccount']);
+
+const emitShowEditAccount = type => {
+  emit('showEditAccount', {account: props.item, type: type});
+}
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+
+const handleClickOutside = (e) => {
+  const menu = e.target.closest(".account-card__menu");
+  if (!menu) {
+    showMenu.value = false;
+  }
+};
+
+async function deleteAccount(id) {
+  const res = await api.accounts.deleteAccount(id);
+  if (res.success) {
+    store.dispatch("getAccounts");
+  }
 }
 </script>
 
@@ -73,10 +128,62 @@ const formatAmount = (value) => {
     }
   }
 
-  &__icon-group{
+  &__menu{
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    border-radius: 50%;
+    cursor: pointer;
+    background: transparent;
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
+    transition: 0.2s;
+    position: relative;
+
+    &:hover{
+      background: rgba(46, 125, 50, 0.1);
+    }
+
+    &.active{
+      background: rgba(46, 125, 50, 0.1);
+    }
+
+    &-list{
+      position: absolute;
+      top: 0px;
+      right: 115%;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #fff;
+      padding: 18px;
+      border: 1px solid rgba(209, 213, 219, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+
+    &-item{
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+
+      &:hover{
+        color: #2E7D32;
+      }
+    }
+
+    &-icon{
+      width: 24px;
+      color: #2E7D32;
+    }
+
+    &-icon.trash{
+      width: 18px;
+      margin-right: 6px;
+    }
   }
 
   &__name{

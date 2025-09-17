@@ -44,5 +44,23 @@ export default {
         } catch (error) {
             throw error.response?.data?.error || error;
         }
-    }
+    },
+
+    async addFavoriteCategory(id) {
+        try {
+            const response = await api.post(`/transaction-categories/${id}/favorite`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.error || error;
+        }
+    },
+
+    async deleteFavoriteCategory(id) {
+        try {
+            const response = await api.delete(`/transaction-categories/${id}/favorite`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.error || error;
+        }
+    },
 }

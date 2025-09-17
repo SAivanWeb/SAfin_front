@@ -3,6 +3,7 @@ import general from './modules/general';
 import goals from './modules/goals';
 import category from "./modules/category.js";
 import transactions from './modules/transactions.js';
+import accounts from './modules/account.js';
 
 class Api {
     constructor() {
@@ -11,6 +12,7 @@ class Api {
         this.goals = goals;
         this.category = category;
         this.transactions = transactions;
+        this.accounts = accounts;
     }
 }
 

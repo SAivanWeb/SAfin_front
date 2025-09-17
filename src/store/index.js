@@ -4,6 +4,7 @@ import userApi from "@/api/modules/user.js";
 import categoryApi from "@/api/modules/category.js";
 import goalsApi from "@/api/modules/goals.js"
 import transactionsApi from "@/api/modules/transactions.js"
+import accountsApi from "@/api/modules/account.js"
 
 export default createStore({
     state: {
@@ -14,12 +15,14 @@ export default createStore({
         categories: null,
         goals: null,
         transactions: null,
+        accounts: null,
     },
     getters: {
         GET_MESSAGE: (state) => state.message,
         GET_CATEGORIES: (state) => state.categories,
         GET_GOALS: (state) => state.goals,
         GET_TRANSACTIONS: (state) => state.transactions,
+        GET_ACCOUNTS: (state) => state.accounts,
     },
     mutations: {
         SET_MESSAGE: (state, message) => {
@@ -33,6 +36,9 @@ export default createStore({
         },
         SET_TRANSACTIONS: (state, transactions) => {
             state.transactions = transactions;
+        },
+        SET_ACCOUNTS: (state, accounts) => {
+            state.accounts = accounts;
         }
     },
     actions: {
@@ -65,8 +71,13 @@ export default createStore({
         async getTransactions({ commit }) {
             const res = await transactionsApi.getTransactions();
             if (res.success) {
-                console.log(res.data)
                 commit('SET_TRANSACTIONS', res.data);
+            }
+        },
+        async getAccounts({ commit }) {
+            const res = await accountsApi.getAccounts();
+            if (res.success) {
+                commit('SET_ACCOUNTS', res.data);
             }
         }
     },

@@ -29,7 +29,7 @@
           
           <template #accounts>
             <div class="transactions__accounts">
-              <AccountCard v-for="item in accounts" :item="item"/>
+              <AccountCard v-for="item in accounts" :item="item" @show-edit-account="(data) => $emit('showEditAccount', data)"/>
             </div>
           </template>
       </TabContainer>
@@ -47,11 +47,12 @@ import PageAlert from "@/components/template/PageAlert.vue";
 import Chart from "@/components/ui/chart/Chart.vue";
 import TabContainer from "@/components/ui/tabs/TabContainer.vue";
 import ProgressList from "@/components/ui/chart/ProgressList.vue";
-import {computed, ref} from "vue";
+import {computed, inject, onMounted, ref} from "vue";
 import AccountCard from "@/components/ui/card/AccountCard.vue";
 import {useStore} from "vuex";
 
 const store = useStore();
+const { api } = inject('plugins');
 
 const activeTab = ref('transactions');
 
@@ -76,10 +77,6 @@ const tabHeadersTransactions = ref([
 ])
 
 const transactions = computed(() => {
-  const transactionsArr = store.getters.GET_TRANSACTIONS || [];
-  if (transactionsArr.length === 0) {
-    store.dispatch("getTransactions");
-  }
   return store.getters.GET_TRANSACTIONS || [];
 });
 
@@ -106,10 +103,14 @@ const transactionsEx = [
   { id: 20, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-04-25', category: 'Здоровье', description: 'Витамины' }
 ]
 
-const accounts = [
-  { id: 1, name: 'Карта Тинькофф', balance: 50000},
-  { id: 2, name: 'Наличные', balance: 20000},
-];
+const accounts = computed(() => {
+  return store.getters.GET_ACCOUNTS || [];
+});
+
+onMounted(() => {
+  store.dispatch("getAccounts");
+  store.dispatch("getTransactions");
+})
 </script>
 
 <style scoped lang="scss">

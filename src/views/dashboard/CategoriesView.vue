@@ -11,8 +11,8 @@
     </div>
     <div class="categories__container">
       <n-collapse :trigger-areas="triggerAreas">
-        <n-collapse-item v-for="item in filteredCategories" :title="item.title" :name="item.id">
-          <template #header-extra v-if="item.type !== 'system'">
+        <n-collapse-item v-for="item in filteredCategories" :title="item.title" :name="item.id" :class="{ 'favorite-category': item.isFavorite }">
+          <template #header-extra >
             <div class="categories__item-menu" :class="{ active: showCategoryMenu === item.id }">
               <menu-vertical
                   class="categories__item-icon"
@@ -22,13 +22,17 @@
                   v-if="showCategoryMenu === item.id"
                   class="categories__item-menu-list"
               >
-                <div class="categories__item-menu-item" @click="deleteCategory(item.id)">
+                <div v-if="item.type !== 'system'" class="categories__item-menu-item" @click.stop="deleteCategory(item.id)">
                   <trash class="categories__item-menu-icon trash"/>
                   Удалить
                 </div>
-                <div class="categories__item-menu-item" @click="emitShowEditCategory(item)">
+                <div v-if="item.type !== 'system'" class="categories__item-menu-item" @click.stop="emitShowEditCategory(item)">
                   <edit class="categories__item-menu-icon"/>
                   Редактировать
+                </div>
+                <div class="categories__item-menu-item" @click.stop="favoriteCategory(item)">
+                  <star class="categories__item-menu-icon"/>
+                  Избранное
                 </div>
               </div>
             </div>
@@ -61,6 +65,7 @@ import {useStore} from "vuex";
 import MenuVertical from "@/assets/icons/menu-vertical.vue";
 import Trash from "@/assets/icons/trash.vue";
 import Edit from "@/assets/icons/edit.vue";
+import Star from "@/assets/icons/star.vue";
 
 const store = useStore();
 const { api } = inject('plugins');
@@ -84,11 +89,18 @@ const searchedValue = ref('');
 const showCategoryMenu = ref(null);
 
 const filteredCategories = computed(() => {
-  const list = categories.value || [];
-  if (!searchedValue.value.trim()) return list;
-  return list.filter(item =>
-      item.title.toLowerCase().includes(searchedValue.value.toLowerCase())
-  );
+  let list = categories.value || [];
+
+  if (searchedValue.value.trim()) {
+    list = list.filter(item =>
+        item.title.toLowerCase().includes(searchedValue.value.toLowerCase())
+    );
+  }
+
+  return list.sort((a, b) => {
+    if (a.isFavorite === b.isFavorite) return 0;
+    return a.isFavorite ? -1 : 1;
+  });
 });
 
 const toggleMenu = (id) => {
@@ -112,6 +124,19 @@ const handleClickOutside = (e) => {
 
 async function deleteCategory(id) {
   const res = await api.category.deleteCategory(id);
+  if (res.success) {
+    store.dispatch("getCategories");
+  }
+}
+
+async function favoriteCategory(category) {
+  let res;
+  showCategoryMenu.value = null;
+  if (!category.isFavorite) {
+    res = await api.category.addFavoriteCategory(category.id);
+  } else {
+    res = await api.category.deleteFavoriteCategory(category.id);
+  }
   if (res.success) {
     store.dispatch("getCategories");
   }
@@ -224,6 +249,11 @@ async function deleteCategory(id) {
     }
 
   }
+}
+
+.favorite-category .n-collapse-item__header-main,
+.favorite-category .n-collapse-item__header-main .n-collapse-item-arrow{
+  color: #2E7D32 !important;
 }
 
 @media (max-width: 767px) {
