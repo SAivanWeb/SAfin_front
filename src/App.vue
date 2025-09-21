@@ -25,6 +25,10 @@
         <CategoryModal v-if="showCategoryModal" @hide-modal="hideModal" :category="categoryData" :edit="editCategoryMode"/>
 
         <Chat v-if="isAuth && !isChatPage && !isProfilePage" class="main__chat"/>
+
+        <div v-if="showPreloader" class="main__preloader">
+          <n-spin size="medium" />
+        </div>
       </div>
     </n-message-provider>
   </n-config-provider>
@@ -35,7 +39,7 @@ import HeaderBar from "@/components/template/HeaderBar.vue";
 import FooterBar from "@/components/template/FooterBar.vue";
 import {useRoute} from "vue-router";
 import {useStore} from "vuex";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import MenuBar from "@/components/template/MenuBar.vue";
 import GoalsModal from "@/components/template/modal/GoalsModal.vue";
 import { dateRuRU, NConfigProvider, ruRU } from 'naive-ui'
@@ -44,6 +48,9 @@ import AmountGoalModal from "@/components/template/modal/AmountGoalModal.vue";
 import Chat from "@/components/template/Chat.vue";
 import AccountModal from "@/components/template/modal/AccountModal.vue";
 import CategoryModal from "@/components/template/modal/CategoryModal.vue";
+import { useMessage } from "naive-ui";
+
+// const message = useMessage();
 
 const themeOverrides = {
   common: {
@@ -170,6 +177,25 @@ const showHeader = computed(() => {
   } 
 })
 
+const showPreloader = computed(() => {
+  return store.getters['GET_PRELOADER']
+})
+
+// watch(
+//     () => store.getters.GET_MESSAGE,
+//     (msg) => {
+//       if (msg && msg.text) {
+//         if (msg.type && message[msg.type]) {
+//           message[msg.type](msg.text)
+//         } else {
+//           message.info(msg.text)
+//         }
+//         store.commit('SET_MESSAGE', null)
+//       }
+//     },
+//     { deep: true }
+// )
+
 onMounted(() => {
   store.dispatch('initAuth');
 });
@@ -197,6 +223,19 @@ onMounted(() => {
     bottom: 100px;
     right: 80px;
     z-index: 100;
+  }
+
+  &__preloader{
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
   }
 }
 </style>

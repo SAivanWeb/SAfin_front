@@ -16,6 +16,7 @@ export default createStore({
         goals: null,
         transactions: null,
         accounts: null,
+        preloader: false
     },
     getters: {
         GET_MESSAGE: (state) => state.message,
@@ -23,6 +24,7 @@ export default createStore({
         GET_GOALS: (state) => state.goals,
         GET_TRANSACTIONS: (state) => state.transactions,
         GET_ACCOUNTS: (state) => state.accounts,
+        GET_PRELOADER: (state) => state.preloader
     },
     mutations: {
         SET_MESSAGE: (state, message) => {
@@ -39,11 +41,15 @@ export default createStore({
         },
         SET_ACCOUNTS: (state, accounts) => {
             state.accounts = accounts;
+        },
+        SET_PRELOADER: (state, preloader) => {
+            state.preloader = preloader;
         }
     },
     actions: {
         async initAuth({ commit, dispatch }) {
             commit('user/SET_ERROR', null);
+            commit('SET_PRELOADER', true);
             let token = localStorage.getItem('access_token');
             if (token) {
                 const response = await userApi.getProfile();
@@ -55,6 +61,7 @@ export default createStore({
                     await dispatch('getTransactions');
                 }
             }
+            commit('SET_PRELOADER', false);
         },
         async getCategories({ commit }) {
             const res = await categoryApi.getCategories();
