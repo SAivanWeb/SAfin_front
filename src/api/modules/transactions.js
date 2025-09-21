@@ -21,7 +21,7 @@ export default {
 
     async updateTransaction(id, payload) {
         try {
-            const response = await api.put(`/transactions/${id}`, {payload});
+            const response = await api.put(`/transactions/${id}`, payload);
             return response.data;
         } catch (error) {
             throw error.response?.data?.error || error;

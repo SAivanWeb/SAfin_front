@@ -6,9 +6,10 @@
     <template #body>
       <div class="modal__fields-container">
         <MainSelect
-            title="Тип транзакции"
-            :items="transactionTypes"
-            v-model="transactionData.type"
+            title="Счет"
+            :items="accounts"
+            v-model="transactionData.account_id"
+            placeholder="Выберите счет"
         />
 
         <MainSelect
@@ -16,6 +17,14 @@
             :items="categories"
             v-model="transactionData.category_id"
             placeholder="Выберите категорию"
+        />
+
+        <InputDate v-model="transactionData.date" label="Дата и время" type="datetime"/>
+
+        <MainSelect
+            title="Тип транзакции"
+            :items="transactionTypes"
+            v-model="transactionData.type"
         />
 
         <MainInput
@@ -46,6 +55,8 @@ import MainInput from "@/components/ui/input/MainInput.vue";
 import {computed, inject, ref} from "vue";
 import {useStore} from "vuex";
 import MainSelect from "@/components/ui/select/MainSelect.vue";
+import InputDate from "@/components/ui/input/InputDate.vue";
+import transactions from "@/api/modules/transactions.js";
 
 const store = useStore();
 const emit = defineEmits('hide-modal');
@@ -62,30 +73,43 @@ const categories = computed(() => {
   const raw = store.getters.GET_CATEGORIES || [];
   return raw.map(item => ({
     value: item.id,
-    label: item.name
+    label: item.title
+  }));
+});
+
+const accounts = computed(() => {
+  const raw = store.getters.GET_ACCOUNTS || [];
+  return raw.map(item => ({
+    value: item.id,
+    label: item.title
   }));
 });
 
 const transactionData = ref({
-  type: '',
+  category_id: null,
+  account_id: null,
+  date: null,
   amount: 0,
-  category_id: '',
-  description: '',
+  type: '',
+  description: ''
 })
 
 const transactionTypes = [
-  { value: 'income', label: 'Списаине' },
+  { value: 'income', label: 'Списание' },
   { value: 'expense', label: 'Пополнение' },
 ];
 
 const disableButton = computed(() => {
   return !transactionData.value.type ||
   !transactionData.value.amount ||
-  !transactionData.value.category_id
+  !transactionData.value.category_id ||
+  !transactionData.value.account_id ||
+  !transactionData.value.date;
 })
 
 async function createTransaction() {
   const res = await api.transactions.createTransaction(transactionData.value);
+  console.log(res)
   if (res.success) {
     emit('hide-modal');
   }

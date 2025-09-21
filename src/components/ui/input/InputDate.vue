@@ -7,15 +7,15 @@
         clearable
         @update:value="handleDateUpdate"
         :size="type === 'daterange' ? 'medium' : 'large'"
-        :format="type === 'month' ? 'y MMMM' : 'yyyy-MM-dd'"
-        :value-format="type === 'month' ? 'y MMM' : 'yyyy-MM-dd'"
-        :month-format="type === 'month' ? 'MMMM' : 'MMM'"
+        :format="format"
+        :value-format="format"
+        :month-format="monthFormat"
     />
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import {computed, ref, watch} from 'vue';
 
 const props = defineProps({
   label: String,
@@ -28,6 +28,10 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
+const timestampValue = ref(
+    props.modelValue ? new Date(props.modelValue).getTime() : null
+);
+
 const formatDateToYMD = (date) => {
   if (!date) return null;
   const d = date instanceof Date ? date : new Date(date);
@@ -37,32 +41,56 @@ const formatDateToYMD = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-const timestampValue = ref(
-    props.modelValue
-        ? new Date(props.modelValue).getTime()
-        : null
-);
-
-if (props.modelValue) {
-  emit('update:modelValue', formatDateToYMD(props.modelValue));
-}
-
 const handleDateUpdate = (timestamp) => {
-  emit('update:modelValue',
-      timestamp ? formatDateToYMD(new Date(timestamp)) : null
-  );
+  if (!timestamp) {
+    emit('update:modelValue', null);
+    return;
+  }
+
+  const date = new Date(timestamp);
+
+  if (props.type === 'datetime') {
+    emit('update:modelValue', date.toISOString());
+  } else {
+    emit('update:modelValue', formatDateToYMD(date));
+  }
 };
 
-watch(() => props.modelValue, (newVal) => {
-  timestampValue.value = newVal ? new Date(newVal).getTime() : null;
+watch(
+    () => props.modelValue,
+    (newVal) => {
+      timestampValue.value = newVal ? new Date(newVal).getTime() : null;
+    }
+);
+
+const format = computed(() => {
+  if (props.type === 'month') {
+    return 'y MMM';
+  } else if (props.type === 'datetime') {
+    return 'yyyy-MM-dd HH:mm:ss';
+  } else {
+    return 'yyyy-MM-dd';
+  }
+});
+
+const monthFormat = computed(() => {
+  if (props.type === 'month') {
+    return 'MMMM';
+  } else {
+    return 'MMM';
+  }
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .datepicker {
   display: flex;
   flex-direction: column;
   gap: 8px;
 
+  & > .n-button{
+    border-radius: 6px;
+    font-weight: 300;
+  }
 }
 </style>
