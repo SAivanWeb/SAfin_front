@@ -14,17 +14,17 @@ export default createStore({
         },
         categories: null,
         goals: null,
-        transactions: null,
         accounts: null,
-        preloader: false
+        preloader: false,
+        resetTransaction: false
     },
     getters: {
         GET_MESSAGE: (state) => state.message,
         GET_CATEGORIES: (state) => state.categories,
         GET_GOALS: (state) => state.goals,
-        GET_TRANSACTIONS: (state) => state.transactions,
         GET_ACCOUNTS: (state) => state.accounts,
-        GET_PRELOADER: (state) => state.preloader
+        GET_PRELOADER: (state) => state.preloader,
+        GET_RESET_TRANSACTIONS: (state) => state.resetTransaction,
     },
     mutations: {
         SET_MESSAGE: (state, message) => {
@@ -36,14 +36,14 @@ export default createStore({
         SET_GOALS: (state, goals) => {
             state.goals = goals;
         },
-        SET_TRANSACTIONS: (state, transactions) => {
-            state.transactions = transactions;
-        },
         SET_ACCOUNTS: (state, accounts) => {
             state.accounts = accounts;
         },
         SET_PRELOADER: (state, preloader) => {
             state.preloader = preloader;
+        },
+        SET_RESET_TRANSACTIONS: (state, status) => {
+            state.resetTransaction = status;
         }
     },
     actions: {
@@ -58,7 +58,6 @@ export default createStore({
                     commit('user/SET_USER_ID', response.data.id);
                     commit('user/INIT_AUTH');
                     await dispatch('getCategories');
-                    await dispatch('getTransactions');
                 }
             }
             commit('SET_PRELOADER', false);
@@ -75,10 +74,10 @@ export default createStore({
                 commit('SET_GOALS', res.data);
             }
         },
-        async getTransactions({ commit }) {
-            const res = await transactionsApi.getTransactions();
+        async getTransactions({ commit }, config) {
+            const res = await transactionsApi.getTransactions(config);
             if (res.success) {
-                commit('SET_TRANSACTIONS', res.data);
+                return res;
             }
         },
         async getAccounts({ commit }) {

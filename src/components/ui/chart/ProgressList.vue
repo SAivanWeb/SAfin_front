@@ -6,7 +6,7 @@
         class="progress__item"
     >
       <div class="progress__label">
-        <span class="category">{{ item.category }}</span>
+        <span class="category">{{ item.title }}</span>
         <span class="amount">{{ item.amount.toLocaleString() }} ₽</span>
       </div>
       <div class="progress__bar">
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import {computed} from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   items: {
@@ -41,20 +41,19 @@ const chartData = computed(() => {
   props.items
       .filter(item => item.type === 'expense')
       .forEach(item => {
-        if (!categories[item.category]) {
-          categories[item.category] = 0
+        const categoryId = item.category.id
+        if (!categories[categoryId]) {
+          categories[categoryId] = {
+            title: item.category.title,
+            amount: 0
+          }
         }
-        categories[item.category] += item.amount
+        categories[categoryId].amount += item.amount
       })
 
-  return Object.entries(categories)
-      .map(([category, amount]) => ({
-        category,
-        amount
-      }))
+  return Object.values(categories)
       .sort((a, b) => b.amount - a.amount)
 })
-
 </script>
 
 <style scoped lang="scss">

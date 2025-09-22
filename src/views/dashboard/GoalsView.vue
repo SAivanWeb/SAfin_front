@@ -6,7 +6,7 @@
     </div>
     <PageAlert class="goals__alert"/>
     <div class="goals__container">
-      <GoalCard v-for="item in goals" :goal="item" @show-amount-goal="(goal) => $emit('showAmountGoal', goal)" @show-edit-goal="(goal) => $emit('showEditGoal', goal)"/>
+      <GoalCard v-for="item in goals" :goal="item" @show-amount-goal="(goal) => $emit('showAmountGoal', goal)"/>
     </div>
   </MainWrapper>
 </template>
@@ -22,15 +22,15 @@ import {onMounted, inject, ref, computed} from "vue";
 import {useStore} from "vuex";
 const store = useStore();
 
-defineEmits(['showAmountGoal', 'showEditGoal']);
+defineEmits(['showAmountGoal']);
 
 const goals = computed(() => {
-  const goalsArr = store.getters.GET_GOALS || [];
-  if (goalsArr.length === 0) {
-    store.dispatch("getGoals");
-  }
   return store.getters.GET_GOALS || [];
 });
+
+onMounted(() => {
+  store.dispatch("getGoals");
+})
 
 </script>
 

@@ -1,10 +1,10 @@
 <template>
   <div class="goal-card">
     <div class="goal-card__header">
-      <h4 class="goal-card__name">{{goal.name}}</h4>
+      <h4 class="goal-card__name">{{goal.title}}</h4>
       <div class="goal-card__icon-group">
-        <div v-if="editable" class="goal-card__header-button" @click="emitShowEditGoal">
-          <Edit class="goal-card__icon"/>
+        <div v-if="editable" class="goal-card__header-button" @click="deleteGoal">
+          <Trash class="goal-card__icon trash"/>
         </div>
         <div class="goal-card__header-button" @click="emitShowAmountGoal">
           <Plus class="goal-card__icon"/>
@@ -44,7 +44,12 @@
 <script setup>
 import Edit from "@/assets/icons/edit.vue";
 import Plus from "@/assets/icons/plus.vue";
-import {computed} from "vue";
+import {computed, inject} from "vue";
+import {useStore} from "vuex";
+import Trash from "@/assets/icons/trash.vue";
+
+const store = useStore();
+const { api } = inject('plugins');
 
 const props = defineProps({
   goal: Object,
@@ -64,15 +69,15 @@ const emitShowEditGoal = () => {
 };
 
 const progressMoney = computed(() => {
-  const current = props.goal.current_amount || 0
-  const target = props.goal.target_amount || 0
+  const current = props.goal.currentAmount || 0
+  const target = props.goal.targetAmount || 0
   if (target <= 0) return 0
   return Math.min(((current / target) * 100).toFixed(2), 100)
 })
 
 const progressTime = computed(() => {
-  const start = props.goal.start_at ? new Date(props.goal.start_at) : new Date()
-  const end = props.goal.end_at ? new Date(props.goal.end_at) : null
+  const start = props.goal.startDate ? new Date(props.goal.startDate) : new Date()
+  const end = props.goal.endDate ? new Date(props.goal.endDate) : null
   if (!end) return 0
 
   const total = end.getTime() - start.getTime()
@@ -82,6 +87,12 @@ const progressTime = computed(() => {
   return Math.min(((elapsed / total) * 100).toFixed(2), 100)
 })
 
+async function deleteGoal() {
+  const res = await api.goals.deleteGoal(props.goal.id);
+  if (res.success) {
+    store.dispatch("getGoals");
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -121,10 +132,16 @@ const progressTime = computed(() => {
     }
   }
 
-  &__icon-group{
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  &__icon{
+    &-group{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    &.trash{
+      width: 16px;
+    }
   }
 
   &__name{

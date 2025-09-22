@@ -12,7 +12,6 @@
               @show-account="showAccountModal = true"
               @show-edit-account="openEditAccount"
               @show-category="showCategoryModal = true"
-              @show-edit-goal="openEditGoal"
               @show-edit-category="openEditCategory"
           />
         </div>
@@ -114,7 +113,6 @@ const hideModal = () => {
   showAmountGoal.value = false;
   showAccountModal.value = false;
   showCategoryModal.value = false;
-  editGoalMode.value = false;
   editCategoryMode.value = false;
   showCategoryModal.value = false;
 
@@ -126,12 +124,6 @@ const hideModal = () => {
 const openAmountGoal = (goal) => {
   goalData.value = goal;
   showAmountGoal.value = true;
-}
-
-const openEditGoal = (goal) => {
-  goalData.value = goal;
-  editGoalMode.value = true;
-  showGoalsModal.value = true;
 }
 
 const openEditAccount = (data) => {

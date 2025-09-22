@@ -94,23 +94,30 @@ import TransactionList from "@/components/transaction/TransactionList.vue";
 import MainCard from "@/components/ui/card/MainCard.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import PageAlert from "@/components/template/PageAlert.vue";
-import {useRouter} from "vue-router";
-import Filter from "@/components/template/Filter.vue";
+import {useRoute, useRouter} from "vue-router";
 import InputDate from "@/components/ui/input/InputDate.vue";
+import {onMounted, ref} from "vue";
+import {useStore} from "vuex";
 
 const router = useRouter();
+const store = useStore();
 
-const transactions = [
-  { id: 1, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-01-05', category: 'Еда', description: 'Продукты' },
-  { id: 2, displayType: 'Списание', type: 'expense', amount: 500, date: '2023-01-10', category: 'Транспорт', description: 'Такси' },
-  { id: 3, displayType: 'Пополнение', type: 'income', amount: 45000, date: '2023-01-15', category: 'Зарплата', description: 'Зарплата за январь' },
-  { id: 4, displayType: 'Списание', type: 'expense', amount: 12000, date: '2023-01-20', category: 'Жилье', description: 'Аренда' },
-  { id: 5, displayType: 'Списание', type: 'expense', amount: 3000, date: '2023-01-25', category: 'Развлечения', description: 'Кино' },
-]
+const transactions = ref([]);
 
 const toTransactions = () => {
   router.push('/transactions/')
 }
+
+async function fetchTransactions() {
+  const res = await store.dispatch("getTransactions", {page: 1, perPage: 5});
+  if (res.success) {
+    transactions.value = res.data;
+  }
+}
+
+onMounted(() => {
+  fetchTransactions();
+})
 </script>
 
 <style scoped lang="scss">

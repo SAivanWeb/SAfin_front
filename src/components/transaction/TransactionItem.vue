@@ -1,10 +1,13 @@
 <template>
   <div class="transaction">
     <div class="transaction__text">
-      {{ item.category }}
+      {{ item.category.title }}
+    </div>
+    <div class="transaction__text">
+      {{ item.account.title }}
     </div>
     <div class="transaction__text transaction__text_date">
-      {{ item.date }}
+      {{ formatDate(item.date) }}
     </div>
     <div class="transaction__amount" :class="item.type === 'income' ? 'transaction__amount_up' : 'transaction__amount_down'">
       <arrow class="transaction__amount-icon"/>
@@ -30,6 +33,18 @@ const formatAmount = (value) => {
     maximumFractionDigits: 2
   }).replace(/,/g, ' ');
 }
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString('sv-SE', {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  }).replace("T", " ");
+}
 </script>
 
 <style scoped lang="scss">
@@ -42,7 +57,7 @@ const formatAmount = (value) => {
   font-size: 18px;
 
   display: grid;
-  grid-template-columns: 30% 1fr 1fr;
+  grid-template-columns: 20% 1fr 1fr 1fr;
   align-items: center;
   gap: 6px;
 
@@ -76,6 +91,7 @@ const formatAmount = (value) => {
 @media (max-width: 768px) {
   .transaction{
     padding: 16px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     &__text{
       font-size: 16px;
     }

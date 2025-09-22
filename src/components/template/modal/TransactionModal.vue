@@ -8,14 +8,14 @@
         <MainSelect
             title="Счет"
             :items="accounts"
-            v-model="transactionData.account_id"
+            v-model="transactionData.accountId"
             placeholder="Выберите счет"
         />
 
         <MainSelect
             title="Категория"
             :items="categories"
-            v-model="transactionData.category_id"
+            v-model="transactionData.categoryId"
             placeholder="Выберите категорию"
         />
 
@@ -86,8 +86,8 @@ const accounts = computed(() => {
 });
 
 const transactionData = ref({
-  category_id: null,
-  account_id: null,
+  categoryId: null,
+  accountId: null,
   date: null,
   amount: 0,
   type: '',
@@ -95,22 +95,23 @@ const transactionData = ref({
 })
 
 const transactionTypes = [
-  { value: 'income', label: 'Списание' },
-  { value: 'expense', label: 'Пополнение' },
+  { value: 'income', label: 'Пополнение' },
+  { value: 'expense', label: 'Списание' },
 ];
 
 const disableButton = computed(() => {
   return !transactionData.value.type ||
   !transactionData.value.amount ||
-  !transactionData.value.category_id ||
-  !transactionData.value.account_id ||
+  !transactionData.value.categoryId ||
+  !transactionData.value.accountId ||
   !transactionData.value.date;
 })
 
 async function createTransaction() {
   const res = await api.transactions.createTransaction(transactionData.value);
-  console.log(res)
   if (res.success) {
+    store.commit("SET_RESET_TRANSACTIONS", true);
+    store.dispatch("getAccounts");
     emit('hide-modal');
   }
 }

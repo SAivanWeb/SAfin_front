@@ -12,16 +12,17 @@
               <TabContainer :headers="tabHeadersTransactions">
                 <template #chart>
                   <div class="transactions__statistic-item">
-                    <Chart :items="transactionsEx"/>
+                    <Chart :items="transactionsMonth"/>
                   </div>
                 </template>
                 <template #progress>
-                  <ProgressList :items="transactionsEx"/>
+                  <ProgressList :items="transactionsMonth"/>
                 </template>
                 <template #list>
                   <div class="transactions__statistic-item">
                     <Filter/>
-                    <TransactionList :items="transactionsEx"/>
+                    <TransactionList :items="transactionsList"/>
+                    <n-pagination v-if="transactionsList.length > transactionListPerPage" class="transactions__pagination" v-model:page="transactionListPage" :page-count="transactionListTotalPage" />
                   </div>
                 </template>
               </TabContainer>
@@ -47,12 +48,11 @@ import PageAlert from "@/components/template/PageAlert.vue";
 import Chart from "@/components/ui/chart/Chart.vue";
 import TabContainer from "@/components/ui/tabs/TabContainer.vue";
 import ProgressList from "@/components/ui/chart/ProgressList.vue";
-import {computed, inject, onMounted, ref} from "vue";
+import {computed, inject, onMounted, ref, watch, nextTick} from "vue";
 import AccountCard from "@/components/ui/card/AccountCard.vue";
 import {useStore} from "vuex";
 
 const store = useStore();
-const { api } = inject('plugins');
 
 const activeTab = ref('transactions');
 
@@ -76,44 +76,83 @@ const tabHeadersTransactions = ref([
   },
 ])
 
-const transactions = computed(() => {
-  return store.getters.GET_TRANSACTIONS || [];
-});
-
-const transactionsEx = [
-  { id: 1, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-01-05', category: 'Еда', description: 'Продукты' },
-  { id: 2, displayType: 'Списание', type: 'expense', amount: 500, date: '2023-01-10', category: 'Транспорт', description: 'Такси' },
-  { id: 3, displayType: 'Пополнение', type: 'income', amount: 45000, date: '2023-01-15', category: 'Зарплата', description: 'Зарплата за январь' },
-  { id: 4, displayType: 'Списание', type: 'expense', amount: 12000, date: '2023-01-20', category: 'Жилье', description: 'Аренда' },
-  { id: 5, displayType: 'Списание', type: 'expense', amount: 3000, date: '2023-01-25', category: 'Развлечения', description: 'Кино' },
-  { id: 6, displayType: 'Списание', type: 'expense', amount: 2000, date: '2023-02-03', category: 'Еда', description: 'Ресторан' },
-  { id: 7, displayType: 'Пополнение', type: 'income', amount: 8000, date: '2023-02-10', category: 'Фриланс', description: 'Проект' },
-  { id: 8, displayType: 'Списание', type: 'expense', amount: 700, date: '2023-02-15', category: 'Транспорт', description: 'Метро' },
-  { id: 9, displayType: 'Списание', type: 'expense', amount: 2500, date: '2023-02-20', category: 'Здоровье', description: 'Аптека' },
-  { id: 10, displayType: 'Списание', type: 'expense', amount: 4000, date: '2023-02-25', category: 'Одежда', description: 'Куртка' },
-  { id: 11, displayType: 'Пополнение', type: 'income', amount: 45000, date: '2023-03-05', category: 'Зарплата', description: 'Зарплата за март' },
-  { id: 12, displayType: 'Списание', type: 'expense', amount: 12000, date: '2023-03-10', category: 'Жилье', description: 'Аренда' },
-  { id: 13, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-03-15', category: 'Еда', description: 'Продукты' },
-  { id: 14, displayType: 'Списание', type: 'expense', amount: 1000, date: '2023-03-20', category: 'Транспорт', description: 'Бензин' },
-  { id: 15, displayType: 'Списание', type: 'expense', amount: 5000, date: '2023-03-25', category: 'Развлечения', description: 'Концерт' },
-  { id: 16, displayType: 'Пополнение', type: 'income', amount: 10000, date: '2023-04-05', category: 'Премия', description: 'Квартальная премия' },
-  { id: 17, displayType: 'Списание', type: 'expense', amount: 8000, date: '2023-04-10', category: 'Жилье', description: 'Коммунальные' },
-  { id: 18, displayType: 'Списание', type: 'expense', amount: 2000, date: '2023-04-15', category: 'Еда', description: 'Продукты' },
-  { id: 19, displayType: 'Списание', type: 'expense', amount: 3000, date: '2023-04-20', category: 'Одежда', description: 'Обувь' },
-  { id: 20, displayType: 'Списание', type: 'expense', amount: 1500, date: '2023-04-25', category: 'Здоровье', description: 'Витамины' }
-]
+const transactionsList = ref([]);
+const transactionsMonth = ref([]);
+const transactionListPage = ref(1);
+const transactionListPerPage = ref(10);
+const transactionListTotalPage = ref(1);
 
 const accounts = computed(() => {
-  return store.getters.GET_ACCOUNTS || [];
+  const list = store.getters.GET_ACCOUNTS || [];
+  if (!list.length) return [];
+  const totalBalance = list.reduce((sum, acc) => sum + acc.balance, 0);
+  return [
+    {
+      id: "total",
+      title: "Общий баланс",
+      description: "",
+      balance: totalBalance,
+    },
+    ...list,
+  ];
 });
+
+const isReset = computed(() => store.state.resetTransaction);
+
+watch(isReset, (newValue) => {
+  if (newValue) {
+    transactionListPage.value = 1;
+    fetchTransactionsList(transactionListPage.value, transactionListPerPage.value);
+    nextTick(() => {
+      store.commit("SET_RESET_TRANSACTIONS", false);
+    });
+  }
+});
+
+async function fetchTransactionsList() {
+  let config = {
+    page: transactionListPage.value,
+    perPage: transactionListPerPage.value,
+  }
+  const res = await store.dispatch("getTransactions", config);
+  if(res.success) {
+    transactionsList.value = res.data;
+    transactionListTotalPage.value = res.pagination.totalPages;
+  }
+}
+
+async function fetchTransactionsMonth() {
+  const now = new Date();
+  const dateStart = new Date(now.getFullYear(), now.getMonth(), 1)
+      .toISOString()
+      .split("T")[0];
+
+  const dateEnd = now.toISOString().split("T")[0];
+  const config = {
+    dateStart,
+    dateEnd,
+  };
+
+  const res = await store.dispatch("getTransactions", config);
+  if (res.success) {
+    transactionsMonth.value = res.data;
+  }
+}
+
+watch(transactionListPage, (newPage) => {
+  transactionListPage.value = newPage;
+  fetchTransactionsList(transactionListPage.value, transactionListPerPage.value);
+  }
+)
 
 onMounted(() => {
   store.dispatch("getAccounts");
-  store.dispatch("getTransactions");
+  fetchTransactionsList(transactionListPerPage.value, transactionListPerPage.value);
+  fetchTransactionsMonth();
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .transactions{
   &__header{
     margin-bottom: 24px;
@@ -128,7 +167,7 @@ onMounted(() => {
   }
 
   &__button{
-    width: fit-content;
+    width: fit-content !important;
   }
 
   &__menu{
@@ -156,6 +195,17 @@ onMounted(() => {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
+  }
+
+  &__pagination{
+    margin: 0 auto;
+    & .n-pagination-item.n-pagination-item--button{
+      border-radius: 6px !important;
+    }
+
+    & .n-pagination-item{
+      border-radius: 6px !important;
+    }
   }
 
 }

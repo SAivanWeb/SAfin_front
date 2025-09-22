@@ -1,79 +1,71 @@
 <template>
   <ModalWrapper size="650px">
     <template #header>
-      <h2 class="modal__title">{{isEditMode ? 'Обновление цели' : 'Создание цели'}}</h2>
+      <h2 class="modal__title">{{'Создание цели'}}</h2>
     </template>
 
     <template #body>
-        <RadioBox
-            :items="goalsType"
-            v-model="goalsData.type"
-            title="Тип цели"
-            @update:modelValue="handleTypeChange"
+      <RadioBox
+          :items="goalsType"
+          v-model="goalsData.type"
+          title="Тип цели"
+          @update:modelValue="handleTypeChange"
+      />
+
+      <div class="modal__fields-container">
+        <CheckBox title="Основная цель" label="Основная цель" v-model="goalsData.is_main"/>
+
+        <MainInput
+            label="Наименование"
+            placeholder="Введите название цели"
+            v-model="goalsData.title"
         />
 
-        <div class="modal__fields-container">
-          <CheckBox title="Основная цель" label="Основная цель" v-model="goalsData.is_main"/>
+        <MainInput
+            label="Описание"
+            placeholder="Опишите вашу цель"
+            v-model="goalsData.description"
+        />
 
-          <MainInput
-              label="Наименование"
-              placeholder="Введите название цели"
-              v-model="goalsData.name"
-          />
+        <MainSelect
+            v-if="goalsData.type === 'limiting'"
+            title="Категория расходов"
+            :items="categories"
+            v-model="goalsData.category_id"
+            placeholder="Выберите категорию"
+        />
 
-          <MainInput
-              label="Описание"
-              placeholder="Опишите вашу цель"
-              v-model="goalsData.description"
-          />
+        <InputDate
+            label="Дата начала"
+            v-model="goalsData.start_at"
+            format="yyyy-MM-dd"
+        />
 
-          <MainSelect
-              v-if="goalsData.type === 'limiting'"
-              title="Категория расходов"
-              :items="categories"
-              v-model="goalsData.category_id"
-              placeholder="Выберите категорию"
-          />
+        <InputDate
+            :label="goalsData.type === 'saving' ? 'Дата завершения' : 'Ограничивающий срок'"
+            v-model="goalsData.end_at"
+            format="yyyy-MM-dd"
+        />
 
-          <MainSelect
-              title="Приоритет цели"
-              :items="priorityOptions"
-              v-model="goalsData.priority"
-          />
+        <MainInput
+            type="number"
+            :label="goalsData.type === 'saving' ? 'Текущая сумма' : 'Текущий расход'"
+            placeholder="Введите сумму"
+            v-model="goalsData.current_amount"
+        />
 
-          <InputDate
-              label="Дата начала"
-              v-model="goalsData.start_at"
-              format="yyyy-MM-dd"
-          />
+        <MainInput
+            type="number"
+            :label="goalsData.type === 'saving' ? 'Желаемая сумма' : 'Лимит расходов'"
+            placeholder="Введите сумму"
+            v-model="goalsData.target_amount"
+        />
 
-          <InputDate
-              :label="goalsData.type === 'saving' ? 'Дата завершения' : 'Ограничивающий срок'"
-              v-model="goalsData.end_at"
-              format="yyyy-MM-dd"
-          />
+      </div>
 
-          <MainInput
-              type="number"
-              :label="goalsData.type === 'saving' ? 'Текущая сумма' : 'Текущий расход'"
-              placeholder="Введите сумму"
-              v-model="goalsData.current_amount"
-          />
-
-          <MainInput
-              type="number"
-              :label="goalsData.type === 'saving' ? 'Желаемая сумма' : 'Лимит расходов'"
-              placeholder="Введите сумму"
-              v-model="goalsData.target_amount"
-          />
-
-        </div>
-
-        <div class="modal__actions">
-          <MainButton v-if="!isEditMode" title="Создать" @click="createGoal" :disabled="disableButton"/>
-          <MainButton v-if="isEditMode" title="Удалить" @click="deleteGoal" type="secondary"/>
-          <MainButton v-if="isEditMode" title="Обновить" @click="updateGoal" :disabled="disableButton"/>
-        </div>
+      <div class="modal__actions">
+        <MainButton title="Создать" @click="createGoal" :disabled="disableButton"/>
+      </div>
     </template>
   </ModalWrapper>
 </template>
@@ -81,7 +73,7 @@
 <script setup>
 import ModalWrapper from "@/components/template/ModalWrapper.vue";
 import MainInput from "@/components/ui/input/MainInput.vue";
-import {ref, computed, onMounted, toRefs, inject} from "vue";
+import {ref, computed, inject} from "vue";
 import RadioBox from "@/components/ui/box/RadioBox.vue";
 import MainSelect from "@/components/ui/select/MainSelect.vue";
 import InputDate from "@/components/ui/input/InputDate.vue";
@@ -91,24 +83,11 @@ import {useStore} from "vuex";
 
 const store = useStore();
 
-const props = defineProps({
-  editGoal: {
-    type: Object,
-  },
-  isEditMode: {
-    type: Boolean,
-    default: false
-  },
-});
-
+const emit = defineEmits('hide-modal');
 const { api } = inject('plugins');
 
-const emit = defineEmits('hide-modal');
-
-const {isEditMode} = toRefs(props);
-
 const goalsData = ref({
-  name: '',
+  title: '',
   description: '',
   type: 'saving',
   category_id: null,
@@ -116,13 +95,12 @@ const goalsData = ref({
   target_amount: null,
   start_at: new Date().toISOString().split('T')[0],
   end_at: null,
-  priority: 1,
   is_main: false,
 });
 
 const clearForm = () => {
   goalsData.value = {
-    name: '',
+    title: '',
     description: '',
     type: goalsData.value.type,
     category_id: null,
@@ -130,27 +108,24 @@ const clearForm = () => {
     target_amount: null,
     start_at: new Date().toISOString().split('T')[0],
     end_at: null,
-    priority: 1,
     is_main: false,
   };
 };
 
 const disableButton = computed(() => {
   if (goalsData.value.type === "saving") {
-    return !goalsData.value.name ||
+    return !goalsData.value.title ||
         (!goalsData.value.current_amount && goalsData.value.current_amount !== 0) ||
         !goalsData.value.target_amount ||
         !goalsData.value.start_at ||
-        !goalsData.value.end_at ||
-        !goalsData.value.priority;
+        !goalsData.value.end_at
   } else {
-    return !goalsData.value.name ||
+    return !goalsData.value.title ||
         !goalsData.value.category_id ||
         !goalsData.value.current_amount ||
         !goalsData.value.target_amount ||
         !goalsData.value.start_at ||
-        !goalsData.value.end_at ||
-        !goalsData.value.priority;
+        !goalsData.value.end_at
   }
 })
 
@@ -159,17 +134,11 @@ const goalsType = [
   { item_title: 'Лимитная', id: 'limiting', name: 'limiting', group: 'goal-type' }
 ];
 
-const priorityOptions = [
-  { value: 1, label: 'Низкий' },
-  { value: 2, label: 'Средний' },
-  { value: 3, label: 'Высокий' }
-];
-
 const categories = computed(() => {
   const raw = store.getters.GET_CATEGORIES || [];
   return raw.map(item => ({
     value: item.id,
-    label: item.name
+    label: item.title
   }));
 });
 
@@ -185,35 +154,4 @@ async function createGoal() {
     store.dispatch("getGoals");
   }
 }
-
-async function deleteGoal() {
-  const res = await api.goals.deleteGoal(props.editGoal.id);
-  if (res.success) {
-    emit('hide-modal');
-    store.dispatch("getGoals");
-  }
-}
-
-// async function updateGoal() {
-//   const res = await api.goals.deleteGoal(props.editGoal.id);
-//   if (res.success) {
-//     emit('hide-modal');
-//     store.dispatch("getGoals");
-//   }
-// }
-
-onMounted(() => {
-  if (isEditMode.value) {
-    handleTypeChange(props.editGoal.type)
-    goalsData.value.is_main = props.editGoal.is_main;
-    goalsData.value.name = props.editGoal.name;
-    goalsData.value.description = props.editGoal.description;
-    goalsData.value.category_id = props.editGoal.category_id ? props.editGoal.category_id : null;
-    goalsData.value.current_amount = props.editGoal.current_amount;
-    goalsData.value.target_amount = props.editGoal.target_amount;
-    goalsData.value.start_at = props.editGoal.start_at;
-    goalsData.value.end_at = props.editGoal.end_at;
-    goalsData.value.priority = props.editGoal.priority;
-  }
-})
 </script>

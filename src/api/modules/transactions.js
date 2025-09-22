@@ -1,9 +1,9 @@
 import api from '../api.js'
 
 export default {
-    async getTransactions() {
+    async getTransactions(params) {
         try {
-            const response = await api.get(`/transactions`);
+            const response = await api.get(`/transactions`, {params});
             return response.data;
         } catch (error) {
             throw error.response?.data?.error || error;

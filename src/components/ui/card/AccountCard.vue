@@ -2,7 +2,7 @@
   <div class="account-card">
     <div class="account-card__header">
       <h4 class="account-card__name">{{ item.title }}</h4>
-      <div class="account-card__menu" :class="{ active: showMenu }">
+      <div v-if="item.id !== 'total'" class="account-card__menu" :class="{ active: showMenu }">
         <menu-vertical
             class="account-card__menu-icon"
             @click.stop="showMenu = !showMenu"
