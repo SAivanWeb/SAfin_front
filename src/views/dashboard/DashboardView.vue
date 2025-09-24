@@ -14,13 +14,13 @@
       </div>
       <div class="dashboard__user-info balance">
         <h3 class="dashboard__sub-title">Баланс</h3>
-        <p class="dashboard__user-value">100 000₽</p>
+        <p class="dashboard__user-value">{{ totalBalance }}₽</p>
       </div>
     </div>
 
-    <div class="dashboard__section">
+    <div v-if="mainGoal" class="dashboard__section">
       <h3 class="dashboard__sub-title">Основная цель</h3>
-<!--      <GoalCard :editable="false"/>-->
+      <GoalCard :editable="false" :goal="mainGoal" @show-amount-goal="(goal) => $emit('showAmountGoal', goal)"/>
     </div>
 
     <div class="dashboard__section">
@@ -94,13 +94,15 @@ import TransactionList from "@/components/transaction/TransactionList.vue";
 import MainCard from "@/components/ui/card/MainCard.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import PageAlert from "@/components/template/PageAlert.vue";
-import {useRoute, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import InputDate from "@/components/ui/input/InputDate.vue";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useStore} from "vuex";
 
 const router = useRouter();
 const store = useStore();
+
+defineEmits(['showAmountGoal']);
 
 const transactions = ref([]);
 
@@ -115,7 +117,27 @@ async function fetchTransactions() {
   }
 }
 
+const totalBalance = computed(() => {
+  const accounts = store.getters.GET_ACCOUNTS || [];
+  const total = accounts.find(acc => acc.id === "total");
+
+  return total
+      ? total.balance.toLocaleString("ru-RU", {
+        useGrouping: true,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }).replace(/,/g, " ")
+      : "0";
+});
+
+const mainGoal = computed(() => {
+  const goals = store.getters.GET_GOALS || [];
+  return goals.find(goal => goal.isMain === true);
+})
+
 onMounted(() => {
+  store.dispatch("getAccounts");
+  store.dispatch("getGoals");
   fetchTransactions();
 })
 </script>

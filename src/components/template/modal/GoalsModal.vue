@@ -122,7 +122,7 @@ const disableButton = computed(() => {
   } else {
     return !goalsData.value.title ||
         !goalsData.value.category_id ||
-        !goalsData.value.current_amount ||
+        (!goalsData.value.current_amount && goalsData.value.current_amount !== 0) ||
         !goalsData.value.target_amount ||
         !goalsData.value.start_at ||
         !goalsData.value.end_at

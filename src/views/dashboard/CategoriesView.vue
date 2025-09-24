@@ -6,11 +6,10 @@
     </div>
     <PageAlert class="categories__alert"/>
     <div class="categories__menu">
-      <Filter/>
       <InputSearch class="categories__menu-search" placeholder="поиск категории" :items="categories" v-model="searchedValue"/>
     </div>
     <div class="categories__container">
-      <n-collapse :trigger-areas="triggerAreas">
+      <n-collapse :trigger-areas="triggerAreas" @update:expanded-names="fetchCategoryData" accordion>
         <n-collapse-item v-for="item in filteredCategories" :title="item.title" :name="item.id" :class="{ 'favorite-category': item.isFavorite }">
           <template #header-extra >
             <div class="categories__item-menu" :class="{ active: showCategoryMenu === item.id }">
@@ -37,14 +36,14 @@
               </div>
             </div>
           </template>
-          <div class="categories__item">
-            <div v-if="item.description" class="categories__item-descripiton">
-              Описание: {{ item.description }}
+          <div v-if="activeCategory" class="categories__item">
+            <div class="categories__item-descripiton">
+              Описание: {{ activeCategory.description }}
             </div>
             <div class="categories__item-statistic">
-              <p>Потрачено в этом месяце: <span>20 000</span></p>
-              <p>Лимит: <span>30 000</span></p>
-              <p>15% от всех расходов</p>
+              <p v-if="activeCategory.stats.monthAmount !== 0">Потрачено в этом месяце: <span>{{activeCategory.stats.monthAmount}}₽</span></p>
+              <p v-if="activeCategory.stats.expenseLimit">Лимит: <span>{{ activeCategory.stats.expenseLimit }}₽</span></p>
+              <p v-if="activeCategory.stats.percent !== 0">{{ activeCategory.stats.percent }}% от всех расходов</p>
             </div>
           </div>
         </n-collapse-item>
@@ -87,6 +86,7 @@ const categories = computed(() => {
 const triggerAreas = ['main', 'arrow']
 const searchedValue = ref('');
 const showCategoryMenu = ref(null);
+const activeCategory = ref(null);
 
 const filteredCategories = computed(() => {
   let list = categories.value || [];
@@ -141,6 +141,13 @@ async function favoriteCategory(category) {
     store.dispatch("getCategories");
   }
 }
+
+async function fetchCategoryData (id) {
+  const res = await api.category.getCategory(id[0]);
+  if (res.success) {
+    activeCategory.value = res.data;
+  }
+}
 </script>
 
 <style lang="scss">
@@ -171,6 +178,7 @@ async function favoriteCategory(category) {
     &-search{
       width: 100%;
       max-width: 300px;
+      margin-left: auto;
     }
   }
 

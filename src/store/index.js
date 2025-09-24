@@ -83,7 +83,19 @@ export default createStore({
         async getAccounts({ commit }) {
             const res = await accountsApi.getAccounts();
             if (res.success) {
-                commit('SET_ACCOUNTS', res.data);
+                if (res.data.length === 0) return [];
+                let accounts = res.data;
+                const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
+                accounts = [
+                    {
+                        id: "total",
+                        title: "Общий баланс",
+                        description: "",
+                        balance: totalBalance,
+                    },
+                    ...accounts,
+                ];
+                commit('SET_ACCOUNTS', accounts);
             }
         }
     },

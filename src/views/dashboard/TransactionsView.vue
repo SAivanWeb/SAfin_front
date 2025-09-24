@@ -83,18 +83,7 @@ const transactionListPerPage = ref(10);
 const transactionListTotalPage = ref(1);
 
 const accounts = computed(() => {
-  const list = store.getters.GET_ACCOUNTS || [];
-  if (!list.length) return [];
-  const totalBalance = list.reduce((sum, acc) => sum + acc.balance, 0);
-  return [
-    {
-      id: "total",
-      title: "Общий баланс",
-      description: "",
-      balance: totalBalance,
-    },
-    ...list,
-  ];
+  return store.getters.GET_ACCOUNTS || [];
 });
 
 const isReset = computed(() => store.state.resetTransaction);

@@ -64,10 +64,6 @@ const emitShowAmountGoal = () => {
   emit('showAmountGoal', props.goal);
 };
 
-const emitShowEditGoal = () => {
-  emit('showEditGoal', props.goal);
-};
-
 const progressMoney = computed(() => {
   const current = props.goal.currentAmount || 0
   const target = props.goal.targetAmount || 0
