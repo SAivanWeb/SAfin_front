@@ -20,7 +20,7 @@
                 </template>
                 <template #list>
                   <div class="transactions__statistic-item">
-                    <Filter/>
+                    <Filter @apply-filters="fetchTransactionsList"/>
                     <TransactionList :items="transactionsList"/>
                     <n-pagination v-if="transactionsList.length > transactionListPerPage" class="transactions__pagination" v-model:page="transactionListPage" :page-count="transactionListTotalPage" />
                   </div>
@@ -98,10 +98,11 @@ watch(isReset, (newValue) => {
   }
 });
 
-async function fetchTransactionsList() {
+async function fetchTransactionsList(filters) {
   let config = {
     page: transactionListPage.value,
     perPage: transactionListPerPage.value,
+    ...filters
   }
   const res = await store.dispatch("getTransactions", config);
   if(res.success) {

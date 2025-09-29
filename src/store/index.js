@@ -5,6 +5,7 @@ import categoryApi from "@/api/modules/category.js";
 import goalsApi from "@/api/modules/goals.js"
 import transactionsApi from "@/api/modules/transactions.js"
 import accountsApi from "@/api/modules/account.js"
+import generalApi from "@/api/modules/general.js"
 
 export default createStore({
     state: {

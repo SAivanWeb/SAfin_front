@@ -1,10 +1,12 @@
 <template>
   <div class="transaction">
-    <div class="transaction__text">
-      {{ item.category.title }}
-    </div>
-    <div class="transaction__text">
-      {{ item.account.title }}
+    <div class="transaction__text-group">
+      <div class="transaction__text">
+        {{ item.category.title }}
+      </div>
+      <div class="transaction__text">
+        {{ item.account.title }}
+      </div>
     </div>
     <div class="transaction__text transaction__text_date">
       {{ formatDate(item.date) }}
@@ -57,12 +59,25 @@ const formatDate = (dateString) => {
   font-size: 18px;
 
   display: grid;
-  grid-template-columns: 20% 1fr 1fr 1fr;
+  grid-template-columns: 30% 1fr 1fr;
   align-items: center;
   gap: 6px;
 
   &__text{
     font-size: 18px;
+
+    &_date{
+      margin-left: auto;
+    }
+
+    &-group{
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      @media (max-width: 550px) {
+        flex-direction: column;
+      }
+    }
   }
 
   &__amount{
@@ -91,7 +106,7 @@ const formatDate = (dateString) => {
 @media (max-width: 768px) {
   .transaction{
     padding: 16px;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     &__text{
       font-size: 16px;
     }

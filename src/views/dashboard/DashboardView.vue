@@ -25,7 +25,7 @@
 
     <div class="dashboard__section">
       <h3 class="dashboard__sub-title">Статистика</h3>
-      <InputDate type="month"/>
+      <InputDate v-model="statsPeriod" type="month"/>
       <div class="dashboard__cards">
         <MainCard>
           <template #header>
@@ -96,8 +96,9 @@ import MainButton from "@/components/ui/button/MainButton.vue";
 import PageAlert from "@/components/template/PageAlert.vue";
 import {useRouter} from "vue-router";
 import InputDate from "@/components/ui/input/InputDate.vue";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useStore} from "vuex";
+import generalApi from "@/api/modules/general.js";
 
 const router = useRouter();
 const store = useStore();
@@ -105,6 +106,15 @@ const store = useStore();
 defineEmits(['showAmountGoal']);
 
 const transactions = ref([]);
+const stats = ref(null);
+const now = new Date()
+const statsPeriod = ref(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`)
+
+watch(statsPeriod, (newVal) => {
+  if (newVal) {
+    getGeneralStats(newVal);
+  }
+})
 
 const toTransactions = () => {
   router.push('/transactions/')
@@ -135,10 +145,26 @@ const mainGoal = computed(() => {
   return goals.find(goal => goal.isMain === true);
 })
 
+async function getGeneralStats(period) {
+  if (!period) return;
+
+  const date = new Date(period);
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const res = await generalApi.getStats({ month, year });
+
+  if (res.success) {
+    stats.value = res.data;
+  }
+}
+
+
 onMounted(() => {
   store.dispatch("getAccounts");
   store.dispatch("getGoals");
   fetchTransactions();
+  getGeneralStats(statsPeriod.value);
 })
 </script>
 

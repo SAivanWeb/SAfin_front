@@ -6,7 +6,7 @@
         :type="type"
         clearable
         @update:value="handleDateUpdate"
-        :size="type === 'daterange' ? 'medium' : 'large'"
+        size="large"
         :format="format"
         :value-format="format"
         :month-format="monthFormat"
