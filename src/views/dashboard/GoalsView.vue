@@ -4,7 +4,7 @@
       <MainTitle title="Цели" class="goals__title"/>
       <MainButton class="goals__button" action="add" title="создать цель" type="secondary" @click="$emit('showGoals')"/>
     </div>
-    <PageAlert class="goals__alert"/>
+<!--    <PageAlert class="goals__alert"/>-->
     <div class="goals__container">
       <GoalCard v-for="item in goals" :goal="item" @show-amount-goal="(goal) => $emit('showAmountGoal', goal)"/>
     </div>

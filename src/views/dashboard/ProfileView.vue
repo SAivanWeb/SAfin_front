@@ -4,7 +4,7 @@
       <MainTitle title="Профиль" class="profile__title"/>
       <MainButton class="profile__button" title="получить отчет" type="secondary" @click="toChat"/>
     </div>
-    <PageAlert class="profile__alert"/>
+<!--    <PageAlert class="profile__alert"/>-->
 
     <div class="profile__levels">
       <h3 class="profile__levels-title">Уровни</h3>
@@ -45,7 +45,7 @@
         </template>
         <template #body>
           <div class="card__body-row card__body-row_center">
-            <span class="card__body-statistic">{{userProfile.goals_count}}</span>
+            <span class="card__body-statistic">{{userProfile.goalsCount}}</span>
           </div>
         </template>
       </MainCard>
@@ -55,7 +55,7 @@
         </template>
         <template #body>
           <div class="card__body-row card__body-row_center">
-            <span class="card__body-statistic">{{userProfile.transaction_count}}</span>
+            <span class="card__body-statistic">{{userProfile.transactionsCount}}</span>
           </div>
         </template>
       </MainCard>
@@ -65,7 +65,7 @@
         </template>
         <template #body>
           <div class="card__body-row card__body-row_center">
-            <span class="card__body-statistic">25</span>
+            <span class="card__body-statistic">{{userProfile.points}}</span>
           </div>
         </template>
       </MainCard>
@@ -100,18 +100,22 @@ import MainInput from "@/components/ui/input/MainInput.vue";
 import Edit from "@/assets/icons/edit.vue"
 import Cancel from "@/assets/icons/cancel.vue";
 import Check from "@/assets/icons/check.vue";
-import {computed, ref, watch} from "vue";
+import {computed, inject, ref, watch} from "vue";
 import {useStore} from "vuex"
 import LevelCard from "@/components/ui/card/LevelCard.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import {useRouter} from "vue-router";
 import Process from "@/assets/icons/process.vue";
 import PageAlert from "@/components/template/PageAlert.vue";
-
+const { api } = inject('plugins');
 const router = useRouter();
 const store = useStore();
 
-const userProfile = computed(() => store.getters['user/GET_CURRENT_USER'] || {});
+const userProfile = computed(() => {
+  console.log(store.getters['user/GET_CURRENT_USER'])
+    return store.getters['user/GET_CURRENT_USER'] || {}
+  }
+);
 
 const profileData = ref({
   name: '',
@@ -141,6 +145,8 @@ const tasks = [
   },
 ]
 
+const levels = ref([]);
+
 const toChat = () => {
   router.push("/chat");
 }
@@ -163,7 +169,13 @@ const clearProfileData = () => {
 }
 
 const editProfileData = async () => {
-  console.log(profileData.value);
+  profileData.value.cushion = userProfile.value.cushion;
+  const res = await api.user.updateProfile(profileData.value);
+
+  if(res.success){
+    store.dispatch('getProfile');
+    isFieldDisabled.value = true;
+  }
 }
 </script>
 

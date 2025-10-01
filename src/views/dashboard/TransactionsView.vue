@@ -5,16 +5,16 @@
       <MainButton v-if="activeTab === 'transactions'" class="transactions__button" action="add" title="создать транзакцию" type="secondary" @click="$emit('showTransaction')"/>
       <MainButton v-else class="transactions__button" action="add" title="создать счет" type="secondary" @click="$emit('showAccount')"/>
     </div>
-    <PageAlert class="transactions__alert"/>
+<!--    <PageAlert class="transactions__alert"/>-->
     <div class="transactions__container">
       <TabContainer :headers="tabHeadersMain" v-model:active="activeTab" :main="true">
           <template #transactions>
               <TabContainer :headers="tabHeadersTransactions">
-                <template #chart>
-                  <div class="transactions__statistic-item">
-                    <Chart :items="transactionsMonth"/>
-                  </div>
-                </template>
+<!--                <template #chart>-->
+<!--                  <div class="transactions__statistic-item">-->
+<!--                    <Chart :items="transactionsMonth"/>-->
+<!--                  </div>-->
+<!--                </template>-->
                 <template #progress>
                   <ProgressList :items="transactionsMonth"/>
                 </template>
@@ -66,10 +66,10 @@ const tabHeadersTransactions = ref([
     name: 'list',
     value: 'Список'
   },
-  {
-    name: 'chart',
-    value: 'График'
-  },
+  // {
+  //   name: 'chart',
+  //   value: 'График'
+  // },
   {
     name: 'progress',
     value: 'Прогресс'

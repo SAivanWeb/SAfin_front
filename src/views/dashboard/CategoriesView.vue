@@ -4,7 +4,7 @@
       <MainTitle title="Категории" class="categories__title"/>
       <MainButton class="categories__button" action="add" title="создать категорию" type="secondary" @click="$emit('showCategory')"/>
     </div>
-    <PageAlert class="categories__alert"/>
+<!--    <PageAlert class="categories__alert"/>-->
     <div class="categories__menu">
       <InputSearch class="categories__menu-search" placeholder="поиск категории" :items="categories" v-model="searchedValue"/>
     </div>

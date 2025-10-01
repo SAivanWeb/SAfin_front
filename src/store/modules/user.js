@@ -3,7 +3,6 @@ import userApi from '@/api/modules/user.js';
 const state = {
     currentUser: null,
     isAuth: false,
-    userID: null,
     error: null,
     access_token: null,
 };
@@ -11,9 +10,6 @@ const state = {
 const getters = {
     GET_CURRENT_USER(state) {
         return state.currentUser;
-    },
-    GET_USER_ID(state) {
-        return state.userID;
     },
     GET_IS_AUTH(state) {
         return state.isAuth;
@@ -26,9 +22,6 @@ const getters = {
 const mutations = {
     SET_CURRENT_USER(state, user) {
         state.currentUser = user;
-    },
-    SET_USER_ID(state, userId) {
-        state.userId = userId;
     },
     SET_TOKENS(state, tokens) {
         state.access_token = tokens.access_token;
@@ -43,7 +36,6 @@ const mutations = {
     CLEAR_AUTH(state) {
         state.currentUser = null;
         state.isAuth = false;
-        state.userId = null;
         state.error = null;
         state.access_token = null;
         localStorage.removeItem('access_token');
@@ -62,8 +54,7 @@ const actions = {
             commit('SET_ERROR', null);
             const response = await userApi.register(payload);
             if(response.success){
-                commit('SET_CURRENT_USER', {name: response.data.name, email: response.data.email});
-                commit('SET_USER_ID', response.data.id);
+                commit('SET_CURRENT_USER', response.data.user);
                 commit('SET_TOKENS', response.data.token);
             }
             return response;
@@ -78,8 +69,7 @@ const actions = {
             commit('SET_ERROR', null);
             const response = await userApi.login(payload);
             if(response.success){
-                commit('SET_CURRENT_USER', {name: response.data.name, email: response.data.email});
-                commit('SET_USER_ID', response.data.id);
+                commit('SET_CURRENT_USER', response.data.user);
                 commit('SET_TOKENS', response.data.token);
             }
             return response;

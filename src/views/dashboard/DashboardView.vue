@@ -2,7 +2,7 @@
   <MainWrapper>
     <MainTitle title="Главная" class="dashboard__title"/>
 
-    <PageAlert class="dashboard__alert"/>
+<!--    <PageAlert class="dashboard__alert"/>-->
 
     <div class="dashboard__section dashboard__section_row dashboard__section_user">
       <div class="dashboard__user-info level">
@@ -23,55 +23,104 @@
       <GoalCard :editable="false" :goal="mainGoal" @show-amount-goal="(goal) => $emit('showAmountGoal', goal)"/>
     </div>
 
-    <div class="dashboard__section">
-      <h3 class="dashboard__sub-title">Статистика</h3>
+    <div v-if="stats" class="dashboard__section">
+      <h3 class="dashboard__sub-title">Статистика за период</h3>
       <InputDate v-model="statsPeriod" type="month"/>
       <div class="dashboard__cards">
         <MainCard>
           <template #header>
-            <div class="card__title">Доход</div>
+            <div class="card__title">Общая</div>
           </template>
-          <template #body>
+          <template v-if="stats.current.general" #body>
             <div class="card__period">
-              <div>Количество транзакций: 100</div>
-              <div class="card__period_worse">Потрачено: 100 000 <span>(на 10% больше)</span></div>
-              <div class="card__period_better">Заработано: 110 000 <span>(на 20% больше)</span></div>
+              <div>
+                Количество транзакций: {{ stats.current.general.count }}
+              </div>
+              <div>
+                Потрачено: {{ stats.current.general.spent }}
+                <span class="reverse" v-if="stats.previous.general" :class="diffInfo('general','spent').class">({{ diffInfo('general','spent').text }})</span>
+              </div>
+              <div>
+                Заработано: {{ stats.current.general.earned }}
+                <span class="default" v-if="stats.previous.general" :class="diffInfo('general','earned').class">({{ diffInfo('general','earned').text }})</span>
+              </div>
+            </div>
+          </template>
+          <template v-else #body>
+            <div class="card__period card__period_empty">
+              Нет данных
             </div>
           </template>
         </MainCard>
         <MainCard>
           <template #header>
-            <div class="card__title">Расход</div>
+            <div class="card__title">Популярная категория</div>
           </template>
-          <template #body>
+          <template v-if="stats.current.popular_category" #body>
             <div class="card__period">
-              <div>Количество транзакций: 40</div>
-              <div class="card__period_worse">Потрачено: 20 000 <span>(на 20% больше)</span></div>
-              <div class="card__period_better">Заработано: 0</div>
+              <div>
+                Название: {{ stats.current.popular_category.title }}
+              </div>
+              <div>
+                Количество транзакций: {{ stats.current.popular_category.count }}
+              </div>
+              <div>
+                {{ stats.current.popular_category.type === 'income' ? 'Заработано' : 'Потрачено' }}: {{ stats.current.popular_category.amount }}
+                <span v-if="stats.previous.popular_category" :class="[diffInfo('popular_category','amount').class , stats.current.popular_category.type === 'income' ? 'default' : 'reverse' ]">
+                  ({{ diffInfo('popular_category','amount').text }})
+                </span>
+              </div>
+            </div>
+          </template>
+          <template v-else #body>
+            <div class="card__period card__period_empty">
+              Нет данных
             </div>
           </template>
         </MainCard>
         <MainCard>
           <template #header>
-            <div class="card__title">Разница</div>
+            <div class="card__title">Затратная категория</div>
           </template>
-          <template #body>
+          <template v-if="stats.current.expensive_category" #body>
             <div class="card__period">
-              <div>Количество транзакций: 100</div>
-              <div class="card__period_worse">Потрачено: 100 000 <span>(на 10% больше)</span></div>
-              <div class="card__period_better">Заработано: 110 000 <span>(на 20% больше)</span></div>
+              <div>
+                Название: {{ stats.current.expensive_category.title }}</div>
+              <div>
+                Количество транзакций: {{ stats.current.expensive_category.count }}
+              </div>
+              <div>
+                Потрачено: {{ stats.current.expensive_category.amount }}
+                <span class="reverse" v-if="stats.previous.expensive_category" :class="diffInfo('expensive_category','amount').class">({{ diffInfo('expensive_category','amount').text }})</span>
+              </div>
+            </div>
+          </template>
+          <template v-else #body>
+            <div class="card__period card__period_empty">
+              Нет данных
             </div>
           </template>
         </MainCard>
         <MainCard>
           <template #header>
-            <div class="card__title">Категория</div>
+            <div class="card__title">Прибыльная категория</div>
           </template>
-          <template #body>
+          <template v-if="stats.current.profitable_category" #body>
             <div class="card__period">
-              <div>Количество транзакций: 40</div>
-              <div class="card__period_worse">Потрачено: 20 000 <span>(на 20% больше)</span></div>
-              <div class="card__period_better">Заработано: 0</div>
+              <div>
+                Название: {{ stats.current.profitable_category.title }}</div>
+              <div>
+                Количество транзакций: {{ stats.current.profitable_category.count }}
+              </div>
+              <div>
+                Заработано: {{ stats.current.profitable_category.amount }}
+                <span class="default" v-if="stats.previous.profitable_category" :class="diffInfo('profitable_category','amount').class">({{ diffInfo('profitable_category','amount').text }})</span>
+              </div>
+            </div>
+          </template>
+          <template v-else #body>
+            <div class="card__period card__period_empty">
+              Нет данных
             </div>
           </template>
         </MainCard>
@@ -159,6 +208,26 @@ async function getGeneralStats(period) {
   }
 }
 
+const diffInfo = (key, field) => {
+  const prev = stats.value?.previous?.[key]?.[field];
+  const curr = stats.value?.current?.[key]?.[field];
+
+  if (prev == null || curr == null || typeof prev !== 'number' || typeof curr !== 'number') {
+    return { text: '', class: '' };
+  }
+
+  if (prev === 0) {
+    return curr > 0
+        ? { text: 'выросло с 0', class: 'up' }
+        : { text: '', class: '' };
+  }
+
+  const diff = Math.round(((curr - prev) / prev) * 100);
+
+  if (diff === 0) return { text: 'без изменений', class: 'neutral' };
+  if (diff > 0) return { text: `на ${diff}% больше`, class: 'up' };
+  return { text: `на ${Math.abs(diff)}% меньше`, class: 'down' };
+};
 
 onMounted(() => {
   store.dispatch("getAccounts");
@@ -288,6 +357,10 @@ onMounted(() => {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 12px;
+
+    & .card{
+      min-height: 192px;
+    }
   }
   
 }

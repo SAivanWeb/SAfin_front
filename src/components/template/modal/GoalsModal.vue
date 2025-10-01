@@ -152,6 +152,7 @@ async function createGoal() {
   if (res.success) {
     emit('hide-modal');
     store.dispatch("getGoals");
+    store.dispatch("getProfile");
   }
 }
 </script>

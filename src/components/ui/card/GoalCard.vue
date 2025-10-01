@@ -87,6 +87,7 @@ async function deleteGoal() {
   const res = await api.goals.deleteGoal(props.goal.id);
   if (res.success) {
     store.dispatch("getGoals");
+    store.dispatch("getProfile");
   }
 }
 </script>

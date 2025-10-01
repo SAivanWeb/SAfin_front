@@ -112,6 +112,7 @@ async function createTransaction() {
   if (res.success) {
     store.commit("SET_RESET_TRANSACTIONS", true);
     store.dispatch("getAccounts");
+    store.dispatch("getProfile");
     emit('hide-modal');
   }
 }

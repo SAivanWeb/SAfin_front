@@ -35,5 +35,14 @@ export default {
         } catch (error) {
             throw error.response?.data?.error || error;
         }
+    },
+
+    async updateProfile(payload) {
+        try {
+            const response = await api.put('/auth/me', payload);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.error || error;
+        }
     }
 }

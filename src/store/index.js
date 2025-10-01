@@ -53,15 +53,17 @@ export default createStore({
             commit('SET_PRELOADER', true);
             let token = localStorage.getItem('access_token');
             if (token) {
-                const response = await userApi.getProfile();
-                if(response.success) {
-                    commit('user/SET_CURRENT_USER', {name: response.data.name, email: response.data.email});
-                    commit('user/SET_USER_ID', response.data.id);
-                    commit('user/INIT_AUTH');
-                    await dispatch('getCategories');
-                }
+                dispatch('getProfile');
             }
             commit('SET_PRELOADER', false);
+        },
+        async getProfile({ commit, dispatch }) {
+            const response = await userApi.getProfile();
+            if(response.success) {
+                commit('user/SET_CURRENT_USER', response.data);
+                commit('user/INIT_AUTH');
+                await dispatch('getCategories');
+            }
         },
         async getCategories({ commit }) {
             const res = await categoryApi.getCategories();

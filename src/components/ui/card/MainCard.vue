@@ -102,15 +102,30 @@
     gap: 12px;
     font-size: 20px;
 
-    &_worse{
-      & span{
-        color: red;
-      }
+    &_empty{
+      align-items: center;
+      justify-content: center;
+      height: 100%;
     }
 
-    &_better{
-      & span {
-        color: #2E7D32;
+    & span{
+      &.default{
+        &.up{
+          color: #2E7D32;
+        }
+
+        &.down{
+          color: red;
+        }
+      }
+      &.reverse{
+        &.up{
+          color: red;
+        }
+
+        &.down{
+          color: #2E7D32;
+        }
       }
     }
   }
