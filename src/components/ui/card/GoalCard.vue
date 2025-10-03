@@ -1,12 +1,12 @@
 <template>
-  <div class="goal-card">
+  <div class="goal-card" :class="`${goal.status}`">
     <div class="goal-card__header">
       <h4 class="goal-card__name">{{goal.title}}</h4>
       <div class="goal-card__icon-group">
         <div v-if="editable" class="goal-card__header-button" @click="deleteGoal">
           <Trash class="goal-card__icon trash"/>
         </div>
-        <div class="goal-card__header-button" @click="emitShowAmountGoal">
+        <div v-if="goal.status === 'process'" class="goal-card__header-button" @click="emitShowAmountGoal">
           <Plus class="goal-card__icon"/>
         </div>
       </div>
@@ -104,6 +104,14 @@ async function deleteGoal() {
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  &.complete{
+    border-color: #2E7D32;
+  }
+
+  &.failed{
+    border-color: #ff2626;
+  }
 
   &__header {
     display: flex;
