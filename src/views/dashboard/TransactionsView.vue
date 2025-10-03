@@ -9,7 +9,7 @@
     <div class="transactions__container">
       <TabContainer :headers="tabHeadersMain" v-model:active="activeTab" :main="true">
           <template #transactions>
-              <TabContainer :headers="tabHeadersTransactions">
+              <TabContainer :headers="tabHeadersTransactions" v-model:active="activeTransactionsTab">
 <!--                <template #chart>-->
 <!--                  <div class="transactions__statistic-item">-->
 <!--                    <Chart :items="transactionsMonth"/>-->
@@ -98,6 +98,14 @@ watch(isReset, (newValue) => {
   }
 });
 
+const activeTransactionsTab = ref('list');
+
+watch(activeTransactionsTab, (newVal) => {
+  if (newVal === 'progress') {
+    fetchTransactionsMonth();
+  }
+});
+
 async function fetchTransactionsList(filters) {
   let config = {
     page: transactionListPage.value,
@@ -138,7 +146,6 @@ watch(transactionListPage, (newPage) => {
 onMounted(() => {
   store.dispatch("getAccounts");
   fetchTransactionsList(transactionListPerPage.value, transactionListPerPage.value);
-  fetchTransactionsMonth();
 })
 </script>
 

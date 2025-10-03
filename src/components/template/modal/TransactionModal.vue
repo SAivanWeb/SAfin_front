@@ -79,9 +79,11 @@ const categories = computed(() => {
 
 const accounts = computed(() => {
   const raw = store.getters.GET_ACCOUNTS || [];
-  return raw.map(item => ({
+  return raw.filter(item => item.id !== "total")
+    .map(item => ({
     value: item.id,
-    label: item.title
+    label: item.title,
+    balance: item.balance
   }));
 });
 
@@ -100,12 +102,25 @@ const transactionTypes = [
 ];
 
 const disableButton = computed(() => {
-  return !transactionData.value.type ||
-  !transactionData.value.amount ||
-  !transactionData.value.categoryId ||
-  !transactionData.value.accountId ||
-  !transactionData.value.date;
-})
+  console.log(accounts.value)
+  if (transactionData.value.type === 'expense') {
+    const selectedAccount = accounts.value.find(
+        item => item.value === transactionData.value.accountId
+    );
+    if (!selectedAccount) return true;
+
+    if (transactionData.value.amount > selectedAccount.balance) {
+      return true;
+    }
+  }
+  return (
+      !transactionData.value.type ||
+      !transactionData.value.amount ||
+      !transactionData.value.categoryId ||
+      !transactionData.value.accountId ||
+      !transactionData.value.date
+  );
+});
 
 async function createTransaction() {
   const res = await api.transactions.createTransaction(transactionData.value);
