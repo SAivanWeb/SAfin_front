@@ -2,15 +2,14 @@
   <MainWrapper>
     <div class="profile__header">
       <MainTitle title="Профиль" class="profile__title"/>
-      <MainButton class="profile__button" title="получить отчет" type="secondary" @click="toChat"/>
+<!--      <MainButton class="profile__button" title="получить отчет" type="secondary" @click="toChat"/>-->
     </div>
 <!--    <PageAlert class="profile__alert"/>-->
 
     <div class="profile__levels">
       <h3 class="profile__levels-title">Уровни</h3>
       <n-carousel draggable :space-between="12" :show-dots="true">
-        <LevelCard/>
-        <LevelCard/>
+        <LevelCard v-for="level in levels" :item="level" :balance="userProfile.points"/>
       </n-carousel>
     </div>
 
@@ -75,14 +74,14 @@
       <h3 class="profile__levels-title">Задания</h3>
       <n-scrollbar style="max-height: 340px">
         <div class="profile__tasks">
-          <n-alert v-for="task in tasks" :title="task.status === 'done' ? 'Завершено' : 'В процессе'" :type="task.status === 'done' ? 'success' : 'default'">
-            <template #icon v-if="task.status === 'processing'">
+          <n-alert v-for="task in tasks" :title="task.status === 'complete' ? 'Завершено' : 'В процессе'" :type="task.status === 'complete' ? 'success' : 'default'">
+            <template #icon v-if="task.status === 'process'">
               <n-icon>
                 <process/>
               </n-icon>
             </template>
             <div class="profile__tasks-content">
-              {{ task.name }}<br/>
+              {{ task.title }}<br/>
               Баллы: {{ task.points }}
             </div>
           </n-alert>
@@ -100,7 +99,7 @@ import MainInput from "@/components/ui/input/MainInput.vue";
 import Edit from "@/assets/icons/edit.vue"
 import Cancel from "@/assets/icons/cancel.vue";
 import Check from "@/assets/icons/check.vue";
-import {computed, inject, ref, watch} from "vue";
+import {computed, inject, onMounted, ref, watch} from "vue";
 import {useStore} from "vuex"
 import LevelCard from "@/components/ui/card/LevelCard.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
@@ -112,7 +111,6 @@ const router = useRouter();
 const store = useStore();
 
 const userProfile = computed(() => {
-  console.log(store.getters['user/GET_CURRENT_USER'])
     return store.getters['user/GET_CURRENT_USER'] || {}
   }
 );
@@ -122,30 +120,30 @@ const profileData = ref({
   email: ''
 });
 
-const tasks = [
-  {
-    name: 'Выполнить 1 цель',
-    status: 'processing',
-    points: '50'
-  },
-  {
-    name: 'Выполнить 3 цели',
-    status: 'processing',
-    points: '30'
-  },
-  {
-    name: 'Добавить 50 транзакций',
-    status: 'done',
-    points: '10'
-  },
-  {
-    name: 'Вести статистику 3 дня подряд',
-    status: 'done',
-    points: '20'
-  },
-]
+const tasks = ref(null)
 
-const levels = ref([]);
+const levels = ref([
+  {
+    id: 1,
+    title: "Гоблин"
+  },
+  {
+    id: 2,
+    title: "Собиратель"
+  },
+  {
+    id: 3,
+    title: "Планировщик"
+  },
+  {
+    id: 4,
+    title: "Инвестор"
+  },
+  {
+    id: 5,
+    title: "Финансист"
+  },
+]);
 
 const toChat = () => {
   router.push("/chat");
@@ -177,6 +175,18 @@ const editProfileData = async () => {
     isFieldDisabled.value = true;
   }
 }
+
+
+async function fetchTasks() {
+  const res = await api.general.getTasks();
+  if(res.success){
+    tasks.value = res.data;
+  }
+}
+
+onMounted(() => {
+  fetchTasks()
+})
 </script>
 
 <style lang="scss">

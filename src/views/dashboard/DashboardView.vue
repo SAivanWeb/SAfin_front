@@ -7,10 +7,10 @@
     <div class="dashboard__section dashboard__section_row dashboard__section_user">
       <div class="dashboard__user-info level">
         <h3 class="dashboard__sub-title">Уровень</h3>
-        <p class="dashboard__user-value">Зеленый гоблин</p>
+        <p class="dashboard__user-value">{{userLevelTitle}}</p>
       </div>
       <div class="dashboard__user-img">
-        <img src="/goblin.png">
+        <img :src="userImage" alt="User level image" />
       </div>
       <div class="dashboard__user-info balance">
         <h3 class="dashboard__sub-title">Баланс</h3>
@@ -168,6 +168,58 @@ watch(statsPeriod, (newVal) => {
 const toTransactions = () => {
   router.push('/transactions/')
 }
+
+const userProfile = computed(() => {
+      return store.getters['user/GET_CURRENT_USER'] || {}
+    }
+);
+
+const levels = ref([
+  {
+    id: 1,
+    title: "Гоблин"
+  },
+  {
+    id: 2,
+    title: "Собиратель"
+  },
+  {
+    id: 3,
+    title: "Планировщик"
+  },
+  {
+    id: 4,
+    title: "Инвестор"
+  },
+  {
+    id: 5,
+    title: "Финансист"
+  },
+]);
+
+const userLevelTitle = computed(() => {
+  const points = userProfile.value?.points || 0;
+
+  if (points < 100) return levels.value[0].title;
+  if (points < 200) return levels.value[1].title;
+  if (points < 300) return levels.value[2].title;
+  if (points < 400) return levels.value[3].title;
+  if (points < 500) return levels.value[4].title;
+
+  return levels.value[4].title;
+});
+
+const userImage = computed(() => {
+  const points = userProfile.value?.points || 0;
+
+  if (points < 100) return '/first.webp';
+  if (points < 200) return '/second.webp';
+  if (points < 300) return '/third.webp';
+  if (points < 400) return '/fourth.webp';
+  if (points < 500) return '/fifth.webp';
+
+  return '/fifth.webp';
+});
 
 async function fetchTransactions() {
   const res = await store.dispatch("getTransactions", {page: 1, perPage: 5});

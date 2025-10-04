@@ -1,14 +1,14 @@
 <template>
-  <div class="level-card">
+  <div class="level-card" :class="{ 'level-card_done': isComplete }">
     <div class="level-card__header">
-      <div class="level-card__title">Финансовый головастик</div>
-      <div class="level-card__progress">25/150 баллов</div>
+      <div class="level-card__title">{{ item.title }}</div>
+      <div class="level-card__progress">{{ requiredPoints }} баллов</div>
     </div>
     <div class="level-card__body">
-      <div class="level-card__level">Уровень 1</div>
+      <div class="level-card__level">Уровень {{ item.id }}</div>
       <n-progress
           type="line"
-          :percentage="35"
+          :percentage="progress"
           :height="24"
           :border-radius="6"
           color="#2E7D32"
@@ -20,8 +20,24 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 
-import Calendar from "@/assets/icons/calendar.vue";
+const props = defineProps({
+  item: Object,
+  balance: {
+    type: Number,
+    required: true
+  }
+});
+
+const requiredPoints = computed(() => props.item.id * 100);
+
+const progress = computed(() => {
+  const percent = (props.balance / requiredPoints.value) * 100;
+  return Math.min(Math.round(percent), 100);
+});
+
+const isComplete = computed(() => progress.value >= 100);
 </script>
 
 <style scoped lang="scss">
@@ -32,6 +48,10 @@ import Calendar from "@/assets/icons/calendar.vue";
   padding: 24px;
   border: 2px solid #2E7D32;
   box-shadow: 0 4px 12px rgba(46, 125, 50, 0.1);
+
+  &_done{
+    background: rgba(219, 255, 222, 0.4);
+  }
 
   &__header {
     display: flex;
@@ -55,12 +75,12 @@ import Calendar from "@/assets/icons/calendar.vue";
 
   &__level {
     font-size: 18px;
-    color: #616161;
+    color: #000;
   }
 
   &__progress {
     font-size: 18px;
-    color: #757575;
+    color: #000;
     text-align: right;
   }
 }
