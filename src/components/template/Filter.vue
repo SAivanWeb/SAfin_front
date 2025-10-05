@@ -85,8 +85,21 @@ const showFilters = ref(false);
 
 const acceptFilters = () => {
   showFilters.value = false;
-  emit("applyFilters", { ...filters.value });
+
+  const cleanedFilters = {
+    ...filters.value,
+    categoryId: cleanId(filters.value.categoryId),
+    accountId: cleanId(filters.value.accountId),
+  };
+
+  emit("applyFilters", cleanedFilters);
 }
+
+const cleanId = (val) => {
+  if (!val) return null;
+  return val.toString().replace(/^[a-zA-Z_]+-/, '');
+};
+
 
 const clearFilters = () => {
   filters.value = {
@@ -112,6 +125,7 @@ const categories = computed(() => {
   let arr = store.getters['GET_CATEGORIES'];
   return arr.map((item) => ({
     ...item,
+    id: `category-${item.id}`,
     group: 'categories',
     item_title: item.title
   }));
@@ -124,6 +138,7 @@ const accounts = computed(() => {
       .filter(item => item.id !== 'total')
       .map(item => ({
         ...item,
+        id: `account-${item.id}`,
         group: 'accounts',
         item_title: item.title
       }));

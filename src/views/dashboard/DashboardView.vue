@@ -412,6 +412,10 @@ onMounted(() => {
 
     & .card{
       min-height: 192px;
+      
+      @media (max-width: 767px) {
+        min-height: 150px;
+      }
     }
   }
   

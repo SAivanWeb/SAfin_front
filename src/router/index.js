@@ -11,6 +11,11 @@ const router = createRouter({
       meta: { requiresGuest: true }
     },
     {
+      path: '/f&q',
+      name: 'f&q',
+      component: () => import('@/views/public/F&QView.vue'),
+    },
+    {
       path: '/auth',
       name: 'Auth',
       component: () => import('@/views/public/RegisterView.vue'),

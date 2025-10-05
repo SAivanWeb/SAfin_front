@@ -17,7 +17,7 @@
             <span>легко</span>
           </h1>
           <p class="home__promo-description">Учет расходов, цели, аналитика — все в одном месте</p>
-          <div class="home__promo-button">
+          <div class="home__promo-button" @click="toAuth">
             начать бесплатно
           </div>
         </div>
@@ -56,12 +56,8 @@
       <!-- CTA -->
       <div class="home__cta">
         <h2 class="home__section-title">Готовы взять финансы под контроль?</h2>
-        <p class="home__cta-text">Начните прямо сейчас — это бесплатно и займет меньше минуты</p>
-        <button class="home__promo-button">Зарегистрироваться</button>
-        <div class="home__cta-pwa">
-          <button class="home__cta-pwa-button">Установить приложение</button>
-          <p class="home__cta-pwa-text">Доступно в браузере. Нажмите "Установить", затем "Добавить на главный экран"</p>
-        </div>
+        <p class="home__cta-text">Начните прямо сейчас — регистрируйтесь и устанавливайте приложение</p>
+        <button class="home__promo-button" @click="toAuth">Зарегистрироваться</button>
       </div>
     </div>
   </div>
@@ -69,6 +65,13 @@
 
 <script setup>
 import {ref} from "vue";
+import {useRouter} from "vue-router";
+const router = useRouter();
+
+const toAuth = () => {
+  router.push("/auth");
+}
+
 const features = ref([
   {
     icon: '/icons/chart.svg',
