@@ -2,9 +2,24 @@
   <MainWrapper>
     <div class="profile__header">
       <MainTitle title="Профиль" class="profile__title"/>
-<!--      <MainButton class="profile__button" title="получить отчет" type="secondary" @click="toChat"/>-->
+      <MainButton class="profile__button" title="инструкции" type="secondary" @click="toAnswers"/>
     </div>
 <!--    <PageAlert class="profile__alert"/>-->
+
+    <div v-if="canInstall" class="profile__install">
+      <h3 class="profile__levels-title">Установка приложения</h3>
+      <p class="profile__install-text">
+        Установите <span>SAfin</span> как приложение, чтобы быстро получать доступ к своим финансам прямо с рабочего стола или главного экрана телефона.
+        Приложение работает через браузер, не требует установки из магазина и открывается без адресной строки.
+      </p>
+      <MainButton
+        class="profile__install-button"
+        title="Установить приложение"
+        type="primary"
+        size="small"
+        @click="installApp"
+      />
+    </div>
 
     <div class="profile__levels">
       <h3 class="profile__levels-title">Уровни</h3>
@@ -149,6 +164,10 @@ const toChat = () => {
   router.push("/chat");
 }
 
+const toAnswers = () => {
+  router.push("/f&q/");
+}
+
 watch(userProfile, (newVal) => {
   if (newVal) {
     profileData.value = {
@@ -187,6 +206,39 @@ async function fetchTasks() {
 onMounted(() => {
   fetchTasks()
 })
+
+const canInstall = ref(false);
+let deferredPrompt = null;
+
+onMounted(() => {
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    canInstall.value = true;
+  });
+
+  // Проверим, если событие уже было (в некоторых браузерах)
+  if (window.deferredPrompt) {
+    deferredPrompt = window.deferredPrompt;
+    canInstall.value = true;
+  }
+});
+
+const installApp = async () => {
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === "accepted") {
+    console.log("✅ Пользователь установил приложение");
+  } else {
+    console.log("❌ Установка отменена пользователем");
+  }
+
+  deferredPrompt = null;
+  canInstall.value = false;
+};
+
 </script>
 
 <style lang="scss">
@@ -214,6 +266,20 @@ onMounted(() => {
     &-title{
       font-size: 28px;
       color: #2E7D32;
+    }
+  }
+
+  &__install{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 24px;
+
+    &-text{
+      font-size: 18px;
+      & span {
+        color: #2E7D32;
+      }
     }
   }
 

@@ -5,7 +5,6 @@
       <img src="@/assets/icons/logo.svg" alt="safin">
     </div>
     <div class="header__menu">
-      <div v-if="isAuth" class="header__menu-link" @click="toAnswers">F&Q</div>
       <button class="header__menu-button" @click="toAuth" v-if="!isAuth">войти</button>
       <button class="header__menu-button" @click="logout" v-if="isAuth">выйти</button>
     </div>
@@ -24,11 +23,6 @@ const store = useStore();
 const isAuth = computed(() => {
   return store.getters['user/GET_IS_AUTH'];
 })
-
-const toAnswers = () => {
-  router.push("/f&q/");
-}
-
 
 const toAuth = () => {
   router.push("/auth/");
