@@ -70,6 +70,7 @@ const logoRoute = () => {
   }
 
   &__logo{
+    width: 80px;
     height: 30px;
     cursor: pointer;
 
