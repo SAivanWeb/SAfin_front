@@ -207,30 +207,43 @@ onMounted(() => {
   fetchTasks()
 })
 
-const canInstall = ref(true);
+const canInstall = ref(false);
 let deferredPrompt = null;
 
 onMounted(() => {
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault()
-    deferredPrompt = e
-  })
-})
+  // Chrome, Edge, Яндекс (Android)
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    canInstall.value = true;
+  });
+
+  // iOS / Safari / Firefox
+  const isIos =
+    /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+  const isInStandaloneMode =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone;
+
+  if (isIos && !isInStandaloneMode) {
+    canInstall.value = true;
+  }
+});
 
 const installApp = async () => {
-  // Если браузер поддерживает beforeinstallprompt (Chrome, Edge)
   if (deferredPrompt) {
-    deferredPrompt.prompt()
-    const { outcome } = await deferredPrompt.userChoice
-    console.log(`PWA install: ${outcome}`)
-    deferredPrompt = null
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(outcome === "accepted" ? "✅ Установлено" : "❌ Отменено");
+    deferredPrompt = null;
+    canInstall.value = false;
   } else {
     // Safari / iOS / Firefox
     alert(
-      'Чтобы установить приложение, используйте кнопку “Поделиться” → “На экран Домой”.'
-    )
+      'Чтобы установить приложение, нажмите “Поделиться” → “На экран Домой”.'
+    );
   }
-}
+};
 
 </script>
 
