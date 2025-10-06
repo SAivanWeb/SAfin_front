@@ -23,6 +23,7 @@ export default defineConfig({
         "name": "SAfin",
         "start_url":"/",
         "display": "standalone",
+        "display_override": ['window-controls-overlay', 'standalone', 'minimal-ui'],
         "theme_color": "#fff",
         "background_color": "#fff",
         "orientation": "portrait",
@@ -50,7 +51,9 @@ export default defineConfig({
             "type": "image/png",
             "label": "Главная страница"
           }
-        ]
+        ],
+        prefer_related_applications: false,
+        related_applications: [],
       }
     })
   ],

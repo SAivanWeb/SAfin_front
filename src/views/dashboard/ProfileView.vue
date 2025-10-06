@@ -207,37 +207,30 @@ onMounted(() => {
   fetchTasks()
 })
 
-const canInstall = ref(false);
+const canInstall = ref(true);
 let deferredPrompt = null;
 
 onMounted(() => {
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    canInstall.value = true;
-  });
-
-  // Проверим, если событие уже было (в некоторых браузерах)
-  if (window.deferredPrompt) {
-    deferredPrompt = window.deferredPrompt;
-    canInstall.value = true;
-  }
-});
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault()
+    deferredPrompt = e
+  })
+})
 
 const installApp = async () => {
-  if (!deferredPrompt) return;
-
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  if (outcome === "accepted") {
-    console.log("✅ Пользователь установил приложение");
+  // Если браузер поддерживает beforeinstallprompt (Chrome, Edge)
+  if (deferredPrompt) {
+    deferredPrompt.prompt()
+    const { outcome } = await deferredPrompt.userChoice
+    console.log(`PWA install: ${outcome}`)
+    deferredPrompt = null
   } else {
-    console.log("❌ Установка отменена пользователем");
+    // Safari / iOS / Firefox
+    alert(
+      'Чтобы установить приложение, используйте кнопку “Поделиться” → “На экран Домой”.'
+    )
   }
-
-  deferredPrompt = null;
-  canInstall.value = false;
-};
+}
 
 </script>
 
