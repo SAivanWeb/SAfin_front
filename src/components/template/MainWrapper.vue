@@ -19,6 +19,7 @@
 
   @media (max-width: 767px) {
     height: calc(100vh - 59px);
+    scrollbar-width: none;
   }
 
   &__container{

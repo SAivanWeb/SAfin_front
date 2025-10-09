@@ -160,13 +160,11 @@ const screenSize = computed(()=>{
 })
 
 const showHeader = computed(() => {
-  if(isAuthPage.value) {
-    return false
-  } else if(isAuth.value && screenSize < 768 && !isProfilePage.value) {
-    return false
+  if(screenSize.value > 768) {
+    return !isAuthPage.value;
   } else {
-    return true
-  } 
+    return isProfilePage.value;
+  }
 })
 
 const showPreloader = computed(() => {
