@@ -294,7 +294,7 @@ const hideAdditional = window.innerWidth < 768
 
     &-item {
       padding: 24px;
-      height: 100%;
+      width: 100%;
       backdrop-filter: blur(10px) saturate(168%);
       -webkit-backdrop-filter: blur(10px) saturate(168%);
       background-color: rgba(255, 255, 255, 0.6);
