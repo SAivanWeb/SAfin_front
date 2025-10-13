@@ -140,6 +140,7 @@ async function deleteAccount(id) {
     justify-content: center;
     transition: 0.2s;
     position: relative;
+    z-index: 10;
 
     &:hover{
       background: rgba(46, 125, 50, 0.1);
@@ -162,6 +163,7 @@ async function deleteAccount(id) {
       border: 1px solid rgba(209, 213, 219, 0.3);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
+      z-index: 10;
     }
 
     &-item{

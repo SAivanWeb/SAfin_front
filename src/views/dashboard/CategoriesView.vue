@@ -13,7 +13,7 @@
         <n-collapse-item v-for="item in filteredCategories" :title="item.title" :name="item.id" :class="{ 'favorite-category': item.isFavorite }">
           <template #header-extra >
             <div class="categories__item-menu" :class="{ active: showCategoryMenu === item.id }">
-              <menu-vertical
+              <MenuVertical
                   class="categories__item-icon"
                   @click.stop="toggleMenu(item.id)"
               />
@@ -56,10 +56,8 @@
 import MainWrapper from "@/components/template/MainWrapper.vue";
 import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
-import Filter from "@/components/template/Filter.vue";
 import InputSearch from "@/components/ui/input/InputSearch.vue";
 import {computed, ref, onMounted, onBeforeUnmount, inject} from "vue";
-import PageAlert from "@/components/template/PageAlert.vue";
 import {useStore} from "vuex";
 import MenuVertical from "@/assets/icons/menu-vertical.vue";
 import Trash from "@/assets/icons/trash.vue";
@@ -200,6 +198,7 @@ async function fetchCategoryData (id) {
       justify-content: center;
       transition: 0.2s;
       position: relative;
+      z-index: 10;
 
       &:hover{
         background: rgba(46, 125, 50, 0.1);
