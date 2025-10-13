@@ -25,7 +25,7 @@
 
         <Chat v-if="isAuth && !isChatPage && !isProfilePage" class="main__chat"/>
 
-        <div v-if="showPreloader" class="main__preloader">
+        <div v-show="showPreloader" class="main__preloader">
           <n-spin size="medium" />
         </div>
       </div>
