@@ -134,6 +134,7 @@ async function fetchTransactionsMonth() {
   const res = await store.dispatch("getTransactions", config);
   if (res.success) {
     transactionsMonth.value = res.data;
+    store.commit("SET_PRELOADER", false);
   }
 }
 
