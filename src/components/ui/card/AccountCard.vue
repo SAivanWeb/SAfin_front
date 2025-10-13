@@ -11,10 +11,6 @@
             v-if="showMenu"
             class="account-card__menu-list"
         >
-          <div class="account-card__menu-item" @click="emitShowEditAccount('part')">
-            <plus class="account-card__menu-icon"/>
-            Пополнить
-          </div>
           <div class="account-card__menu-item" @click="emitShowEditAccount('all')">
             <edit class="account-card__menu-icon"/>
             Редактировать
