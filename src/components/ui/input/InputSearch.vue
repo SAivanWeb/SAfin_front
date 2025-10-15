@@ -2,13 +2,17 @@
   <div class="input" ref="inputWrapper">
     <div class="input__wrapper">
       <input
-          v-model="inputValue"
-          class="input__field"
-          lang="ru-Ru"
-          @input="filterValue"
-          :placeholder="placeholder"
-          @click="showOptions = true"
-      >
+        v-model="inputValue"
+        class="input__field"
+        type="text"
+        inputmode="text"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="none"
+        @input="filterValue"
+        :placeholder="placeholder"
+        @focus="showOptions = true"
+      />
       <search-ico class="input__ico"/>
     </div>
     <div v-if="showOptions" class="input__options">
@@ -65,13 +69,15 @@ onBeforeUnmount(() => {
 });
 
 function handleClickOutside(event) {
-  if (inputWrapper.value && !inputWrapper.value.contains(event.target)) {
+  if (!inputWrapper.value?.contains(event.target) || event.target.tagName === 'BODY') {
     showOptions.value = false;
   }
 }
 
 function filterValue() {
-  emitValue(); // теперь эмитим сразу
+  setTimeout(() => {
+    emit('update:modelValue', inputValue.value);
+  }, 0);
 }
 
 const selectOption = (name) => {

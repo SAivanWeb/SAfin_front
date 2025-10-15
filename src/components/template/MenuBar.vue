@@ -43,7 +43,7 @@ const sortedMenu = computed(() => {
     z-index: 100;
     background-color: #fff;
     border-top: 1px solid rgba(209, 213, 219, 0.3);
-
+    border-bottom: 1px solid rgba(209, 213, 219, 0.3);
   }
 }
 </style>

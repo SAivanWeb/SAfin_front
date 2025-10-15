@@ -87,6 +87,7 @@ const iconComponent = computed(() => icons[props.icon]);
   .menu-link{
     width: fit-content;
     padding: 14px 18px;
+    border-bottom: none;
     &__icon{
       display: block;
     }

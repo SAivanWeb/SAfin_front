@@ -90,8 +90,10 @@ const themeOverrides = {
     fontSize: '18px'
   },
   Message: {
-    borderRadius: '12px',
-  },
+    borderRadius: "12px",
+    iconSize: "32px",
+    fontSize: "18px"
+  }
 }
 
 const route = useRoute();
@@ -183,9 +185,13 @@ watch(
     (msg) => {
       if (msg && msg.text) {
         if (msg.type === 'error') {
-          message.error(msg.text);
+          message.error(msg.text, {
+            duration: 30000
+          });
         } else if (msg.type === 'success') {
-          message.success(msg.text);
+          message.success(msg.text, {
+            duration: 30000
+          });
         }
         store.commit('SET_MESSAGE', null)
       }
