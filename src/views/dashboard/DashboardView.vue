@@ -14,7 +14,16 @@
       </div>
       <div class="dashboard__user-info balance">
         <h3 class="dashboard__sub-title">Баланс</h3>
-        <p class="dashboard__user-value">{{ totalBalance }}₽</p>
+        <p class="dashboard__user-value">
+          <n-number-animation
+            ref="balanceAnimationRef"
+            :from="0"
+            :to="totalBalanceRaw"
+            :precision="2"
+            :duration="1200"
+            show-separator
+          />
+          ₽</p>
       </div>
     </div>
 
@@ -228,18 +237,17 @@ async function fetchTransactions() {
   }
 }
 
-const totalBalance = computed(() => {
-  const accounts = store.getters.GET_ACCOUNTS || [];
-  const total = accounts.find(acc => acc.id === "total");
+const balanceAnimationRef = ref(null)
 
-  return total
-      ? total.balance.toLocaleString("ru-RU", {
-        useGrouping: true,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      }).replace(/,/g, " ")
-      : "0";
-});
+const totalBalanceRaw = computed(() => {
+  const accounts = store.getters.GET_ACCOUNTS || []
+  const total = accounts.find(acc => acc.id === 'total')
+  return total ? Number(total.balance) : 0
+})
+
+onMounted(() => {
+  balanceAnimationRef.value?.play()
+})
 
 const mainGoal = computed(() => {
   const goals = store.getters.GET_GOALS || [];
