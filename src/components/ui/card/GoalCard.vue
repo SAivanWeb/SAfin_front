@@ -1,5 +1,8 @@
 <template>
-  <div class="goal-card" :class="`${goal.status}`">
+  <div class="goal-card" :class="[
+    goal.status,
+    { 'goal-card_main': goal.isMain }
+  ]">
     <div class="goal-card__header">
       <h4 class="goal-card__name">{{goal.title}}</h4>
       <div class="goal-card__icon-group">
@@ -15,6 +18,18 @@
       <div class="goal-card__container">
         <div v-if="goal.description" class="goal-card__description">
           {{goal.description}}
+        </div>
+        <div class="goal-card__amount">
+          <span class="goal-card__amount-label">
+            {{ goal.type === 'saving' ? 'Накоплено' : 'Потрачено' }}:
+          </span>
+                  <span class="goal-card__amount-value">
+            {{ formatNum(goal.currentAmount) }}₽
+          </span>
+                  <span class="goal-card__amount-separator">/</span>
+                  <span class="goal-card__amount-target">
+            {{ formatNum(goal.targetAmount) }}₽
+          </span>
         </div>
         <div class="goal-card__statistic">
           <img src="@/assets/icons/money.svg" class="goal-card__statistic-icon">
@@ -87,6 +102,18 @@ const emitDeleteGoal = (id) => {
   emit('deleteGoal', id);
 };
 
+const formatNum = (num) => {
+  if (num == null) return '0'
+  return Number(num)
+    .toLocaleString('ru-RU', {
+      useGrouping: true,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    })
+    .replace(/,/g, ' ')
+}
+
+
 </script>
 
 <style scoped lang="scss">
@@ -100,7 +127,31 @@ const emitDeleteGoal = (id) => {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+
+  &_main {
+    border: 2px solid #2E7D32;
+    box-shadow: 0 0 10px rgba(46, 125, 50, 0.2);
+    position: relative;
+
+    &::before {
+      content: '★ Основная цель';
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: #2E7D32;
+      color: #fff;
+      padding: 2px 8px;
+      font-size: 14px;
+      font-weight: 300;
+      border-radius: 8px;
+      letter-spacing: 1.2px;
+
+      @media (max-width: 767px) {
+        left: 12px;
+      }
+    }
+  }
 
   &.complete{
     border-color: #2E7D32;
@@ -159,7 +210,7 @@ const emitDeleteGoal = (id) => {
   &__container{
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
   }
 
   &__statistic{
@@ -171,6 +222,34 @@ const emitDeleteGoal = (id) => {
       width: 32px;
     }
   }
+
+  .goal-card {
+    &__amount {
+      font-size: 18px;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      flex-wrap: wrap;
+
+      &-label {
+        color: #757575;
+        font-weight: 400;
+      }
+
+      &-value {
+        font-weight: 600;
+      }
+
+      &-separator {
+        color: #9e9e9e;
+      }
+
+      &-target {
+        font-weight: 600;
+      }
+    }
+  }
+
 
   &__button{
     width: fit-content;
