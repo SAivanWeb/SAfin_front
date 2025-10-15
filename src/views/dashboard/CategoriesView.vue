@@ -90,7 +90,7 @@ import MainWrapper from "@/components/template/MainWrapper.vue";
 import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import InputSearch from "@/components/ui/input/InputSearch.vue";
-import {computed, ref, onMounted, onBeforeUnmount, inject, nextTick} from "vue";
+import {computed, ref, onMounted, onBeforeUnmount, inject} from "vue";
 import {useStore} from "vuex";
 import MenuVertical from "@/assets/icons/menu-vertical.vue";
 import Trash from "@/assets/icons/trash.vue";
@@ -296,7 +296,7 @@ async function favoriteCategory(category) {
       padding-left: 26px;
     }
 
-    &-menu {
+    &-menu{
       width: 36px;
       height: 36px;
       padding: 6px;

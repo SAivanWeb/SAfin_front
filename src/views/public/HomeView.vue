@@ -28,12 +28,26 @@
 
         <h2 class="home__section-title">Преимущества</h2>
         <div class="home__advantages-container">
-          <div class="home__advantages-item" v-for="(feature, index) in features" :key="index">
+          <div class="home__advantages-item">
             <div class="home__advantages-icon-container">
-              <img :src="`src/assets${feature.icon}`" :alt="feature.title">
+              <img src="@/assets/icons/chart.svg">
             </div>
-            <h3 class="home__advantages-title">{{ feature.title }}</h3>
-            <p class="home__advantages-text">{{ feature.description }}</p>
+            <h3 class="home__advantages-title">Автоматическая аналитика</h3>
+            <p class="home__advantages-text">Анализируем ваши траты и выводим статистику</p>
+          </div>
+          <div class="home__advantages-item">
+            <div class="home__advantages-icon-container">
+              <img src="@/assets/icons/goal.svg">
+            </div>
+            <h3 class="home__advantages-title">Достижение целей</h3>
+            <p class="home__advantages-text">Ставьте финансовые цели и отслеживайте прогресс в реальном времени</p>
+          </div>
+          <div class="home__advantages-item">
+            <div class="home__advantages-icon-container">
+              <img src="@/assets/icons/download.svg">
+            </div>
+            <h3 class="home__advantages-title">Доступность</h3>
+            <p class="home__advantages-text">Работает на всех устройствах без установки из магазинов приложений</p>
           </div>
         </div>
       </div>
@@ -71,24 +85,6 @@ const router = useRouter();
 const toAuth = () => {
   router.push("/auth");
 }
-
-const features = ref([
-  {
-    icon: '/icons/chart.svg',
-    title: 'Автоматическая аналитика',
-    description: 'Наш ИИ анализирует ваши траты и дает персональные рекомендации'
-  },
-  {
-    icon: '/icons/goal.svg',
-    title: 'Достижение целей',
-    description: 'Ставьте финансовые цели и отслеживайте прогресс в реальном времени'
-  },
-  {
-    icon: '/icons/download.svg',
-    title: 'Доступность',
-    description: 'Работает на всех устройствах без установки из магазинов приложений'
-  }
-]);
 
 const steps = ref([
   {
@@ -298,7 +294,7 @@ const hideAdditional = window.innerWidth < 768
 
     &-item {
       padding: 24px;
-      height: 100%;
+      width: 100%;
       backdrop-filter: blur(10px) saturate(168%);
       -webkit-backdrop-filter: blur(10px) saturate(168%);
       background-color: rgba(255, 255, 255, 0.6);

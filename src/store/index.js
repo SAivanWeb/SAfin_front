@@ -57,12 +57,14 @@ export default createStore({
             commit('SET_PRELOADER', false);
         },
         async getProfile({ commit, dispatch }) {
+            commit('SET_PRELOADER', true);
             const response = await userApi.getProfile();
             if(response.success) {
                 commit('user/SET_CURRENT_USER', response.data);
                 commit('user/INIT_AUTH');
                 await dispatch('getCategories');
             }
+            commit('SET_PRELOADER', false);
         },
         async getCategories({ commit }) {
             const res = await categoryApi.getCategories();
@@ -71,18 +73,23 @@ export default createStore({
             }
         },
         async getGoals({ commit }) {
+            commit('SET_PRELOADER', true);
             const res = await goalsApi.getGoals();
             if (res.success) {
                 commit('SET_GOALS', res.data);
             }
+            commit('SET_PRELOADER', false);
         },
         async getTransactions({ commit }, config) {
+            commit('SET_PRELOADER', true);
             const res = await transactionsApi.getTransactions(config);
             if (res.success) {
                 return res;
             }
+            commit('SET_PRELOADER', false);
         },
         async getAccounts({ commit }) {
+            commit('SET_PRELOADER', true);
             const res = await accountsApi.getAccounts();
             if (res.success) {
                 if (res.data.length === 0) return [];
@@ -99,6 +106,7 @@ export default createStore({
                 ];
                 commit('SET_ACCOUNTS', accounts);
             }
+            commit('SET_PRELOADER', false);
         }
     },
     modules: {

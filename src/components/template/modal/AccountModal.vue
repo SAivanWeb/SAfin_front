@@ -114,7 +114,11 @@ onMounted(() => {
   if (props.edit) {
     accountData.value.title = props.account.title;
     accountData.value.description = props.account.description;
-    accountData.value.balance = props.account.balance;
+    if (props.editType !== 'part') {
+      accountData.value.balance = props.account.balance;
+    } else {
+      accountData.value.balance = 0;
+    }
   }
 })
 </script>
