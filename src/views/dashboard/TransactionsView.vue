@@ -5,16 +5,10 @@
       <MainButton v-if="activeTab === 'transactions'" class="transactions__button" action="add" title="создать транзакцию" type="secondary" @click="$emit('showTransaction')"/>
       <MainButton v-else class="transactions__button" action="add" title="создать счет" type="secondary" @click="$emit('showAccount')"/>
     </div>
-<!--    <PageAlert class="transactions__alert"/>-->
     <div class="transactions__container">
       <TabContainer :headers="tabHeadersMain" v-model:active="activeTab" :main="true">
           <template #transactions>
               <TabContainer :headers="tabHeadersTransactions" v-model:active="activeTransactionsTab">
-<!--                <template #chart>-->
-<!--                  <div class="transactions__statistic-item">-->
-<!--                    <Chart :items="transactionsMonth"/>-->
-<!--                  </div>-->
-<!--                </template>-->
                 <template #progress>
                   <ProgressList :items="transactionsMonth"/>
                 </template>
@@ -30,11 +24,13 @@
           
           <template #accounts>
             <div class="transactions__accounts">
-              <AccountCard v-for="item in accounts" :item="item" @show-edit-account="(data) => $emit('showEditAccount', data)"/>
+              <AccountCard v-for="item in accounts" :item="item" @show-edit-account="(data) => $emit('showEditAccount', data)" @delete-account="deletingAccount"/>
             </div>
           </template>
       </TabContainer>
     </div>
+
+    <ConfirmModal v-if="showDeleteAccount" @hide-modal="showDeleteAccount = false" @confirm="deleteAccount" :closable="false"/>
   </MainWrapper>
 </template>
 
@@ -51,10 +47,12 @@ import ProgressList from "@/components/ui/chart/ProgressList.vue";
 import {computed, inject, onMounted, ref, watch, nextTick} from "vue";
 import AccountCard from "@/components/ui/card/AccountCard.vue";
 import {useStore} from "vuex";
+import ConfirmModal from "@/components/template/modal/ConfirmModal.vue";
 
 const store = useStore();
 
 const activeTab = ref('transactions');
+const { api } = inject('plugins');
 
 const tabHeadersMain = ref([
   { name: 'transactions', value: 'Транзакции' },
@@ -66,10 +64,6 @@ const tabHeadersTransactions = ref([
     name: 'list',
     value: 'Список'
   },
-  // {
-  //   name: 'chart',
-  //   value: 'График'
-  // },
   {
     name: 'progress',
     value: 'Прогресс'
@@ -147,6 +141,33 @@ onMounted(() => {
   store.dispatch("getAccounts");
   fetchTransactionsList(transactionListPerPage.value, transactionListPerPage.value);
 })
+
+
+const showDeleteAccount = ref(false);
+const deletingAccountId = ref(null);
+
+const deletingAccount = (id) => {
+  deletingAccountId.value = id;
+  showDeleteAccount.value = true;
+}
+
+async function deleteAccount() {
+  const res = await api.accounts.deleteAccount(deletingAccountId.value);
+  if (res.success) {
+    store.commit('SET_MESSAGE',{
+      text: 'Счет удален',
+      type: 'success',
+    });
+    store.dispatch("getAccounts");
+    showDeleteAccount.value = false;
+    deletingAccountId.value = null;
+  } else {
+    store.commit('SET_MESSAGE',{
+      text: 'Ошибка удаления счета',
+      type: 'error',
+    });
+  }
+}
 </script>
 
 <style lang="scss">

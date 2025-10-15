@@ -1,13 +1,15 @@
 import './assets/main.scss'
-
-import { createApp } from 'vue'
+import { createApp, h } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store';
-import naive from "naive-ui";
+import naive, { NMessageProvider } from 'naive-ui'
 import ApiPlugin from './plugins/api';
 
-const app = createApp(App)
+const app = createApp({
+    render: () => h(NMessageProvider, null, { default: () => h(App) })
+})
+
 app.use(naive)
 app.use(store)
 app.use(router)

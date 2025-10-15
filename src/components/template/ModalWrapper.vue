@@ -1,7 +1,7 @@
 <template>
   <div class="modal__layout" @click.self="$emit('hideModal')">
     <div class="modal__container"  :style="{ 'max-width': size }">
-      <button class="modal__close">
+      <button v-if="closable" class="modal__close">
         <Cancel class="modal__close-icon" @click.stop="$emit('hideModal')"/>
       </button>
         <div class="modal__content">
@@ -23,6 +23,10 @@ import Cancel from "@/assets/icons/cancel.vue";
 
 const props = defineProps({
   size: String,
+  closable: {
+    type: Boolean,
+    default: true
+  }
 })
 </script>
 
@@ -98,6 +102,17 @@ const props = defineProps({
     display: flex;
     flex-direction: column;
     gap: 24px;
+  }
+
+  &__info-container{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__info-btn-group{
+    display: flex;
+    gap: 12px;
   }
 
   &__fields{

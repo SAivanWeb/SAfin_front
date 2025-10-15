@@ -6,9 +6,11 @@
     </div>
 <!--    <PageAlert class="goals__alert"/>-->
     <div class="goals__container">
-      <GoalCard v-for="item in goals" :goal="item" @show-amount-goal="(goal) => $emit('showAmountGoal', goal)"/>
+      <GoalCard v-for="item in goals" :goal="item" @show-amount-goal="(goal) => $emit('showAmountGoal', goal)" @delete-goal="deletingGoal"/>
     </div>
   </MainWrapper>
+
+  <ConfirmModal v-if="showDeleteGoal" @hide-modal="showDeleteGoal = false" @confirm="deleteGoal" :closable="false"/>
 </template>
 
 <script setup>
@@ -20,9 +22,11 @@ import GoalCard from "@/components/ui/card/GoalCard.vue";
 import PageAlert from "@/components/template/PageAlert.vue";
 import {onMounted, inject, ref, computed} from "vue";
 import {useStore} from "vuex";
+import ConfirmModal from "@/components/template/modal/ConfirmModal.vue";
 const store = useStore();
 
 defineEmits(['showAmountGoal']);
+const { api } = inject('plugins');
 
 const goals = computed(() => {
   return store.getters.GET_GOALS || [];
@@ -31,6 +35,33 @@ const goals = computed(() => {
 onMounted(() => {
   store.dispatch("getGoals");
 })
+
+const showDeleteGoal = ref(false);
+const deletingGoalId = ref(null);
+
+const deletingGoal = (id) => {
+  deletingGoalId.value = id;
+  showDeleteGoal.value = true;
+}
+
+async function deleteGoal() {
+  const res = await api.goals.deleteGoal(deletingGoalId.value);
+  if (res.success) {
+    store.commit('SET_MESSAGE',{
+      text: 'Цель удалена',
+      type: 'success',
+    });
+    store.dispatch("getGoals");
+    store.dispatch("getProfile");
+  } else {
+    store.commit('SET_MESSAGE',{
+      text: 'Ошибка удаления цели',
+      type: 'success',
+    });
+  }
+  deletingGoalId.value = null;
+  showDeleteGoal.value = false;
+}
 
 </script>
 

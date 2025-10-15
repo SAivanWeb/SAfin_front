@@ -19,7 +19,7 @@
             <edit class="account-card__menu-icon"/>
             Редактировать
           </div>
-          <div class="account-card__menu-item" @click="deleteAccount(item.id)">
+          <div class="account-card__menu-item" @click="emitDeleteAccount(item.id)">
             <trash class="account-card__menu-icon trash"/>
             Удалить
           </div>
@@ -35,19 +35,16 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script setup>
 import Edit from "@/assets/icons/edit.vue";
 import Plus from "@/assets/icons/plus.vue";
-import Star from "@/assets/icons/star.vue";
 import MenuVertical from "@/assets/icons/menu-vertical.vue";
 import Trash from "@/assets/icons/trash.vue";
-import {inject, onBeforeUnmount, onMounted, ref} from "vue";
-import {useStore} from "vuex";
+import { onBeforeUnmount, onMounted, ref} from "vue";
 
-const store = useStore();
-const { api } = inject('plugins');
 const props = defineProps({
   item: Object,
 })
@@ -62,7 +59,7 @@ const formatAmount = (value) => {
   }).replace(/,/g, ' ');
 }
 
-const emit = defineEmits(['showEditAccount']);
+const emit = defineEmits(['showEditAccount', 'deleteAccount']);
 
 const emitShowEditAccount = type => {
   emit('showEditAccount', {account: props.item, type: type});
@@ -83,12 +80,11 @@ const handleClickOutside = (e) => {
   }
 };
 
-async function deleteAccount(id) {
-  const res = await api.accounts.deleteAccount(id);
-  if (res.success) {
-    store.dispatch("getAccounts");
-  }
-}
+const emitDeleteAccount = (id) => {
+  showMenu.value = false;
+  emit('deleteAccount', id);
+};
+
 </script>
 
 <style scoped lang="scss">

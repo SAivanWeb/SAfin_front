@@ -190,11 +190,19 @@ const editProfileData = async () => {
   const res = await api.user.updateProfile(profileData.value);
 
   if(res.success){
+    store.commit('SET_MESSAGE',{
+      text: 'Профиль обновлен',
+      type: 'success',
+    });
     store.dispatch('getProfile');
     isFieldDisabled.value = true;
+  } else {
+    store.commit('SET_MESSAGE',{
+      text: 'Ошибка обновления профиля',
+      type: 'error',
+    });
   }
 }
-
 
 async function fetchTasks() {
   const res = await api.general.getTasks();

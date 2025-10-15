@@ -112,10 +112,6 @@ const toggleForm = () => {
   }
 }
 
-const errors = computed(() => {
-  return store.getters['user/GET_ERROR'];
-})
-
 const disableLogin = computed(() => {
   return !loginForm.value.email || !loginForm.value.password;
 })

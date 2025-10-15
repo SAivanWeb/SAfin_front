@@ -13,7 +13,6 @@
           :border-radius="6"
           color="#2E7D32"
           :indicator-height="12"
-          processing
       />
     </div>
   </div>

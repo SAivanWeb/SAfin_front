@@ -60,18 +60,36 @@ const clearData = () => {
 async function createCategory() {
   const res = await api.category.createCategory(categoryData.value);
   if (res.success) {
+    store.commit('SET_MESSAGE',{
+      text: 'Категория создана',
+      type: 'success',
+    });
     store.dispatch("getCategories");
     clearData();
     emit('hide-modal');
+  } else {
+    store.commit('SET_MESSAGE',{
+      text: 'Ошибка создания категории',
+      type: 'error',
+    });
   }
 }
 
 async function updateCategory() {
   const res = await api.category.updateCategory(categoryData.value, props.category.id);
   if (res.success) {
+    store.commit('SET_MESSAGE',{
+      text: 'Категория обновлена',
+      type: 'success',
+    });
     store.dispatch("getCategories");
     clearData();
     emit('hide-modal');
+  } else {
+    store.commit('SET_MESSAGE',{
+      text: 'Ошибка обновления категории',
+      type: 'error',
+    });
   }
 }
 

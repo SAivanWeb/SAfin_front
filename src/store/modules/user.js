@@ -14,9 +14,6 @@ const getters = {
     GET_IS_AUTH(state) {
         return state.isAuth;
     },
-    GET_ERROR(state) {
-        return state.error;
-    },
 };
 
 const mutations = {
@@ -29,9 +26,6 @@ const mutations = {
         localStorage.setItem('access_token', tokens.access_token);
         localStorage.setItem('refresh_token', tokens.refresh_token);
         localStorage.setItem('IS_AUTH', true);
-    },
-    SET_ERROR(state, error) {
-        state.error = error;
     },
     CLEAR_AUTH(state) {
         state.currentUser = null;
@@ -51,7 +45,6 @@ const mutations = {
 const actions = {
     async register({commit}, payload) {
         try {
-            commit('SET_ERROR', null);
             const response = await userApi.register(payload);
             if(response.success){
                 commit('SET_CURRENT_USER', response.data.user);
@@ -59,14 +52,16 @@ const actions = {
             }
             return response;
         } catch (error) {
-            commit('SET_ERROR', error.message || 'Register failed');
+            commit('SET_MESSAGE', {
+                text: 'Ошибка регистрации',
+                type: 'error',
+            }, { root: true });
             throw error;
         }
     },
 
     async login({ commit }, payload) {
         try {
-            commit('SET_ERROR', null);
             const response = await userApi.login(payload);
             if(response.success){
                 commit('SET_CURRENT_USER', response.data.user);
@@ -74,13 +69,15 @@ const actions = {
             }
             return response;
         } catch (error) {
-            commit('SET_ERROR', error.message || 'Login failed');
+            commit('SET_MESSAGE', {
+                text: 'Пользователь не найден',
+                type: 'error',
+            }, { root: true });
             throw error;
         }
     },
 
     async logout({ commit }) {
-        commit('SET_ERROR', null);
         commit('CLEAR_AUTH');
         window.location.href = '/';
     },

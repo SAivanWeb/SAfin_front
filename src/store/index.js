@@ -49,7 +49,6 @@ export default createStore({
     },
     actions: {
         async initAuth({ commit, dispatch }) {
-            commit('user/SET_ERROR', null);
             commit('SET_PRELOADER', true);
             let token = localStorage.getItem('access_token');
             if (token) {

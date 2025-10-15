@@ -28,29 +28,40 @@ api.interceptors.response.use(
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
+            const refreshToken = localStorage.getItem('refresh_token');
+
+            if (!refreshToken) {
+                store.dispatch('user/logout');
+                router.push('/auth');
+                return Promise.reject(error);
+            }
+
             try {
-                const refreshToken = localStorage.getItem('refresh_token');
+                const response = await axios.post(
+                    `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
+                    { refresh_token: refreshToken }
+                );
 
-                if (refreshToken) {
-                    const response = await api.post('/auth/refresh', {
-                        refresh_token: refreshToken
-                    });
-                    if (response.data?.data?.access_token && response.data?.data?.refresh_token) {
-                        localStorage.setItem('access_token', response.data.data.access_token);
-                        localStorage.setItem('refresh_token', response.data.data.refresh_token);
+                if (response.data?.data?.access_token && response.data?.data?.refresh_token) {
+                    localStorage.setItem('access_token', response.data.data.access_token);
+                    localStorage.setItem('refresh_token', response.data.data.refresh_token);
 
-                        originalRequest.headers.Authorization = `Bearer ${response.data.data.access_token}`;
+                    originalRequest.headers.Authorization = `Bearer ${response.data.data.access_token}`;
 
-                        return api(originalRequest);
-                    }
+                    return api(originalRequest);
+                } else {
+                    throw new Error('Invalid refresh response');
                 }
-
-                throw new Error('Invalid or missing refresh token');
             } catch (refreshError) {
                 store.dispatch('user/logout');
                 router.push('/auth');
                 return Promise.reject(refreshError);
             }
+        }
+
+        if (error.response?.status === 401 && originalRequest._retry) {
+            store.dispatch('user/logout');
+            router.push('/auth');
         }
 
         return Promise.reject(error);

@@ -34,7 +34,7 @@ const sortedMenu = computed(() => {
 @media (max-width: 767px) {
   .menu{
     position: fixed;
-    bottom: 0;
+    bottom: 8px;
     width: 100%;
     flex-direction: row;
     height: fit-content;

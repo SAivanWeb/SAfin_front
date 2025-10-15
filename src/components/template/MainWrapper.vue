@@ -30,7 +30,7 @@
 
 @media (max-width: 768px) {
   .main-wrapper{
-    padding: 24px 10px 66px;
+    padding: 24px 10px 74px;
 
   }
 }

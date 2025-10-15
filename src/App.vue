@@ -49,7 +49,7 @@ import AccountModal from "@/components/template/modal/AccountModal.vue";
 import CategoryModal from "@/components/template/modal/CategoryModal.vue";
 import { useMessage } from "naive-ui";
 
-// const message = useMessage();
+const message = useMessage();
 
 const themeOverrides = {
   common: {
@@ -88,7 +88,10 @@ const themeOverrides = {
   Collapse: {
     titleFontSize: '18px',
     fontSize: '18px'
-  }
+  },
+  Message: {
+    borderRadius: '12px',
+  },
 }
 
 const route = useRoute();
@@ -163,7 +166,11 @@ const showHeader = computed(() => {
   if(screenSize.value > 768) {
     return !isAuthPage.value;
   } else {
-    return isProfilePage.value;
+    if(!isAuth.value) {
+      return isAuthPage.value;
+    } else {
+      return isProfilePage.value;
+    }
   }
 })
 
@@ -171,20 +178,20 @@ const showPreloader = computed(() => {
   return store.getters['GET_PRELOADER']
 })
 
-// watch(
-//     () => store.getters.GET_MESSAGE,
-//     (msg) => {
-//       if (msg && msg.text) {
-//         if (msg.type && message[msg.type]) {
-//           message[msg.type](msg.text)
-//         } else {
-//           message.info(msg.text)
-//         }
-//         store.commit('SET_MESSAGE', null)
-//       }
-//     },
-//     { deep: true }
-// )
+watch(
+    () => store.getters.GET_MESSAGE,
+    (msg) => {
+      if (msg && msg.text) {
+        if (msg.type === 'error') {
+          message.error(msg.text);
+        } else if (msg.type === 'success') {
+          message.success(msg.text);
+        }
+        store.commit('SET_MESSAGE', null)
+      }
+    },
+    { deep: true }
+)
 
 onMounted(() => {
   store.dispatch('initAuth');

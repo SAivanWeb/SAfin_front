@@ -10,6 +10,7 @@
         :format="format"
         :value-format="format"
         :month-format="monthFormat"
+        :input-readonly="true"
     />
   </div>
 </template>

@@ -77,18 +77,36 @@ const clearData = () => {
 async function createAccount() {
   const res = await api.accounts.createAccount(accountData.value);
   if (res.success) {
+    store.commit('SET_MESSAGE',{
+      text: 'Счет создан',
+      type: 'success',
+    });
     store.dispatch("getAccounts");
     clearData();
     emit('hide-modal');
+  } else {
+    store.commit('SET_MESSAGE',{
+      text: 'Ошибка создания счета',
+      type: 'error',
+    });
   }
 }
 
 async function updateAccount() {
   const res = await api.accounts.updateAccount(props.account.id, accountData.value);
   if (res.success) {
+    store.commit('SET_MESSAGE',{
+      text: 'Счет обновлен',
+      type: 'success',
+    });
     store.dispatch("getAccounts");
     clearData();
     emit('hide-modal');
+  } else {
+    store.commit('SET_MESSAGE',{
+      text: 'Ошибка обновления счета',
+      type: 'error',
+    });
   }
 }
 

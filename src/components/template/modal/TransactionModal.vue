@@ -102,7 +102,6 @@ const transactionTypes = [
 ];
 
 const disableButton = computed(() => {
-  console.log(accounts.value)
   if (transactionData.value.type === 'expense') {
     const selectedAccount = accounts.value.find(
         item => item.value === transactionData.value.accountId
@@ -125,10 +124,19 @@ const disableButton = computed(() => {
 async function createTransaction() {
   const res = await api.transactions.createTransaction(transactionData.value);
   if (res.success) {
+    store.commit('SET_MESSAGE',{
+      text: 'Транзакция создана',
+      type: 'success',
+    });
     store.commit("SET_RESET_TRANSACTIONS", true);
     store.dispatch("getAccounts");
     store.dispatch("getProfile");
     emit('hide-modal');
+  } else {
+    store.commit('SET_MESSAGE',{
+      text: 'Ошибка создания транзакции',
+      type: 'success',
+    });
   }
 }
 </script>

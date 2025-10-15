@@ -3,7 +3,7 @@
     <div class="goal-card__header">
       <h4 class="goal-card__name">{{goal.title}}</h4>
       <div class="goal-card__icon-group">
-        <div v-if="editable" class="goal-card__header-button" @click="deleteGoal">
+        <div v-if="editable" class="goal-card__header-button" @click="emitDeleteGoal(goal.id)">
           <Trash class="goal-card__icon trash"/>
         </div>
         <div v-if="goal.status === 'process'" class="goal-card__header-button" @click="emitShowAmountGoal">
@@ -58,7 +58,7 @@ const props = defineProps({
     default: true,
   },
 })
-const emit = defineEmits(['showAmountGoal', 'showEditGoal']);
+const emit = defineEmits(['showAmountGoal', 'showEditGoal', 'deleteGoal']);
 
 const emitShowAmountGoal = () => {
   emit('showAmountGoal', props.goal);
@@ -83,13 +83,10 @@ const progressTime = computed(() => {
   return Math.min(((elapsed / total) * 100).toFixed(2), 100)
 })
 
-async function deleteGoal() {
-  const res = await api.goals.deleteGoal(props.goal.id);
-  if (res.success) {
-    store.dispatch("getGoals");
-    store.dispatch("getProfile");
-  }
-}
+const emitDeleteGoal = (id) => {
+  emit('deleteGoal', id);
+};
+
 </script>
 
 <style scoped lang="scss">

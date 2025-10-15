@@ -150,9 +150,18 @@ const handleTypeChange = (type) => {
 async function createGoal() {
   const res = await api.goals.createGoal(goalsData.value);
   if (res.success) {
+    store.commit('SET_MESSAGE',{
+      text: 'Цель создана',
+      type: 'success',
+    });
     emit('hide-modal');
     store.dispatch("getGoals");
     store.dispatch("getProfile");
+  } else {
+    store.commit('SET_MESSAGE',{
+      text: 'Ошибка создания цели',
+      type: 'error',
+    });
   }
 }
 </script>

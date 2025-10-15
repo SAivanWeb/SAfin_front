@@ -36,6 +36,10 @@ const newCurrentAmount = ref(null)
 const updateCurrent = async () => {
     const res = await api.goals.addToGoal(props.goal.id, newCurrentAmount.value);
     if (res.success) {
+      store.commit('SET_MESSAGE',{
+        text: 'Цель пополнена',
+        type: 'success',
+      });
       emit('hide-modal');
       store.dispatch("getGoals");
     }
