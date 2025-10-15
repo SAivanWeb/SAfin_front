@@ -186,11 +186,11 @@ watch(
       if (msg && msg.text) {
         if (msg.type === 'error') {
           message.error(msg.text, {
-            duration: 30000
+            duration: 3000
           });
         } else if (msg.type === 'success') {
           message.success(msg.text, {
-            duration: 30000
+            duration: 3000
           });
         }
         store.commit('SET_MESSAGE', null)

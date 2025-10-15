@@ -145,3 +145,21 @@ button{
   border: none;
   background: none;
 }
+
+.n-message{
+  border-radius: 12px;
+}
+
+.n-message .n-message__icon{
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.n-message .n-message__icon svg{
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.n-message .n-message__content{
+  font-size: 18px;
+}

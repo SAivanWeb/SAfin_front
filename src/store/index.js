@@ -94,8 +94,14 @@ export default createStore({
             commit('SET_PRELOADER', true);
             const res = await accountsApi.getAccounts();
             if (res.success) {
-                if (res.data.length === 0) return [];
-                let accounts = res.data;
+                let accounts;
+                if (res.data.length === 0) {
+                    accounts = [];
+                    commit('SET_ACCOUNTS', accounts);
+                    commit('SET_PRELOADER', false);
+                    return;
+                }
+                accounts = res.data;
                 const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
                 accounts = [
                     {
