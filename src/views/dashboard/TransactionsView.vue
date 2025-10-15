@@ -40,8 +40,6 @@ import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
 import Filter from "@/components/template/Filter.vue";
 import TransactionList from "@/components/transaction/TransactionList.vue";
-import PageAlert from "@/components/template/PageAlert.vue";
-import Chart from "@/components/ui/chart/Chart.vue";
 import TabContainer from "@/components/ui/tabs/TabContainer.vue";
 import ProgressList from "@/components/ui/chart/ProgressList.vue";
 import {computed, inject, onMounted, ref, watch, nextTick} from "vue";
