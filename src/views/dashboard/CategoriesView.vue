@@ -364,4 +364,12 @@ async function favoriteCategory(category) {
   }
 
 }
+.categories__item:last-child .categories__item-menu-list,
+.categories__item:nth-last-child(2) .categories__item-menu-list,
+.categories__item:nth-last-child(3) .categories__item-menu-list{
+  top: auto;
+  bottom: 105%;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+}
+
 </style>

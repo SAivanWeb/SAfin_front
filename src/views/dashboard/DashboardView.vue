@@ -4,7 +4,7 @@
 
 <!--    <PageAlert class="dashboard__alert"/>-->
 
-    <div class="dashboard__section dashboard__section_row dashboard__section_user">
+    <div v-if="userProfile" class="dashboard__section dashboard__section_row dashboard__section_user">
       <div class="dashboard__user-info level">
         <h3 class="dashboard__sub-title">Уровень</h3>
         <p class="dashboard__user-value">{{userLevelTitle}}</p>
