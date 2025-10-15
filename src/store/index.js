@@ -67,10 +67,12 @@ export default createStore({
             commit('SET_PRELOADER', false);
         },
         async getCategories({ commit }) {
+            commit('SET_PRELOADER', true);
             const res = await categoryApi.getCategories();
             if (res.success) {
                 commit('SET_CATEGORIES', res.data);
             }
+            commit('SET_PRELOADER', false);
         },
         async getGoals({ commit }) {
             commit('SET_PRELOADER', true);

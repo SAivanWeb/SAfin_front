@@ -111,6 +111,7 @@ async function fetchTransactionsList(filters) {
     transactionsList.value = res.data;
     transactionListTotalPage.value = res.pagination.totalPages;
   }
+  store.commit("SET_PRELOADER", false);
 }
 
 async function fetchTransactionsMonth() {
@@ -128,8 +129,8 @@ async function fetchTransactionsMonth() {
   const res = await store.dispatch("getTransactions", config);
   if (res.success) {
     transactionsMonth.value = res.data;
-    store.commit("SET_PRELOADER", false);
   }
+  store.commit("SET_PRELOADER", false);
 }
 
 watch(transactionListPage, (newPage) => {
@@ -142,7 +143,6 @@ onMounted(() => {
   store.dispatch("getAccounts");
   fetchTransactionsList(transactionListPerPage.value, transactionListPerPage.value);
 })
-
 
 const showDeleteAccount = ref(false);
 const deletingAccountId = ref(null);
