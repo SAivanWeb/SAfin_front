@@ -9,7 +9,7 @@
         <h3 class="dashboard__sub-title">Уровень</h3>
         <p class="dashboard__user-value">{{userLevelTitle}}</p>
       </div>
-      <div class="dashboard__user-img" v-if="userProfile && userProfile.points !== undefined">
+      <div class="dashboard__user-img">
         <img :src="userImage" alt="User level image" />
       </div>
       <div class="dashboard__user-info balance">
@@ -355,6 +355,7 @@ onMounted(() => {
       grid-area: img;
       width: 40%;
       min-width: 400px;
+      min-height: 525px;
 
       & img{
         width: 100%;
