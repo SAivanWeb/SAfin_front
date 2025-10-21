@@ -23,7 +23,7 @@
 
     <div class="profile__levels">
       <h3 class="profile__levels-title">Уровни</h3>
-      <n-carousel draggable :space-between="12" :show-dots="true">
+      <n-carousel draggable :space-between="12" :show-dots="true" v-model:current-index="currentSlide">
         <LevelCard v-for="level in levels" :item="level" :balance="userProfile.points"/>
       </n-carousel>
     </div>
@@ -136,7 +136,7 @@ const profileData = ref({
 });
 
 const tasks = ref(null)
-
+const currentSlide = ref(0)
 const levels = ref([
   {
     id: 1,
@@ -160,9 +160,25 @@ const levels = ref([
   },
 ]);
 
-const toChat = () => {
-  router.push("/chat");
-}
+const currentLevelIndex = computed(() => {
+  const points = userProfile.value?.points || 0;
+
+  if (points < 100) return 0;
+  if (points < 200) return 1;
+  if (points < 300) return 2;
+  if (points < 400) return 3;
+  return 4;
+});
+
+watch(userProfile, (newVal) => {
+  if (newVal) {
+    currentSlide.value = currentLevelIndex.value;
+    profileData.value = {
+      name: newVal.name || '',
+      email: newVal.email || ''
+    };
+  }
+}, { immediate: true });
 
 const toAnswers = () => {
   router.push("/f&q/");

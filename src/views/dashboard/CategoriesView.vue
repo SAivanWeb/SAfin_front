@@ -11,15 +11,6 @@
       />
     </div>
 
-    <div class="categories__menu">
-      <InputSearch
-        class="categories__menu-search"
-        placeholder="поиск категории"
-        :items="categories"
-        v-model="searchedValue"
-      />
-    </div>
-
     <div class="categories__container">
       <div
         v-for="item in filteredCategories"
@@ -66,15 +57,31 @@
               Описание: {{ categoryDetails[item.id].description }}
             </div>
             <div class="categories__item-statistic">
-              <p v-if="categoryDetails[item.id].stats.monthAmount !== 0">
-                Потрачено в этом месяце: <span>{{categoryDetails[item.id].stats.monthAmount}}₽</span>
-              </p>
-              <p v-if="categoryDetails[item.id].stats.expenseLimit">
-                Лимит: <span>{{ categoryDetails[item.id].stats.expenseLimit }}₽</span>
-              </p>
-              <p v-if="categoryDetails[item.id].stats.percent !== 0">
-                {{ categoryDetails[item.id].stats.percent }}% от всех расходов
-              </p>
+              <template
+                v-for="stat in categoryDetails[item.id].stats"
+                :key="stat.type"
+              >
+                <div v-if="stat.type === 'income'" class="categories__item-stat-block income">
+                  <p v-if="stat.monthAmount">
+                    Доход за месяц: <span>{{ formatNum(stat.monthAmount) }}₽</span>
+                  </p>
+                  <p v-if="stat.percent">
+                    {{ stat.percent }}% от всех доходов
+                  </p>
+                </div>
+
+                <div v-else-if="stat.type === 'expense'" class="categories__item-stat-block expense">
+                  <p v-if="stat.monthAmount">
+                    Потрачено в этом месяце: <span>{{ formatNum(stat.monthAmount) }}₽</span>
+                  </p>
+                  <p v-if="stat.expenseLimit">
+                    Лимит: <span>{{ formatNum(stat.expenseLimit) }}₽</span>
+                  </p>
+                  <p v-if="stat.percent">
+                    {{ stat.percent }}% от всех расходов
+                  </p>
+                </div>
+              </template>
             </div>
           </template>
         </div>
@@ -89,7 +96,6 @@
 import MainWrapper from "@/components/template/MainWrapper.vue";
 import MainTitle from "@/components/ui/title/MainTitle.vue";
 import MainButton from "@/components/ui/button/MainButton.vue";
-import InputSearch from "@/components/ui/input/InputSearch.vue";
 import {computed, ref, onMounted, onBeforeUnmount, inject, nextTick} from "vue";
 import {useStore} from "vuex";
 import MenuVertical from "@/assets/icons/menu-vertical.vue";
@@ -161,6 +167,17 @@ function toggleMenu(id) {
 function handleClickOutside(e) {
   const menu = e.target.closest(".categories__item-menu");
   if (!menu) showCategoryMenu.value = null;
+}
+
+function formatNum(num) {
+  if (!num && num !== 0) return '0'
+  return Number(num)
+    .toLocaleString('ru-RU', {
+      useGrouping: true,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    })
+    .replace(/,/g, ' ')
 }
 
 onMounted(() => document.addEventListener("click", handleClickOutside));
@@ -249,7 +266,7 @@ async function favoriteCategory(category) {
     flex-direction: column;
 
     &.active{
-      gap: 6px;
+      gap: 8px;
     }
 
     &-icon {
@@ -266,6 +283,12 @@ async function favoriteCategory(category) {
           color: #2E7D32;
         }
       }
+    }
+
+    &-stat-block{
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     &-header {

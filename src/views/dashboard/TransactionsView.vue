@@ -10,6 +10,9 @@
           <template #transactions>
               <TabContainer :headers="tabHeadersTransactions" v-model:active="activeTransactionsTab">
                 <template #progress>
+                  <div class="transactions__statistic-info">
+                    Потрачено в этом месяце: <span>{{ formatNum(totalExpense) }}₽</span>
+                  </div>
                   <ProgressList :items="transactionsMonth"/>
                 </template>
                 <template #list>
@@ -64,7 +67,7 @@ const tabHeadersTransactions = ref([
   },
   {
     name: 'progress',
-    value: 'Прогресс'
+    value: 'Прогресс трат'
   },
 ])
 
@@ -91,6 +94,25 @@ watch(isReset, (newValue) => {
 });
 
 const activeTransactionsTab = ref('list');
+
+const totalExpense = computed(() => {
+  if (transactionsMonth.value) {
+    return transactionsMonth.value
+      .filter(item => item.type === 'expense')
+      .reduce((sum, item) => sum + item.amount, 0)
+  }
+})
+
+function formatNum(num) {
+  if (!num && num !== 0) return '0'
+  return Number(num)
+    .toLocaleString('ru-RU', {
+      useGrouping: true,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    })
+    .replace(/,/g, ' ')
+}
 
 watch(activeTransactionsTab, (newVal) => {
   if (newVal === 'progress') {
@@ -205,6 +227,22 @@ async function deleteAccount() {
       display: flex;
       flex-direction: column;
       gap: 12px;
+    }
+
+    &-info{
+      font-size: 20px;
+      color: #757575;
+      font-weight: 400;
+      margin-bottom: 24px;
+
+      & span {
+        color: #212121;
+        font-weight: 600;
+      }
+
+      @media (max-width: 767px) {
+        font-size: 18px;
+      }
     }
   }
   

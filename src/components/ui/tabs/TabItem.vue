@@ -37,6 +37,7 @@ const props = defineProps({
   align-items: center;
   gap: 6px;
   height: 100%;
+  white-space: nowrap;
 
   &_active{
     color: #2E7D32;
@@ -49,6 +50,7 @@ const props = defineProps({
 
   &__icon{
     width: 32px;
+    min-width: 32px;
   }
 }
 

@@ -9,7 +9,7 @@
         <h3 class="dashboard__sub-title">Уровень</h3>
         <p class="dashboard__user-value">{{userLevelTitle}}</p>
       </div>
-      <div class="dashboard__user-img">
+      <div class="dashboard__user-img" v-if="userProfile && userProfile.points !== undefined">
         <img :src="userImage" alt="User level image" />
       </div>
       <div class="dashboard__user-info balance">
@@ -227,7 +227,7 @@ const userImage = computed(() => {
   if (points < 400) return '/fourth.webp';
   if (points < 500) return '/fifth.webp';
 
-  return '/fifth.webp';
+  return '/first.webp';
 });
 
 async function fetchTransactions() {
