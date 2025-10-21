@@ -219,7 +219,8 @@ const userLevelTitle = computed(() => {
 });
 
 const userImage = computed(() => {
-  const points = userProfile.value?.points || 0;
+  const points = userProfile.value?.points;
+  if (points == null) return null;
 
   if (points < 100) return '/first.webp';
   if (points < 200) return '/second.webp';
